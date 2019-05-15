@@ -5,7 +5,7 @@
       <v-toolbar-side-icon>
         <v-icon>videogame_asset</v-icon>
       </v-toolbar-side-icon>
-      <v-toolbar-title>Game Tracker</v-toolbar-title>
+      <v-toolbar-title>GameTracker</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn flat>Select Team</v-btn>
@@ -29,6 +29,8 @@
         </v-layout>
       </v-container>
     </v-content>
+    <!-- Toaster -->
+    <Toaster/>
   </v-app>
 
 </template>
@@ -41,11 +43,12 @@
 
 import { mapState } from 'vuex';
 import LoginDialog from '@/components/LoginDialog.vue';
+import Toaster from '@/components/Toaster.vue';
 
 export default {
   name: 'App',
   components: {
-    LoginDialog
+    LoginDialog, Toaster
   },
   data () {
     return {

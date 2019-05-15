@@ -2,20 +2,20 @@
     <v-dialog v-model="login.dialogLogin" width="500">
       <v-card>
         <v-card-title class="headline green lighten-2" >
-          Login to Game Tracker
+          Login to GameTracker
         </v-card-title>
         <!-- Login form -->
         <v-card-text>
-          <v-form>
+          <v-form v-model="isValid">
             <v-text-field v-model="email" label="email address" :rules="emailRules" required></v-text-field>
-            <v-text-field v-model="password" :append-icon="showPassword ? 'visibility' : 'visibility_off'" :type="showPassword ? 'text' : 'password'" @click:append="showPassword = !showPassword"></v-text-field>
+            <v-text-field v-model="password" :rules="passwordRules" :append-icon="showPassword ? 'visibility' : 'visibility_off'" :type="showPassword ? 'text' : 'password'" @click:append="showPassword = !showPassword"></v-text-field>
           </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <!-- Login button -->
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="dialog = false">
+          <v-btn color="primary" flat @click="loginWithPassword()" :disabled="!isValid">
             Login
           </v-btn>
         </v-card-actions>
@@ -24,7 +24,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, /*mapMutations*/ } from 'vuex';
+import { repositoryFactory } from '@/api/repositoryFactory';
+const loginRepository = repositoryFactory.get('login');
 
 export default {
     name: 'LoginDialog',
@@ -33,14 +35,34 @@ export default {
             password: '',
             showPassword: false,
             email: '',
+            isValid: false,
             emailRules: [
-                v => !!v || 'E-mail is required',
-                v => /.+@.+/.test(v) || 'E-mail must be valid'
+              v => !!v || 'E-mail is required',
+              v => /.+@.+/.test(v) || 'E-mail must be valid'
+            ],
+            passwordRules: [
+              v => !!v || 'Password is required',
             ]
         }
     },
     computed: {
-        ...mapState(['login'])
-    } 
+      ...mapState(['login'])
+    },
+    methods: {
+      //...mapMutations(['toaster']),
+
+      loginWithPassword() {
+        
+        loginRepository.loginWithPassword({
+          email: this.email,
+          password: this.password
+        }).then(function(){
+
+        }).catch(() => {
+          this.$store.commit('toaster/showError', 'Unable to login');
+        });
+        
+      }
+    }
 }
 </script>
