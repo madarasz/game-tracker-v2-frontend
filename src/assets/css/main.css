@@ -1,3 +1,6 @@
 html { 
     overflow-y: auto;
 }
+.text-transform-none {
+    text-transform: none
+}

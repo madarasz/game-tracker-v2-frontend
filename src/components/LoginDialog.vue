@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="login.dialogLogin" width="500">
+    <v-dialog v-model="login.dialogLogin" width="500" @keydown.enter="loginWithPassword()">
       <v-card>
         <v-card-title class="headline green lighten-2" >
           Login to GameTracker
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState, /*mapMutations*/ } from 'vuex';
+import { mapState } from 'vuex';
 import { repositoryFactory } from '@/api/repositoryFactory';
 const loginRepository = repositoryFactory.get('login');
 
@@ -49,19 +49,21 @@ export default {
       ...mapState(['login'])
     },
     methods: {
-      //...mapMutations(['toaster']),
-
+      // logging in with password
       loginWithPassword() {
-        
-        loginRepository.loginWithPassword({
-          email: this.email,
-          password: this.password
-        }).then(function(){
-
-        }).catch(() => {
-          this.$store.commit('toaster/showError', 'Unable to login');
-        });
-        
+        if (this.isValid) {
+          loginRepository.loginWithPassword({
+            email: this.email,
+            password: this.password
+          }).then((response) => {
+            // successful login
+            this.$store.commit('login/login', response.data);
+            this.$store.commit('login/hideLoginDialog');
+          }).catch(() => {
+            // error handling
+            this.$store.commit('toaster/showError', 'Unable to login');
+          });        
+        }
       }
     }
 }
