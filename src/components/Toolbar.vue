@@ -13,14 +13,14 @@
             <v-menu offset-y bottom left v-if="login.userId">
             <template v-slot:activator="{ on }">
                 <v-btn flat class="text-transform-none" v-on="on">
-                {{ login.userName }}
+                    {{ login.userName }}
                 <v-icon>arrow_drop_down</v-icon>
                 </v-btn>
             </template>
             <v-list dense>
                 <v-list-tile @click="logout()">
-                <v-icon class="pr-2">exit_to_app</v-icon>
-                <v-list-tile-title>Logout</v-list-tile-title>              
+                    <v-icon class="pr-2">exit_to_app</v-icon>
+                    <v-list-tile-title>Logout</v-list-tile-title>              
                 </v-list-tile>
             </v-list>
             </v-menu>
