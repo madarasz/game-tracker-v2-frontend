@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:e2e": "vue-cli-service test:e2e",
+    "test:e2e": "jest",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -29,6 +29,8 @@
     "babel-jest": "^23.6.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "jest-puppeteer": "^4.1.1",
+    "puppeteer": "^1.16.0",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
     "stylus": "^0.54.5",
@@ -61,6 +63,7 @@
     "last 2 versions"
   ],
   "jest": {
+    "preset": "jest-puppeteer",
     "moduleFileExtensions": [
       "js",
       "jsx",
@@ -82,7 +85,7 @@
       "jest-serializer-vue"
     ],
     "testMatch": [
-      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+      "**/tests/e2e/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
     ],
     "testURL": "http://localhost/",
     "watchPlugins": [
