@@ -85,7 +85,7 @@
       "jest-serializer-vue"
     ],
     "testMatch": [
-      "**/tests/e2e/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+      "**/tests/e2e/**/*.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
     ],
     "testURL": "http://localhost/",
     "watchPlugins": [
