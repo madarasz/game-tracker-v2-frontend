@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="toaster.showToaster" :color="toaster.color" :timeout="toaster.timeout" right bottom>
+    <v-snackbar v-model="toaster.showToaster" :color="toaster.color" :timeout="toaster.timeout" right bottom name="toaster">
         {{ toaster.text }}
         <v-btn flat @click="toaster.showToaster = false" v-if="toaster.showCloseButton">
             Close

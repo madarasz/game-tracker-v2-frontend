@@ -7,15 +7,16 @@
             <!-- Login form -->
             <v-card-text>
                 <v-form v-model="isValid">
-                    <v-text-field v-model="email" label="email address" :rules="emailRules" required></v-text-field>
-                    <v-text-field v-model="password" :rules="passwordRules" :append-icon="showPassword ? 'visibility' : 'visibility_off'" :type="showPassword ? 'text' : 'password'" @click:append="showPassword = !showPassword"></v-text-field>
+                    <v-text-field v-model="email" label="email address" :rules="emailRules" required name="field-email"></v-text-field>
+                    <v-text-field v-model="password" :rules="passwordRules" :append-icon="showPassword ? 'visibility' : 'visibility_off'" 
+                        name="field-password" :type="showPassword ? 'text' : 'password'" @click:append="showPassword = !showPassword"></v-text-field>
                 </v-form>
             </v-card-text>
             <v-divider></v-divider>
             <!-- Login button -->
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" flat @click="loginWithPassword()" :disabled="!isValid">
+                <v-btn color="primary" flat @click="loginWithPassword()" :disabled="!isValid" name="button-submit-login">
                     Login
                 </v-btn>
             </v-card-actions>

@@ -1,4 +1,5 @@
-# gametracker-v2-frontend
+# GameTracker Frontend
+Made with Vue, VueX, Vueitify.
 
 ## Project setup
 ```
@@ -29,6 +30,10 @@ yarn run lint
 ```
 yarn run test:e2e
 ```
+Test cases in `./tests/e2e/testcases/`
+Reports in `./tests/e2e/reports/`
+Jest config in `./jest.config.js`
+Jest-Puppeteer config in `./jest-puppeteer.config.js`
 
 ### Run your unit tests
 ```
