@@ -26,8 +26,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import { repositoryFactory } from '@/api/repositoryFactory';
-const loginRepository = repositoryFactory.get('login');
 
 export default {
     name: 'LoginDialog',
@@ -53,17 +51,15 @@ export default {
         // logging in with password
         loginWithPassword() {
             if (this.isValid) {
-                loginRepository.loginWithPassword({
+                this.$store.dispatch('login/login', {
                     email: this.email,
                     password: this.password
-                }).then((response) => {
-                    // successful login
-                    this.$store.commit('login/login', response.data);
-                    this.$store.commit('login/hideLoginDialog');
+                }).then(() => {
+                    this.$store.dispatch('groups/getGroups');
                 }).catch(() => {
                     // error handling
                     this.$store.commit('toaster/showError', 'Unable to login');
-                });        
+                }); 
             }
         }
     }

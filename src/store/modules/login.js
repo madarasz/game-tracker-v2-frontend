@@ -1,3 +1,6 @@
+import { repositoryFactory } from '@/api/repositoryFactory';
+const loginRepository = repositoryFactory.get('login');
+
 export const login = {
     namespaced: true,
     state: {
@@ -10,20 +13,27 @@ export const login = {
     getters: {
     },
     actions: {
-
+        login(context, {email, password}) {
+            return loginRepository.loginWithPassword({
+                email: email,
+                password: password
+            }).then((response) => {
+                context.state.jwtToken = response.data.token;
+                context.state.userId = response.data.userId;
+                context.state.isAdmin = response.data.isAdmin;
+                context.state.userName = response.data.userName;
+                context.state.dialogLogin = false;
+                loginRepository.setToken(response.data.token);
+            })
+        }
     },
     mutations: {
-        login(state, {token, userId, isAdmin, userName}) {
-            state.jwtToken = token;
-            state.userId = userId;
-            state.isAdmin = isAdmin;
-            state.userName = userName;
-        },
         logout(state) {
             state.jwtToken = '';
             state.userId = null;
             state.isAdmin = false;
             state.userName = '';
+            loginRepository.removeToken();
         },
         showLoginDialog(state) {
             state.dialogLogin = true;
