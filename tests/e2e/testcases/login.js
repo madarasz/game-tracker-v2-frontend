@@ -28,7 +28,7 @@ describe('Login', () => {
         done();
     })
 
-    test('can login and logout with user', async () => {
+    async function loginWithEmailAndPassword(page, email, password) {
         // Click login button
         const loginButton = await page.waitForSelector(selectorLoginButton);
         await loginButton.click();
@@ -39,42 +39,34 @@ describe('Login', () => {
         const submitLogin = await page.waitForSelector(selectorLoginSubmit);
         console.log('Login form, form fields, form submit button are visible');
         // // Fill out form, submit
-        await fieldEmail.type(userEmail);
-        await fieldPassword.type(userPassword);
+        await fieldEmail.type(email);
+        await fieldPassword.type(password);
         await submitLogin.click();
         console.log('Filled out form, submited');
-        // // Username is visible
+    }
+
+    test('can login and logout with user', async () => {
+        // Login with correct email and password
+        loginWithEmailAndPassword(page, userEmail, userPassword);
+        // Username is visible
         const elementUserName = await page.waitForSelector(selectorUserName);
         expect(await page.evaluate(element => element.textContent, elementUserName)).toContain(userName);
         console.log('Username is visible');
-        // // Click Logout
+        // Click Logout
         await elementUserName.click();
         const logoutButton = await page.waitForSelector(selectorLogoutButton);
-        await delay(100);
+        await delay(100);   // have to wait here a bit
         await logoutButton.click();
         console.log('Clicked Logout');
-        // // Login button is visible
+        // Login button is visible
         await page.waitForSelector(selectorLoginButton);
         console.log('Login button is visible');
         console.log('Done!');
-        // done();
     }, 5000);
 
     test('can not login with wrong password', async () => {
-        // Click login button
-        const loginButton = await page.waitForSelector(selectorLoginButton);
-        await loginButton.click();
-        console.log('Clicked login button');
-        // Login form, form fields, form submit button are visible
-        const fieldEmail = await page.waitForSelector(selectorEmailField);
-        const fieldPassword = await page.waitForSelector(selectorPasswordField);
-        const submitLogin = await page.waitForSelector(selectorLoginSubmit);
-        console.log('Login form, form fields, form submit button are visible');
-        // Fill out form, submit
-        await fieldEmail.type(userEmail);
-        await fieldPassword.type(userPassword+ '!!!'); // wrong password
-        await submitLogin.click();
-        console.log('Fill out form, submited');
+        // Unsuccessful login with wrong password
+        loginWithEmailAndPassword(page, userEmail, userPassword + '!!!');
         // Toaster is visible, Login button is still visible
         await page.waitForSelector(selectorLoginButton);
         console.log('Login button is still visible');
