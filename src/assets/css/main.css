@@ -7,3 +7,6 @@ html {
 .v-btn:before {
     opacity: 0.3 !important;
 }
+.borderless .v-table tbody tr:not(:last-child) {
+    border: 0;
+}

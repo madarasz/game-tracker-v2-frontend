@@ -15,12 +15,21 @@
                                 <em>Login to view your Teams</em>
                             </v-list-tile-title>
                         </v-list-tile>
+                        <v-data-table :headers="teamHeaders" :items="groups.groups.myGroups" hide-headers hide-actions class="borderless" 
+                            v-if="groups.groups.myGroups && !groups.groups.myGroups.error">
+                            <template v-slot:items="team">
+                                <td style="width: 1%">
+                                    <v-list-tile-avatar color="grey" tile>
+                                    </v-list-tile-avatar>
+                                <td class="text-xs-left">{{ team.item.name }}</td>
+                            </template>
+                        </v-data-table>
                         <v-divider></v-divider>
                         <!-- Public Groups -->
                         <v-subheader>Public Groups</v-subheader>
-                        <v-data-table :headers="teamHeaders" :items="groups.groups.publicGroups" hide-headers hide-actions>
+                        <v-data-table :headers="teamHeaders" :items="groups.groups.publicGroups" hide-headers hide-actions class="borderless">
                             <template v-slot:items="team">
-                                <td avatar style="width: 1%">
+                                <td style="width: 1%">
                                     <v-list-tile-avatar color="grey" tile>
                                     </v-list-tile-avatar>
                                 <td class="text-xs-left">{{ team.item.name }}</td>
@@ -29,9 +38,9 @@
                         <v-divider></v-divider>
                         <!-- Private Groups -->
                         <v-subheader>Private Groups</v-subheader>
-                        <v-data-table :headers="teamHeaders" :items="groups.groups.privateGroups" hide-headers hide-actions="">
+                        <v-data-table :headers="teamHeaders" :items="groups.groups.privateGroups" hide-headers hide-actions class="borderless">
                             <template v-slot:items="team">
-                                <td avatar style="width: 1%">
+                                <td style="width: 1%">
                                     <v-list-tile-avatar color="grey" tile>
                                     </v-list-tile-avatar>
                                 <td class="text-xs-left">{{ team.item.name }}</td>
