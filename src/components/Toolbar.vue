@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <!-- Team -->
-            <v-btn flat>Select Team</v-btn>
+            <v-btn flat to="/" exact>Select Group</v-btn>
             <!-- User -->
             <v-btn flat @click.native.stop="showLoginDialog()" v-if="!login.userId" name="button-login">Login</v-btn>
             <v-menu offset-y bottom left v-if="login.userId">
@@ -38,10 +38,10 @@ export default {
     },
     methods: {
         logout: function() {
-        this.$store.commit('login/logout');
+            this.$store.commit('login/logout');
         },
         showLoginDialog: function() {
-        this.$store.commit('login/showLoginDialog');
+            this.$store.commit('login/showLoginDialog');
         }
     }
 }
