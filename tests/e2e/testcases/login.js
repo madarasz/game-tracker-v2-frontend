@@ -11,12 +11,6 @@ describe('Login', () => {
 
     let page;
 
-    function delay(time) {
-        return new Promise(function(resolve) { 
-            setTimeout(resolve, time)
-        });
-     }
-
     beforeEach(async (done) => {
         console.log('Test starts, opening browser.');
         page = await browser.newPage();
@@ -34,7 +28,7 @@ describe('Login', () => {
         // Click Logout
         await elementUserName.click();
         const logoutButton = await page.waitForSelector(loginPage.selector.logoutButton);
-        await delay(100);   // have to wait here a bit
+        await loginPage.delay(100);   // have to wait here a bit
         await logoutButton.click();
         console.log('Clicked Logout');
         // Login button is visible

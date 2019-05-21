@@ -39,6 +39,7 @@ export default {
     methods: {
         logout: function() {
             this.$store.commit('login/logout');
+            this.$store.dispatch('groups/getGroups');
         },
         showLoginDialog: function() {
             this.$store.commit('login/showLoginDialog');

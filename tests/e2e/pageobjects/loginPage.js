@@ -16,6 +16,12 @@ async function loginWithEmailAndPassword(page, email, password) {
     console.log('Filled out form, submited');
 }
 
+function delay(time) {
+    return new Promise(function(resolve) { 
+        setTimeout(resolve, time)
+    });
+}
+
 const selector = {
     loginButton: 'button[name="button-login"]',
     emailField: 'input[name="field-email"]',
@@ -27,5 +33,6 @@ const selector = {
 
 module.exports = {
     loginWithEmailAndPassword,
-    selector
+    selector,
+    delay
 }
