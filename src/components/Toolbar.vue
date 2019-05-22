@@ -45,6 +45,11 @@ export default {
     computed: {
         ...mapState(['login'])
     },
+    mounted() {
+        if (localStorage.loginData) {
+            this.$store.commit('login/login', JSON.parse(localStorage.loginData));
+        }
+    },
     methods: {
         logout: function() {
             this.$store.commit('login/logout');

@@ -5,13 +5,16 @@ export const login = {
     namespaced: true,
     state: {
         dialogLogin: false,
-        jwtToken: '',
+        token: '',
         userId: null,
         userName: '',
         isAdmin: false
     },
     getters: {
         urlUserName: (state) => {
+            if (!state.userName) {
+                return "";
+            }
             return state.userName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
         }
     },
@@ -21,22 +24,28 @@ export const login = {
                 email: email,
                 password: password
             }).then((response) => {
-                context.state.jwtToken = response.data.token;
-                context.state.userId = response.data.userId;
-                context.state.isAdmin = response.data.isAdmin;
-                context.state.userName = response.data.userName;
-                context.state.dialogLogin = false;
                 loginRepository.setToken(response.data.token);
+                context.commit('login', response.data);
             })
         }
     },
     mutations: {
+        login(state, {token, userId, isAdmin, userName}) {
+            state.token = token;
+            state.userId = userId;
+            state.isAdmin = isAdmin;
+            state.userName = userName;
+            state.dialogLogin = false;
+            loginRepository.setToken(token);
+            localStorage.setItem('loginData', JSON.stringify({...state}));
+        },
         logout(state) {
-            state.jwtToken = '';
+            state.token = '';
             state.userId = null;
             state.isAdmin = false;
             state.userName = '';
             loginRepository.removeToken();
+            localStorage.setItem('loginData', JSON.stringify({...state}));
         },
         showLoginDialog(state) {
             state.dialogLogin = true;
