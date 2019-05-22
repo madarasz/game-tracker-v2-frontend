@@ -9,6 +9,7 @@
                     <v-avatar color="blue" size="48" class="mr-2">
                         <v-icon size="36">person</v-icon>
                     </v-avatar>
+                    <image-uploader/>
                 </v-card-text>
             </v-card>
             <v-card name="card-profile" class="mt-2">
@@ -25,9 +26,11 @@
 
 <script>
     import { mapState } from 'vuex';
+    import ImageUploader from '@/components/ImageUploader.vue';
 
     export default {
         components: {
+            ImageUploader
         },
         data() {
             return {
