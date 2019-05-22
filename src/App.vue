@@ -2,8 +2,9 @@
     <v-app id="inspire">
         <!-- Toolbar -->
         <Toolbar/>
-        <!-- Login Dialog -->
+        <!-- Dialogs -->
         <LoginDialog/>
+        <UserSettingsDialog/>
         <!-- Content -->
         <v-content>
             <v-container fluid fill-height>
@@ -21,13 +22,14 @@
 
 <script>
 import LoginDialog from '@/components/LoginDialog.vue';
+import UserSettingsDialog from '@/components/UserSettingsDialog.vue';
 import Toaster from '@/components/Toaster.vue';
 import Toolbar from '@/components/Toolbar.vue';
 
 export default {
     name: 'App',
     components: {
-        LoginDialog, Toaster, Toolbar
+        LoginDialog, Toaster, Toolbar, UserSettingsDialog
     }
 }
 </script>

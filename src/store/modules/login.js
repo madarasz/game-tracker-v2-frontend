@@ -11,6 +11,9 @@ export const login = {
         isAdmin: false
     },
     getters: {
+        urlUserName: (state) => {
+            return state.userName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+        }
     },
     actions: {
         login(context, {email, password}) {

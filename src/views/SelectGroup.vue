@@ -20,6 +20,7 @@
                             <template v-slot:items="team">
                                 <td style="width: 1%">
                                     <v-list-tile-avatar color="grey" tile>
+                                        <v-icon>group</v-icon>
                                     </v-list-tile-avatar>
                                 <td class="text-xs-left">{{ team.item.name }}</td>
                             </template>
@@ -32,6 +33,7 @@
                             <template v-slot:items="team">
                                 <td style="width: 1%">
                                     <v-list-tile-avatar color="grey" tile>
+                                        <v-icon>group</v-icon>
                                     </v-list-tile-avatar>
                                 <td class="text-xs-left">{{ team.item.name }}</td>
                             </template>
@@ -44,6 +46,7 @@
                             <template v-slot:items="team">
                                 <td style="width: 1%">
                                     <v-list-tile-avatar color="grey" tile>
+                                        <v-icon>group</v-icon>
                                     </v-list-tile-avatar>
                                 <td class="text-xs-left">{{ team.item.name }}</td>
                             </template>
