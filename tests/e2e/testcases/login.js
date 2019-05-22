@@ -22,13 +22,10 @@ describe('Login', () => {
         // Login with correct email and password
         loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
         // Username is visible
-        const elementUserName = await page.waitForSelector(loginPage.selector.userName);
-        expect(await page.evaluate(element => element.textContent, elementUserName)).toContain(userName);
-        console.log('Username is visible');
+        loginPage.checkUserName(page, userName, true);
         // Click Logout
-        await elementUserName.click();
         const logoutButton = await page.waitForSelector(loginPage.selector.logoutButton);
-        await loginPage.delay(100);   // have to wait here a bit
+        await loginPage.delay(200);   // have to wait here a bit
         await logoutButton.click();
         console.log('Clicked Logout');
         // Login button is visible
@@ -46,6 +43,20 @@ describe('Login', () => {
         await page.waitForSelector(selectorToaster);
         console.log('Toaster is visible');
         console.log('Done!');
+    }, 5000);
+
+    test('login state is perserved', async () => {
+        // Login with correct email and password
+        loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
+        // Username is visible
+        loginPage.checkUserName(page, userName, false);
+        // page reload
+        await page.goto('http://localhost:8080');
+        console.log('Reloaded page');
+        // Username is visible
+        elementUserName = await page.waitForSelector(loginPage.selector.userName);
+        expect(await page.evaluate(element => element.textContent, elementUserName)).toContain(userName);
+        console.log('Username is visible');
     }, 5000);
     
 });

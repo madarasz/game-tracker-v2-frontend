@@ -16,6 +16,18 @@ async function loginWithEmailAndPassword(page, email, password) {
     console.log('Filled out form, submited');
 }
 
+// Checks if userName is correct (+clicks if needed)
+async function checkUserName(page, userName, wantClick) {
+    const elementUserName = await page.waitForSelector(selector.userName);
+    expect(await page.evaluate(element => element.textContent, elementUserName)).toContain(userName);
+    console.log(`Username "${userName}" is visible`);
+    // click on user menu
+    if (wantClick) {
+        await elementUserName.click();
+        console.log('Clicked user name');
+    }
+}
+
 function delay(time) {
     return new Promise(function(resolve) { 
         setTimeout(resolve, time)
@@ -34,5 +46,6 @@ const selector = {
 module.exports = {
     loginWithEmailAndPassword,
     selector,
-    delay
+    delay,
+    checkUserName
 }
