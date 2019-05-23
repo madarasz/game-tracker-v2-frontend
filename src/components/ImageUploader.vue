@@ -1,7 +1,8 @@
 <template>
     <div>
-        <v-btn>Upload</v-btn>
-        <v-btn class="btn btn-dark" @click="bind()">Bind</v-btn>
+        <v-btn @click="launchFilePicker">Upload</v-btn>
+        <input type="file" ref="file" name="uploadedFile" style="display:none" 
+            @change="onFileChange"/>
         <v-btn class="btn btn-dark" @click="rotate(+90)">Rotate Left</v-btn>
         <v-btn class="btn btn-dark" @click="rotate(-90)">Rotate Right</v-btn>
         <v-btn class="btn btn-dark" @click="crop()">Crop</v-btn>
@@ -35,6 +36,23 @@ export default {
         }, 1000)
     }, 
     methods: {
+        onFileChange(event) {
+            // check if file was selected
+            if (event.target.files.length < 1) {
+                this.$store.commit('toaster/showError', 'No file was selected');
+                return;
+            }
+            const imageFile = event.target.files[0];
+            // check if not image
+            if (!imageFile.type.match('image.*')) {
+                this.$store.commit('toaster/showError', 'Selected file is not an image');
+                return;
+            }
+            let formData = new FormData()
+            let imageURL = URL.createObjectURL(imageFile)
+            formData.append('uploadedFile', imageFile)
+            this.cropped = formData.imageURL;
+        },
         bind() {
             // // Randomize cat photos, nothing special here.
             // let url = this.images[Math.floor(Math.random() * this.images.length)];
@@ -77,7 +95,11 @@ export default {
             // });
             // eslint-disable-next-line
             console.log('Croppie was  initialized');
-        }
+        },
+
+        launchFilePicker(){
+            this.$refs.file.click();
+        },
     }
 };
 
