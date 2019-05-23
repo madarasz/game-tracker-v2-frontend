@@ -3,25 +3,15 @@
         <v-btn @click="launchFilePicker">Upload</v-btn>
         <input type="file" ref="fileInput" style="display:none" @change="onFileChange"/>
         <!-- Dialog -->
-        <v-dialog v-model="imageUploaded" width="800px" persistent>
+        <v-dialog v-model="imageUploaded" :width="`${dialogWidth}px`" persistent>
             <v-card>
                 <v-card-title class="headline green lighten-2">
                     Upload image
                 </v-card-title>
                 <v-card-text>  
                     <v-layout row wrap fill-height align-center>
-                        <v-flex xs2 text-xs-right>
-                            <v-btn class="btn btn-dark" @click="croppieObject.rotate(+90)" fab>
-                                <v-icon>rotate_left</v-icon>
-                            </v-btn>
-                        </v-flex>
-                        <v-flex xs8>
+                        <v-flex xs12 text-xs-center>                 
                             <div ref="croppieContainer"/>
-                        </v-flex>
-                        <v-flex xs2 text-xs-left>
-                            <v-btn class="btn btn-dark" @click="croppieObject.rotate(-90)" fab>
-                                <v-icon>rotate_right</v-icon>
-                            </v-btn>
                         </v-flex>
                     </v-layout>
                     <img :src="resultImage" v-show="false"/>
@@ -29,7 +19,13 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn flat @click="resetDialog()">Cancel</v-btn>
-                    <v-btn flat @click="cropImage()">Upload</v-btn>
+                    <v-btn class="btn btn-dark" @click="croppieObject.rotate(+90)" flat small v-if="allowRotate">
+                        <v-icon>rotate_left</v-icon>
+                    </v-btn>
+                    <v-btn class="btn btn-dark" @click="croppieObject.rotate(-90)" flat small v-if="allowRotate">
+                        <v-icon>rotate_right</v-icon>
+                    </v-btn>
+                    <v-btn flat @click="cropImage()" class="green" dark>Upload</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -42,13 +38,22 @@ import 'croppie/croppie.css';
 
 export default {
     name: 'ImageUploader',
-    components: {
+    props: {
+        isSquare: {
+            type: Boolean,
+            default: false
+        },
+        allowRotate: {
+            type: Boolean,
+            default: false
+        }
     },
     data () {
         return {
             imageUploaded: false,
             croppieObject: null,
-            resultImage: null
+            resultImage: null,
+            dialogWidth: 800
             // outputOptions: {
             //     format: 'jpeg'
             // } 
@@ -71,24 +76,46 @@ export default {
                 this.$store.commit('toaster/showError', 'Selected file is not an image');
                 return;
             }
-            var reader = new FileReader();
 
-            const options = {
-                viewport: { width: 100, height: 100 },
-                boundary: { width: 300, height: 300 },
-                showZoomer: false,
-                enableResize: true,
-                enableOrientation: true
-            }
-            
-            reader.readAsDataURL(imageFile);
-            reader.onload = (e) => {
-                if (this.croppieObject == null) {
-                    this.croppieObject = new Croppie(this.$refs.croppieContainer, options);
+            var img = new Image();
+            var _URL = window.URL || window.webkitURL;
+
+            img.src = _URL.createObjectURL(imageFile);
+            img.onload = () => {
+                const bounds = this.getBounds(img);
+                const options = {
+                    viewport: bounds,
+                    boundary: bounds,
+                    showZoomer: true,
+                    enableResize: !this.isSquare,
+                    enableOrientation: true
                 }
-                this.croppieObject.bind({ url: e.target.result });
+
+                this.croppieObject = new Croppie(this.$refs.croppieContainer, options);
+                this.croppieObject.bind({ url: img.src });
                 this.imageUploaded = true;
+            };
+        },
+        
+        // calculates ideal dimensions for croppie
+        getBounds({height, width}) {
+            const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            const maxHeight = this.isSquare ? viewportHeight - 285 : viewportHeight - 230; // preceise: 196
+            const maxWidth = Math.min(viewportWidth - 48, this.dialogWidth) - 75; // preceise: 80;
+            const imgRatio = this.isSquare ? 1 : height / width;
+            const maxRatio = maxHeight / maxWidth;
+            var boundaryHeight, boundaryWidth;
+            if (imgRatio > maxRatio) {
+                boundaryHeight = maxHeight;
+                boundaryWidth = boundaryHeight / imgRatio;
+            } else {
+                boundaryWidth = maxWidth;
+                boundaryHeight = boundaryWidth * imgRatio;
             }
+            // eslint-disable-next-line
+            // console.log(`max space: ${maxWidth}x${maxHeight} ratio: ${maxRatio}- image: ${width}x${height} ratio: ${imgRatio} - boundary: ${boundaryWidth}x${boundaryHeight}`);
+            return { width: boundaryWidth, height: boundaryHeight };
         },
 
         cropImage() {
@@ -103,6 +130,8 @@ export default {
         resetDialog() {
             this.imageUploaded = false;
             this.resultImage = null;
+            this.croppieObject.destroy();
+            this.croppieObject = null;
         }
     }
 };

@@ -9,7 +9,7 @@
                     <v-avatar color="blue" size="48" class="mr-2">
                         <v-icon size="36">person</v-icon>
                     </v-avatar>
-                    <image-uploader/>
+                    <image-uploader is-square/>
                 </v-card-text>
             </v-card>
             <v-card name="card-profile" class="mt-2">
