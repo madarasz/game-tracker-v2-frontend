@@ -35,6 +35,9 @@
 <script>
 import Croppie from 'croppie/croppie';
 import 'croppie/croppie.css';
+import { repositoryFactory } from '@/api/repositoryFactory';
+const imagesRepository = repositoryFactory.get('images');
+import { mapState } from 'vuex';
 
 export default {
     name: 'ImageUploader',
@@ -59,6 +62,9 @@ export default {
             // } 
         }
     },    
+    computed: {
+        ...mapState(['login'])
+    },
     methods: {
         launchFilePicker(){
             this.$refs.fileInput.click();
@@ -120,9 +126,22 @@ export default {
 
         cropImage() {
             this.croppieObject.result('base64').then((dataImg) => {
-                // var data = [{ image: dataImg }, { name: 'myimgage.jpg' }];
                 this.resultImage = dataImg;
-                // todo send to backend
+                
+                // convert from base64 to file
+                const i = dataImg.indexOf('base64,');
+                const buffer = Buffer.from(dataImg.slice(i + 7), 'base64');
+                const file = new File([buffer], 'name', {type: 'image/png'});
+
+                // construct form data
+                var formData = new FormData();
+                formData.append('image', file);
+                formData.append('type', 'user');
+                formData.append('parent_id', this.login.userId);
+
+                imagesRepository.uploadImage(formData).catch(() => {
+                    this.$store.commit('toaster/showError', 'File upload failed');
+                });
                 this.resetDialog();
             });
         },
