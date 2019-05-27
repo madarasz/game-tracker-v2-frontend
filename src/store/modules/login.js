@@ -1,5 +1,6 @@
 import { repositoryFactory } from '@/api/repositoryFactory';
 const loginRepository = repositoryFactory.get('login');
+const imageRepository = repositoryFactory.get('images');
 
 export const login = {
     namespaced: true,
@@ -28,6 +29,17 @@ export const login = {
                 loginRepository.setToken(response.data.token);
                 context.commit('login', response.data);
             })
+        },
+        setProfileImage(context, filename) {
+            context.state.imageFile = filename;
+        },
+        removeProfileImage(context) {
+            return imageRepository.removeImage({
+                type: 'user',
+                parent_id: context.state.userId
+            }).then(() => {
+                context.state.imageFile = null;
+            });
         }
     },
     mutations: {

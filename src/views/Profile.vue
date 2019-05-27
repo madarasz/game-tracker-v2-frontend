@@ -10,7 +10,10 @@
                         <v-icon size="36" v-if="login.imageFile == null" name="placeholder-profile">person</v-icon>
                         <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile"/>
                     </v-avatar>
-                    <image-uploader is-square/>
+                    <image-uploader is-square @uploaded="updateProfileImage"/>
+                    <v-btn v-if="login.imageFile" @click="removeProfileImage">
+                        Remove
+                    </v-btn>
                 </v-card-text>
             </v-card>
             <v-card name="card-profile" class="mt-2">
@@ -47,6 +50,13 @@
             }
         },
         methods: {
+            removeProfileImage: function() {
+                this.$store.dispatch('login/removeProfileImage');
+            },
+            updateProfileImage: function(filename) {
+                this.$store.dispatch('login/setProfileImage', filename);
+            }
+
         }
     }
 </script>

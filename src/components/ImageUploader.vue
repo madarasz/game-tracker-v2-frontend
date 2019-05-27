@@ -139,7 +139,9 @@ export default {
                 formData.append('type', 'user');
                 formData.append('parent_id', this.login.userId);
 
-                imagesRepository.uploadImage(formData).catch(() => {
+                imagesRepository.uploadImage(formData).then((response) => {
+                    this.$emit('uploaded', response.data.filename);
+                }).catch(() => {
                     this.$store.commit('toaster/showError', 'File upload failed');
                 });
                 this.resetDialog();
