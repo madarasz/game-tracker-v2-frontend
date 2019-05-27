@@ -16,7 +16,8 @@
                 <template v-slot:activator="{ on }">
                     <v-btn flat class="text-transform-none" v-on="on" name="user-name">
                         <v-avatar color="green darken-4" size="32" class="mr-2">
-                            <v-icon>person</v-icon>
+                            <v-icon v-if="login.imageFile == null" name="placeholder-profile">person</v-icon>
+                            <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile"/>
                         </v-avatar>
                         {{ login.userName }}
                     <v-icon>arrow_drop_down</v-icon>
@@ -43,7 +44,10 @@ import { mapState } from 'vuex';
 export default {
     name: 'Toolbar',
     computed: {
-        ...mapState(['login'])
+        ...mapState(['login']),
+        imageFolder:function() {
+            return process.env.VUE_APP_BACKEND_IMG_URL;
+        }
     },
     mounted() {
         if (localStorage.loginData) {

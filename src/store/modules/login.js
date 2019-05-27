@@ -8,7 +8,8 @@ export const login = {
         token: '',
         userId: null,
         userName: '',
-        isAdmin: false
+        isAdmin: false,
+        imageFile: null
     },
     getters: {
         urlUserName: (state) => {
@@ -30,12 +31,13 @@ export const login = {
         }
     },
     mutations: {
-        login(state, {token, userId, isAdmin, userName}) {
+        login(state, {token, userId, isAdmin, userName, imageFile}) {
             state.token = token;
             state.userId = userId;
             state.isAdmin = isAdmin;
             state.userName = userName;
             state.dialogLogin = false;
+            state.imageFile = imageFile;
             loginRepository.setToken(token);
             localStorage.setItem('loginData', JSON.stringify({...state}));
         },
@@ -44,6 +46,7 @@ export const login = {
             state.userId = null;
             state.isAdmin = false;
             state.userName = '';
+            state.imageFile = null;
             loginRepository.removeToken();
             localStorage.setItem('loginData', JSON.stringify({...state}));
         },

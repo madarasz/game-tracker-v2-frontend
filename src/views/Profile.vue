@@ -7,7 +7,8 @@
                 </v-card-title>
                 <v-card-text>
                     <v-avatar color="blue" size="48" class="mr-2">
-                        <v-icon size="36">person</v-icon>
+                        <v-icon size="36" v-if="login.imageFile == null" name="placeholder-profile">person</v-icon>
+                        <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile"/>
                     </v-avatar>
                     <image-uploader is-square/>
                 </v-card-text>
@@ -40,6 +41,9 @@
             ...mapState(['login']),
             isSettingsVisible: function() {
                 return this.login.isAdmin || this.login.userId == this.$route.params.id;
+            },
+            imageFolder:function() {
+                return process.env.VUE_APP_BACKEND_IMG_URL;
             }
         },
         methods: {
