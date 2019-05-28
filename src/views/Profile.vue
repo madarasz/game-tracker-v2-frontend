@@ -2,7 +2,7 @@
     <v-layout wrap row>
         <v-flex xs12>
             <v-card name="profile-settings" v-if="isSettingsVisible" color="blue lighten-5">
-                <v-card-title class="blue white--text">
+                <v-card-title class="blue white--text" name="card-profile-settings">
                     Profile Settings
                 </v-card-title>
                 <v-card-text>
@@ -11,7 +11,7 @@
                         <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile"/>
                     </v-avatar>
                     <image-uploader is-square @uploaded="updateProfileImage"/>
-                    <v-btn v-if="login.imageFile" @click="removeProfileImage">
+                    <v-btn v-if="login.imageFile" @click="removeProfileImage" name="button-remove-profile-image">
                         Remove
                     </v-btn>
                 </v-card-text>

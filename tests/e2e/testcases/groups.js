@@ -1,5 +1,7 @@
+const puppeteer = require('puppeteer');
 const loginPage = require('../pageobjects/loginPage');
 const groupsPage = require('../pageobjects/groupsPage');
+const common = require('../pageobjects/common');
 
 describe('Groups', () => {
 
@@ -14,6 +16,7 @@ describe('Groups', () => {
     let page;
 
     beforeEach(async (done) => {
+        browser = await puppeteer.launch();
         console.log('Test starts, opening browser.');
         page = await browser.newPage();
         await page.goto('http://localhost:8080');
@@ -32,7 +35,7 @@ describe('Groups', () => {
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateA);
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
         console.log('Private groups listed');
-        loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
         const elementUserName = await page.waitForSelector(loginPage.selector.userName);
         console.log('Logged in with user');
         await groupsPage.waitForGroupInTable(page, 'my', groupPublicA);
@@ -44,7 +47,7 @@ describe('Groups', () => {
         // check after logging out
         await elementUserName.click();
         const logoutButton = await page.waitForSelector(loginPage.selector.logoutButton);
-        await loginPage.delay(100);   // have to wait here a bit
+        await common.delay(100);   // have to wait here a bit
         await logoutButton.click();
         console.log('Clicked Logout');
         await page.waitForSelector(groupsPage.selector.loginNeeded);
@@ -55,6 +58,6 @@ describe('Groups', () => {
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateA);
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
         console.log('Private groups listed');
-    }, 5000);
+    }, 12000);
     
 });

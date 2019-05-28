@@ -1,3 +1,5 @@
+const common = require('./common');
+
 // Clicks Login button and tries to login with email and password
 async function loginWithEmailAndPassword(page, email, password) {
     // Click login button
@@ -13,6 +15,7 @@ async function loginWithEmailAndPassword(page, email, password) {
     await fieldEmail.type(email);
     await fieldPassword.type(password);
     await submitLogin.click();
+    common.delay(200);
     console.log('Filled out form, submited');
 }
 
@@ -28,24 +31,17 @@ async function checkUserName(page, userName, wantClick) {
     }
 }
 
-function delay(time) {
-    return new Promise(function(resolve) { 
-        setTimeout(resolve, time)
-    });
-}
-
 const selector = {
     loginButton: 'button[name="button-login"]',
     emailField: 'input[name="field-email"]',
     passwordField: 'input[name="field-password"]',
     loginSubmit: 'button[name="button-submit-login"]',
     userName: 'button[name="user-name"]',
-    logoutButton: 'a[name="button-logout"]',
+    logoutButton: 'a[name="menu-logout"]',
 }
 
 module.exports = {
     loginWithEmailAndPassword,
     selector,
-    delay,
     checkUserName
 }

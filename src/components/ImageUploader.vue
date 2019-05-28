@@ -1,7 +1,7 @@
 <template>
     <div>
-        <v-btn @click="launchFilePicker">Upload</v-btn>
-        <input type="file" ref="fileInput" style="display:none" @change="onFileChange"/>
+        <v-btn @click="launchFilePicker" name="button-upload-image">Upload</v-btn>
+        <input type="file" ref="fileInput" style="display:none" @change="onFileChange" name="input-file"/>
         <!-- Dialog -->
         <v-dialog v-model="imageUploaded" :width="`${dialogWidth}px`" persistent>
             <v-card>
@@ -18,14 +18,14 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat @click="resetDialog()">Cancel</v-btn>
+                    <v-btn flat @click="resetDialog()" name="button-dialog-cancel">Cancel</v-btn>
                     <v-btn class="btn btn-dark" @click="croppieObject.rotate(+90)" flat small v-if="allowRotate">
                         <v-icon>rotate_left</v-icon>
                     </v-btn>
                     <v-btn class="btn btn-dark" @click="croppieObject.rotate(-90)" flat small v-if="allowRotate">
                         <v-icon>rotate_right</v-icon>
                     </v-btn>
-                    <v-btn flat @click="cropImage()" class="green" dark>Upload</v-btn>
+                    <v-btn flat @click="cropImage()" class="green" dark name="button-dialog-upload">Upload</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

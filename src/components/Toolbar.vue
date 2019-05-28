@@ -16,19 +16,19 @@
                 <template v-slot:activator="{ on }">
                     <v-btn flat class="text-transform-none" v-on="on" name="user-name">
                         <v-avatar color="green darken-4" size="32" class="mr-2">
-                            <v-icon v-if="login.imageFile == null" name="placeholder-profile">person</v-icon>
-                            <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile"/>
+                            <v-icon v-if="login.imageFile == null" name="placeholder-profile-toolbar">person</v-icon>
+                            <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile-toolbar"/>
                         </v-avatar>
                         {{ login.userName }}
                     <v-icon>arrow_drop_down</v-icon>
                     </v-btn>
                 </template>
             <v-list dense>
-                <v-list-tile name="button-user-settings" :to="`/profile/${login.userId}/${$store.getters['login/urlUserName']}`">
+                <v-list-tile name="menu-profile" :to="`/profile/${login.userId}/${$store.getters['login/urlUserName']}`">
                     <v-icon class="pr-2">settings</v-icon>
                     <v-list-tile-title>Profile</v-list-tile-title>
                 </v-list-tile>
-                <v-list-tile @click="logout()" name="button-logout">
+                <v-list-tile @click="logout()" name="menu-logout">
                     <v-icon class="pr-2">exit_to_app</v-icon>
                     <v-list-tile-title>Logout</v-list-tile-title>              
                 </v-list-tile>
