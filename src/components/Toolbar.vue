@@ -3,12 +3,13 @@
         <v-toolbar-side-icon>
             <v-icon>videogame_asset</v-icon>
         </v-toolbar-side-icon>
-        <v-toolbar-title>GameTracker</v-toolbar-title>
+        <v-toolbar-title class="hidden-xs-only">GameTracker</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <!-- Team -->
             <v-btn flat to="/" exact>
-                    Select Group
+                <span class="hidden-xs-only">Select Group</span>
+                <span class="hidden-sm-and-up">Groups</span>
             </v-btn>
             <!-- User -->
             <v-btn flat @click.native.stop="showLoginDialog()" v-if="!login.userId" name="button-login">Login</v-btn>
@@ -19,7 +20,7 @@
                             <v-icon v-if="login.imageFile == null" name="placeholder-profile-toolbar">person</v-icon>
                             <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile-toolbar"/>
                         </v-avatar>
-                        {{ login.userName }}
+                        <span class="hidden-xs-only">{{ login.userName }}</span>
                     <v-icon>arrow_drop_down</v-icon>
                     </v-btn>
                 </template>
