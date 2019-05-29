@@ -7,7 +7,7 @@
                 </v-card-title>
                 <v-card-text>
                     <v-avatar color="blue" size="48" class="mr-2">
-                        <v-icon size="36" v-if="login.imageFile == null" name="placeholder-profile">person</v-icon>
+                        <v-icon size="36" v-if="login.imageFile == null" name="placeholder-profile">face</v-icon>
                         <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile"/>
                     </v-avatar>
                     <image-uploader is-square @uploaded="updateProfileImage"/>

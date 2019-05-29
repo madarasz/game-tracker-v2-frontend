@@ -1,6 +1,6 @@
 <template>
     <v-layout wrap row>
-        <!-- Teams -->
+        <!-- Groups -->
         <v-flex xs12 lg8 offset-lg2 text-xs-center>
             <v-card height="100%" name="groups-card">
                 <v-card-title class="green white--text">
@@ -16,39 +16,46 @@
                             </v-list-tile-title>
                         </v-list-tile>
                         <v-data-table :headers="teamHeaders" :items="groups.groups.myGroups" hide-headers hide-actions class="borderless" 
-                            v-if="groups.groups.myGroups && !groups.groups.myGroups.error" name="my-groups-table">
-                            <template v-slot:items="team">
-                                <td style="width: 1%">
-                                    <v-list-tile-avatar color="grey" tile>
-                                        <v-icon>group</v-icon>
-                                    </v-list-tile-avatar>
-                                <td class="text-xs-left">{{ team.item.name }}</td>
+                            v-if="groups.groups.myGroups && !groups.groups.myGroups.error" name="my-groups-table" :loading="true">
+                            <template v-slot:items="group">
+                                <tr @click="selectGroup(group.item.id)">
+                                    <td style="width: 1%">
+                                        <v-list-tile-avatar color="grey" tile>
+                                            <v-icon>group</v-icon>
+                                        </v-list-tile-avatar>
+                                    <td class="text-xs-left">{{ group.item.name }}</td>
+                                    <td class="text-xs-right">
+                                        <v-icon v-if="group.item.is_admin">settings</v-icon>
+                                    </td>
+                                </tr>
                             </template>
                         </v-data-table>
                         <v-divider></v-divider>
                         <!-- Public Groups -->
                         <v-subheader>Public Groups</v-subheader>
                         <v-data-table :headers="teamHeaders" :items="groups.groups.publicGroups" hide-headers hide-actions 
-                            class="borderless" name="public-groups-table">
-                            <template v-slot:items="team">
-                                <td style="width: 1%">
-                                    <v-list-tile-avatar color="grey" tile>
-                                        <v-icon>group</v-icon>
-                                    </v-list-tile-avatar>
-                                <td class="text-xs-left">{{ team.item.name }}</td>
+                            class="borderless" name="public-groups-table" :loading="!groupsLoaded">
+                            <template v-slot:items="group">
+                                <tr @click="selectGroup(group.item.id)">
+                                    <td style="width: 1%">
+                                        <v-list-tile-avatar color="grey" tile>
+                                            <v-icon>group</v-icon>
+                                        </v-list-tile-avatar>
+                                    <td class="text-xs-left">{{ group.item.name }}</td>
+                                </tr>
                             </template>
                         </v-data-table>
                         <v-divider></v-divider>
                         <!-- Private Groups -->
                         <v-subheader>Private Groups</v-subheader>
                         <v-data-table :headers="teamHeaders" :items="groups.groups.privateGroups" hide-headers hide-actions 
-                            class="borderless" name="private-groups-table">
-                            <template v-slot:items="team">
+                            class="borderless" name="private-groups-table" :loading="!groupsLoaded">
+                            <template v-slot:items="group">
                                 <td style="width: 1%">
                                     <v-list-tile-avatar color="grey" tile>
                                         <v-icon>group</v-icon>
                                     </v-list-tile-avatar>
-                                <td class="text-xs-left">{{ team.item.name }}</td>
+                                <td class="text-xs-left">{{ group.item.name }}</td>
                             </template>
                         </v-data-table>
                     </v-list>
@@ -85,6 +92,9 @@
             });
         },
         methods: {
+            selectGroup: function(id) {
+                this.$store.commit('groups/selectGroup', {id});
+            }
         }
     }
 </script>
