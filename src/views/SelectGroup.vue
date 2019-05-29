@@ -12,7 +12,7 @@
                         <v-subheader>My Groups</v-subheader>
                         <v-list-tile v-if="groupsLoaded && login.userId == null" >
                             <v-list-tile-title class="text-xs-center" name="my-groups-login">
-                                <em>Login to view your Teams</em>
+                                <em>Login to view your Groups</em>
                             </v-list-tile-title>
                         </v-list-tile>
                         <v-data-table :headers="teamHeaders" :items="groups.groups.myGroups" hide-headers hide-actions class="borderless" 
@@ -25,7 +25,7 @@
                                         </v-list-tile-avatar>
                                     <td class="text-xs-left">{{ group.item.name }}</td>
                                     <td class="text-xs-right">
-                                        <v-icon v-if="group.item.is_admin || login.isAdmin">settings</v-icon>
+                                        <v-icon v-if="group.item.is_admin || login.isAdmin" name="icon-settings">settings</v-icon>
                                     </td>
                                 </tr>
                             </template>
@@ -43,7 +43,7 @@
                                         </v-list-tile-avatar>
                                     <td class="text-xs-left">{{ group.item.name }}</td>
                                     <td class="text-xs-right">
-                                        <v-icon v-if="login.isAdmin">settings</v-icon>
+                                        <v-icon v-if="login.isAdmin" name="icon-settings">settings</v-icon>
                                     </td>
                                 </tr>
                             </template>
@@ -60,7 +60,7 @@
                                     </v-list-tile-avatar>
                                 <td class="text-xs-left">{{ group.item.name }}</td>
                                 <td class="text-xs-right">
-                                    <v-icon v-if="group.item.is_admin || login.isAdmin">settings</v-icon>
+                                    <v-icon v-if="login.isAdmin" name="icon-settings">settings</v-icon>
                                 </td>
                             </template>
                         </v-data-table>
