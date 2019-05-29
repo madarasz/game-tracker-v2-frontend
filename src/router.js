@@ -17,5 +17,10 @@ export default new Router({
       name: 'Profile',
       component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
     },
+    {
+      path: '/group/:id/:groupname',
+      name: 'Group details',
+      component: () => import(/* webpackChunkName: "groupDetails" */ './views/GroupDetails.vue')
+    },
   ]
 })

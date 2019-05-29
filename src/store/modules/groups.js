@@ -24,10 +24,11 @@ export const groups = {
     },
     mutations: {
         selectGroup(state, {id}) {
-            state.selectedGroup = 'meh';
-            state.selectedGroup = state.groups.myGroups.find((group) => { return group.id == id});
-            if (state.selectedGroup) {
-                return state.selectedGroup;
+            if (Array.isArray(state.groups.myGroups)) {
+                state.selectedGroup = state.groups.myGroups.find((group) => { return group.id == id});
+                if (state.selectedGroup) {
+                    return state.selectedGroup;
+                }
             }
             state.selectedGroup = state.groups.publicGroups.find((group) => { return group.id == id});
             return state.selectedGroup;

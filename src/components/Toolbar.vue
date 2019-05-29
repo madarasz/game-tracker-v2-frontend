@@ -3,10 +3,15 @@
         <v-toolbar-side-icon>
             <v-icon>videogame_asset</v-icon>
         </v-toolbar-side-icon>
-        <v-toolbar-title class="hidden-xs-only">GameTracker</v-toolbar-title>
+        <v-toolbar-title :class="groups.selectedGroup == null ? 'hidden-xs-only' : 'hidden-sm-and-down'">GameTracker</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-            <!-- Team -->
+            <!-- Game -->
+            <v-btn flat :to="`/group/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}`" v-if="groups.selectedGroup != null" name="button-select-group">
+                <span class="hidden-xs-only">Select Game</span>
+                <span class="hidden-sm-and-up">Games</span>
+            </v-btn>
+            <!-- Group -->
             <v-btn flat to="/" exact v-if="groups.selectedGroup == null" name="button-select-group">
                 <span class="hidden-xs-only">Select Group</span>
                 <span class="hidden-sm-and-up">Groups</span>
@@ -23,7 +28,7 @@
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-tile name="menu-group-details" :to="`/groups/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}`">
+                    <v-list-tile name="menu-group-details" :to="`/group/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}`">
                         <v-icon class="pr-2">more</v-icon>
                         <v-list-tile-title>Details</v-list-tile-title>
                     </v-list-tile>

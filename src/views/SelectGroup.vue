@@ -16,7 +16,7 @@
                             </v-list-tile-title>
                         </v-list-tile>
                         <v-data-table :headers="teamHeaders" :items="groups.groups.myGroups" hide-headers hide-actions class="borderless" 
-                            v-if="groups.groups.myGroups && !groups.groups.myGroups.error" name="my-groups-table" :loading="true">
+                            v-if="groups.groups.myGroups && !groups.groups.myGroups.error" name="my-groups-table" :loading="groupsLoaded">
                             <template v-slot:items="group">
                                 <tr @click="selectGroup(group.item.id)">
                                     <td style="width: 1%">
@@ -25,7 +25,7 @@
                                         </v-list-tile-avatar>
                                     <td class="text-xs-left">{{ group.item.name }}</td>
                                     <td class="text-xs-right">
-                                        <v-icon v-if="group.item.is_admin">settings</v-icon>
+                                        <v-icon v-if="group.item.is_admin || login.isAdmin">settings</v-icon>
                                     </td>
                                 </tr>
                             </template>
@@ -42,6 +42,9 @@
                                             <v-icon>group</v-icon>
                                         </v-list-tile-avatar>
                                     <td class="text-xs-left">{{ group.item.name }}</td>
+                                    <td class="text-xs-right">
+                                        <v-icon v-if="login.isAdmin">settings</v-icon>
+                                    </td>
                                 </tr>
                             </template>
                         </v-data-table>
@@ -56,6 +59,9 @@
                                         <v-icon>group</v-icon>
                                     </v-list-tile-avatar>
                                 <td class="text-xs-left">{{ group.item.name }}</td>
+                                <td class="text-xs-right">
+                                    <v-icon v-if="group.item.is_admin || login.isAdmin">settings</v-icon>
+                                </td>
                             </template>
                         </v-data-table>
                     </v-list>
@@ -94,6 +100,7 @@
         methods: {
             selectGroup: function(id) {
                 this.$store.commit('groups/selectGroup', {id});
+                this.$router.push(`group/${id}/${this.$store.getters['groups/urlGroupName']}`);
             }
         }
     }
