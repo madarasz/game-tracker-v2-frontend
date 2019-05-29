@@ -78,8 +78,15 @@ export default {
         }
     },
     mounted() {
-        if (localStorage.loginData) {
+        // restore login from local storage
+        if (localStorage.loginData != null) {
             this.$store.commit('login/login', JSON.parse(localStorage.loginData));
+        }
+        // restore selected group from local storage
+        if (this.$route != '/' && localStorage.selectedGroupId) {
+            this.$store.dispatch('groups/getGroups').then(() => {
+                this.$store.commit('groups/selectGroup', { id: localStorage.selectedGroupId });
+            });
         }
     },
     methods: {

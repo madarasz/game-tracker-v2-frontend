@@ -37,7 +37,7 @@ export default {
         computed: {
             ...mapState(['login', 'groups']),
             isSettingsVisible: function() {
-                return this.login.isAdmin || this.groups.selectedGroup.is_admin == true;
+                return this.groups.selectedGroup && (this.login.isAdmin || this.groups.selectedGroup.is_admin);
             },
         },
         mounted: function() {

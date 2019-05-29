@@ -17,13 +17,14 @@ export const groups = {
     },
     actions: {
         getGroups(context) {
-            groupRepository.getGroups().then((response) => {
+            return groupRepository.getGroups().then((response) => {
                 context.state.groups = response.data;
             });
         }
     },
     mutations: {
         selectGroup(state, {id}) {
+            localStorage.setItem('selectedGroupId', id);
             if (Array.isArray(state.groups.myGroups)) {
                 state.selectedGroup = state.groups.myGroups.find((group) => { return group.id == id});
                 if (state.selectedGroup) {
@@ -35,6 +36,7 @@ export const groups = {
         },
         unselectGroup(state) {
             state.selectedGroup = null;
+            localStorage.removeItem('selectedGroupId');
         }
     }
 }
