@@ -3,17 +3,9 @@ const loginDialog = require('../pageobjects/loginDialog');
 const groupsPage = require('../pageobjects/groupsPage');
 const common = require('../pageobjects/common');
 const toolbar = require('../pageobjects/toolbar');
+const testvalues = require('../global/testvalues');
 
 describe('Groups', () => {
-
-    // test values
-    const userEmail = 'e2e@test.com';
-    const userPassword = 'pass';
-    const groupPublicA = 'Public Group A';
-    const groupPublicB = 'Public Group B';
-    const groupPrivateA = 'Private Group A';
-    const groupPrivateB = 'Private Group B';
-
     let page;
 
     beforeEach(async (done) => {
@@ -35,23 +27,23 @@ describe('Groups', () => {
         // check without login
         await page.waitForSelector(groupsPage.selector.loginNeeded);
         console.log('My groups needs login message found');
-        await groupsPage.waitForGroupInTable(page, 'public', groupPublicA);
-        await groupsPage.waitForGroupInTable(page, 'public', groupPublicB);
+        await groupsPage.waitForGroupInTable(page, 'public', testvalues.groupPublicA);
+        await groupsPage.waitForGroupInTable(page, 'public', testvalues.groupPublicB);
         console.log('Public groups listed');
-        await groupsPage.waitForGroupInTable(page, 'private', groupPrivateA);
-        await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
+        await groupsPage.waitForGroupInTable(page, 'private', testvalues.groupPrivateA);
+        await groupsPage.waitForGroupInTable(page, 'private', testvalues.groupPrivateB);
         console.log('Private groups listed');
-        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, testvalues.userEmail, testvalues.userPassword);
         const elementUserName = await page.waitForSelector(toolbar.selector.userName);
         console.log('Logged in with user');
         // check after login
-        await groupsPage.waitForGroupInTable(page, 'my', groupPublicA);
-        await groupsPage.waitForGroupInTable(page, 'my', groupPrivateA);
+        await groupsPage.waitForGroupInTable(page, 'my', testvalues.groupPublicA);
+        await groupsPage.waitForGroupInTable(page, 'my', testvalues.groupPrivateA);
         console.log('My groups listed');
-        await groupsPage.waitForGroupInTable(page, 'public', groupPublicB);
-        await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
+        await groupsPage.waitForGroupInTable(page, 'public', testvalues.groupPublicB);
+        await groupsPage.waitForGroupInTable(page, 'private', testvalues.groupPrivateB);
         console.log('Public and private groups listed');
-        groupsPage.waitForAdminOnGroup(page, 'my', groupPublicA);
+        groupsPage.waitForAdminOnGroup(page, 'my', testvalues.groupPublicA);
         console.log('Settings icon on group where user is admin');
         // check after logging out
         await elementUserName.click();
@@ -61,22 +53,22 @@ describe('Groups', () => {
         console.log('Clicked Logout');
         await page.waitForSelector(groupsPage.selector.loginNeeded);
         console.log('My groups needs login message found');
-        await groupsPage.waitForGroupInTable(page, 'public', groupPublicA);
-        await groupsPage.waitForGroupInTable(page, 'public', groupPublicB);
+        await groupsPage.waitForGroupInTable(page, 'public', testvalues.groupPublicA);
+        await groupsPage.waitForGroupInTable(page, 'public', testvalues.groupPublicB);
         console.log('Public groups listed');
-        await groupsPage.waitForGroupInTable(page, 'private', groupPrivateA);
-        await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
+        await groupsPage.waitForGroupInTable(page, 'private', testvalues.groupPrivateA);
+        await groupsPage.waitForGroupInTable(page, 'private', testvalues.groupPrivateB);
         console.log('Private groups listed');
     }, 12000);
 
     test('groups selection is perserved', async () => {
-        const group = await groupsPage.waitForGroupInTable(page, 'public', groupPublicA);
+        const group = await groupsPage.waitForGroupInTable(page, 'public', testvalues.groupPublicA);
         console.log('Public group is listed');
         await group.click();
-        await toolbar.checkSelectedGroup(page, groupPublicA, false);
+        await toolbar.checkSelectedGroup(page, testvalues.groupPublicA, false);
         // page reload
         await page.goto('http://localhost:8080/profile/1/test-user');
-        await toolbar.checkSelectedGroup(page, groupPublicA, false);
+        await toolbar.checkSelectedGroup(page, testvalues.groupPublicA, false);
     }, 5000);
 
 });

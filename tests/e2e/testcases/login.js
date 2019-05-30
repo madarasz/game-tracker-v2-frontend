@@ -2,14 +2,9 @@ const puppeteer = require('puppeteer');
 const loginDialog = require('../pageobjects/loginDialog');
 const common = require('../pageobjects/common');
 const toolbar = require('../pageobjects/toolbar');
+const testvalues = require('../global/testvalues');
 
 describe('Login', () => {
-
-    // test values
-    const userEmail = 'e2e@test.com';
-    const userPassword = 'pass';
-    const userName = 'Test User';
-
     let page;
 
     beforeEach(async (done) => {
@@ -27,9 +22,9 @@ describe('Login', () => {
 
     test('can login and logout with user', async () => {
         // Login with correct email and password
-        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, testvalues.userEmail, testvalues.userPassword);
         // Username is visible
-        await toolbar.checkUserName(page, userName, true);
+        await toolbar.checkUserName(page, testvalues.userName, true);
         // Click Logout
         const logoutButton = await page.waitForSelector(toolbar.selector.logoutButton);
         await common.delay(200);   // have to wait here a bit
@@ -43,7 +38,7 @@ describe('Login', () => {
 
     test('can not login with wrong password', async () => {
         // Unsuccessful login with wrong password
-        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword + '!!!');
+        await loginDialog.loginWithEmailAndPassword(page, testvalues.userEmail, testvalues.userPassword + '!!!');
         // Toaster is visible, Login button is still visible
         await page.waitForSelector(toolbar.selector.loginButton);
         console.log('Login button is still visible');
@@ -54,14 +49,14 @@ describe('Login', () => {
 
     test('login state is perserved', async () => {
         // Login with correct email and password
-        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, testvalues.userEmail, testvalues.userPassword);
         // Username is visible
-        await toolbar.checkUserName(page, userName, false);
+        await toolbar.checkUserName(page, testvalues.userName, false);
         // page reload
         await page.goto('http://localhost:8080');
         console.log('Reloaded page');
         // Username is visible
-        await toolbar.checkUserName(page, userName, false);
+        await toolbar.checkUserName(page, testvalues.userName, false);
     }, 10000);
     
 });

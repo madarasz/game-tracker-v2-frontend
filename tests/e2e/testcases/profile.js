@@ -4,14 +4,9 @@ const profilePage = require('../pageobjects/profilePage');
 const common = require('../pageobjects/common');
 const uploadDialog = require('../pageobjects/uploadDialog');
 const toolbar = require('../pageobjects/toolbar');
+const testvalues = require('../global/testvalues');
 
 describe('Profile', () => {
-
-    // test values
-    const userEmail = 'e2e@test.com';
-    const userPassword = 'pass';
-    const profileImagePath = './tests/e2e/testfiles/dunecat.png';
-
     let page;
 
     beforeEach(async (done) => {
@@ -28,7 +23,7 @@ describe('Profile', () => {
     });
 
     test('can upload and remove profile image', async () => {
-        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, testvalues.userEmail, testvalues.userPassword);
         const userName = await page.waitForSelector(toolbar.selector.userName);
         await userName.click();
         const menuProfile = await page.waitForSelector(common.selector.profileMenu);
@@ -43,7 +38,7 @@ describe('Profile', () => {
         await uploadButton.click();
         console.log('Clicked Upload')
         const fileInput = await page.waitForSelector(uploadDialog.selector.fileInput);
-        await fileInput.uploadFile(profileImagePath);
+        await fileInput.uploadFile(testvalues.profileImagePath);
         console.log('File selected');
         const uploadDialogButton = await page.waitForSelector(uploadDialog.selector.uploadButton);
         await uploadDialogButton.click();
@@ -63,7 +58,7 @@ describe('Profile', () => {
     }, 12000);
     
     test('profile settings is not visible for other user', async() => {
-        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, testvalues.userEmail, testvalues.userPassword);
         await page.goto('http://localhost:8080/profile/2/test-user-admin');
         expect(await common.isElementVisible(page, profilePage.selector.profileSettingsCard)).toBe(false);
         console.log('Profile settings is not visible');
