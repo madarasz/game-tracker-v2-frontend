@@ -1,8 +1,9 @@
 const puppeteer = require('puppeteer');
-const loginPage = require('../pageobjects/loginPage');
+const loginDialog = require('../pageobjects/loginDialog');
 const profilePage = require('../pageobjects/profilePage');
 const common = require('../pageobjects/common');
 const uploadDialog = require('../pageobjects/uploadDialog');
+const toolbar = require('../pageobjects/toolbar');
 
 describe('Profile', () => {
 
@@ -20,10 +21,15 @@ describe('Profile', () => {
         await page.goto('http://localhost:8080');
         done();
     })
+    
+    afterEach(async (done) => {
+        browser.close();
+        done();
+    });
 
     test('can upload and remove profile image', async () => {
-        await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
-        const userName = await page.waitForSelector(loginPage.selector.userName);
+        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
+        const userName = await page.waitForSelector(toolbar.selector.userName);
         await userName.click();
         const menuProfile = await page.waitForSelector(common.selector.profileMenu);
         await common.delay(200);   // have to wait here a bit
@@ -57,10 +63,13 @@ describe('Profile', () => {
     }, 12000);
     
     test('profile settings is not visible for other user', async() => {
-        await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
         await page.goto('http://localhost:8080/profile/2/test-user-admin');
         expect(await common.isElementVisible(page, profilePage.selector.profileSettingsCard)).toBe(false);
         console.log('Profile settings is not visible');
         console.log('Done!');
-    }, 12000)
+    }, 12000);
+
+    test('profile settings is visible for admin', async() => {
+    });
 });

@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
-const loginPage = require('../pageobjects/loginPage');
+const loginDialog = require('../pageobjects/loginDialog');
 const groupsPage = require('../pageobjects/groupsPage');
 const common = require('../pageobjects/common');
+const toolbar = require('../pageobjects/toolbar');
 
 describe('Groups', () => {
 
@@ -22,6 +23,11 @@ describe('Groups', () => {
         await page.goto('http://localhost:8080');
         done();
     })
+    
+    afterEach(async (done) => {
+        browser.close();
+        done();
+    });
 
     test('groups with and without login', async () => {
         await page.waitForSelector(groupsPage.selector.groupsCard);
@@ -35,8 +41,8 @@ describe('Groups', () => {
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateA);
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
         console.log('Private groups listed');
-        await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
-        const elementUserName = await page.waitForSelector(loginPage.selector.userName);
+        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
+        const elementUserName = await page.waitForSelector(toolbar.selector.userName);
         console.log('Logged in with user');
         // check after login
         await groupsPage.waitForGroupInTable(page, 'my', groupPublicA);
@@ -49,7 +55,7 @@ describe('Groups', () => {
         console.log('Settings icon on group where user is admin');
         // check after logging out
         await elementUserName.click();
-        const logoutButton = await page.waitForSelector(loginPage.selector.logoutButton);
+        const logoutButton = await page.waitForSelector(toolbar.selector.logoutButton);
         await common.delay(100);   // have to wait here a bit
         await logoutButton.click();
         console.log('Clicked Logout');
@@ -65,12 +71,12 @@ describe('Groups', () => {
 
     test('groups selection is perserved', async () => {
         const group = await groupsPage.waitForGroupInTable(page, 'public', groupPublicA);
-        console.log('Public team is listed');
+        console.log('Public group is listed');
         await group.click();
-        await groupsPage.checkSelectedGroup(page, groupPublicA, false);
+        await toolbar.checkSelectedGroup(page, groupPublicA, false);
         // page reload
         await page.goto('http://localhost:8080/profile/1/test-user');
-        await groupsPage.checkSelectedGroup(page, groupPublicA, false);
+        await toolbar.checkSelectedGroup(page, groupPublicA, false);
     }, 5000);
 
 });

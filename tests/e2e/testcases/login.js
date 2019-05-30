@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
-const loginPage = require('../pageobjects/loginPage');
+const loginDialog = require('../pageobjects/loginDialog');
 const common = require('../pageobjects/common');
+const toolbar = require('../pageobjects/toolbar');
 
 describe('Login', () => {
 
@@ -18,28 +19,33 @@ describe('Login', () => {
         await page.goto('http://localhost:8080');
         done();
     })
+    
+    afterEach(async (done) => {
+        browser.close();
+        done();
+    });
 
     test('can login and logout with user', async () => {
         // Login with correct email and password
-        await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
         // Username is visible
-        await loginPage.checkUserName(page, userName, true);
+        await toolbar.checkUserName(page, userName, true);
         // Click Logout
-        const logoutButton = await page.waitForSelector(loginPage.selector.logoutButton);
+        const logoutButton = await page.waitForSelector(toolbar.selector.logoutButton);
         await common.delay(200);   // have to wait here a bit
         await logoutButton.click();
         console.log('Clicked Logout');
         // Login button is visible
-        await page.waitForSelector(loginPage.selector.loginButton);
+        await page.waitForSelector(toolbar.selector.loginButton);
         console.log('Login button is visible');
         console.log('Done!');
     }, 10000);
 
     test('can not login with wrong password', async () => {
         // Unsuccessful login with wrong password
-        await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword + '!!!');
+        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword + '!!!');
         // Toaster is visible, Login button is still visible
-        await page.waitForSelector(loginPage.selector.loginButton);
+        await page.waitForSelector(toolbar.selector.loginButton);
         console.log('Login button is still visible');
         await page.waitForSelector(common.selector.toaster);
         console.log('Toaster is visible');
@@ -48,16 +54,14 @@ describe('Login', () => {
 
     test('login state is perserved', async () => {
         // Login with correct email and password
-        await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
+        await loginDialog.loginWithEmailAndPassword(page, userEmail, userPassword);
         // Username is visible
-        await loginPage.checkUserName(page, userName, false);
+        await toolbar.checkUserName(page, userName, false);
         // page reload
         await page.goto('http://localhost:8080');
         console.log('Reloaded page');
         // Username is visible
-        elementUserName = await page.waitForSelector(loginPage.selector.userName);
-        expect(await page.evaluate(element => element.textContent, elementUserName)).toContain(userName);
-        console.log('Username is visible');
+        await toolbar.checkUserName(page, userName, false);
     }, 10000);
     
 });
