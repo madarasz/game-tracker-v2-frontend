@@ -38,12 +38,15 @@ describe('Groups', () => {
         await loginPage.loginWithEmailAndPassword(page, userEmail, userPassword);
         const elementUserName = await page.waitForSelector(loginPage.selector.userName);
         console.log('Logged in with user');
+        // check after login
         await groupsPage.waitForGroupInTable(page, 'my', groupPublicA);
         await groupsPage.waitForGroupInTable(page, 'my', groupPrivateA);
         console.log('My groups listed');
         await groupsPage.waitForGroupInTable(page, 'public', groupPublicB);
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
         console.log('Public and private groups listed');
+        groupsPage.waitForAdminOnGroup(page, 'my', groupPublicA);
+        console.log('Settings icon on group where user is admin');
         // check after logging out
         await elementUserName.click();
         const logoutButton = await page.waitForSelector(loginPage.selector.logoutButton);
@@ -59,5 +62,15 @@ describe('Groups', () => {
         await groupsPage.waitForGroupInTable(page, 'private', groupPrivateB);
         console.log('Private groups listed');
     }, 12000);
-    
+
+    test('groups selection is perserved', async () => {
+        const group = await groupsPage.waitForGroupInTable(page, 'public', groupPublicA);
+        console.log('Public team is listed');
+        await group.click();
+        await groupsPage.checkSelectedGroup(page, groupPublicA, false);
+        // page reload
+        await page.goto('http://localhost:8080/profile/1/test-user');
+        await groupsPage.checkSelectedGroup(page, groupPublicA, false);
+    }, 5000);
+
 });
