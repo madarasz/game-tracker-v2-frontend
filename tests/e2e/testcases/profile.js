@@ -66,5 +66,12 @@ describe('Profile', () => {
     }, 12000);
 
     test('profile settings is visible for admin', async() => {
+        await loginDialog.loginWithEmailAndPassword(page, testvalues.adminEmail, testvalues.adminPassword);
+        await toolbar.checkUserName(page, testvalues.adminName, false);
+        await page.goto('http://localhost:8080/profile/1/test-user');
+        console.log('Looking at profile of other user');
+        await page.waitForSelector(profilePage.selector.profileSettingsCard);
+        console.log('Profile settings is visible for admin');
+        console.log('Done!');
     });
 });
