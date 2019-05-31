@@ -19,15 +19,11 @@
                 <v-card-title class="green white--text">
                     <span class="subheading">Members</span>
                 </v-card-title>
-                <v-list v-if="groupDetailsLoaded">
+                <v-list v-if="groupDetailsLoaded" two-line>
                     <template v-for="(member) in groups.selectedGroup.members">
-                        <v-list-tile :key="member.id">
-                            <v-avatar color="blue" class="mr-2">
-                                <v-icon v-if="member.imageFile == null" :name="`placeholder-member-${member.id}`">person</v-icon>
-                                <img v-if="member.imageFile" :src="imageFolder+member.imageFile" :name="`image-member-${member.id}`"/>
-                            </v-avatar>
-                            {{ member.name }}
-                        </v-list-tile>
+                        <!-- <v-list-tile :key="member.id"> -->
+                            <user-with-avatar :user="member" :key="member-id"/>
+                        <!-- </v-list-tile> -->
                     </template>
                 </v-list>
             </v-card>
@@ -36,10 +32,12 @@
 </template>
 
 <script>
+import UserWithAvatar from '@/components/UserWithAvatar';
 import { mapState } from 'vuex';
 
 export default {
         components: {
+            UserWithAvatar
         },
         data() {
             return {
