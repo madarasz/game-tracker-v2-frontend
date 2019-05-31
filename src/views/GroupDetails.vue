@@ -19,6 +19,17 @@
                 <v-card-title class="green white--text">
                     <span class="subheading">Members</span>
                 </v-card-title>
+                <v-list v-if="groupDetailsLoaded">
+                    <template v-for="(member) in groups.selectedGroup.members">
+                        <v-list-tile :key="member.id">
+                            <v-avatar color="blue" class="mr-2">
+                                <v-icon v-if="member.imageFile == null" :name="`placeholder-member-${member.id}`">person</v-icon>
+                                <img v-if="member.imageFile" :src="imageFolder+member.imageFile" :name="`image-member-${member.id}`"/>
+                            </v-avatar>
+                            {{ member.name }}
+                        </v-list-tile>
+                    </template>
+                </v-list>
             </v-card>
         </v-flex>
     </v-layout>
@@ -32,6 +43,7 @@ export default {
         },
         data() {
             return {
+                groupDetailsLoaded: false
             }
         },
         computed: {
@@ -39,8 +51,14 @@ export default {
             isSettingsVisible: function() {
                 return this.groups.selectedGroup && (this.login.isAdmin || this.groups.selectedGroup.is_admin);
             },
+            imageFolder:function() {
+                return process.env.VUE_APP_BACKEND_IMG_URL;
+            }
         },
         mounted: function() {
+            this.$store.dispatch('groups/getGroupDetails', {id: this.$route.params.id}).then(() => {
+                this.groupDetailsLoaded = true;
+            });
         },
         methods: {
         }

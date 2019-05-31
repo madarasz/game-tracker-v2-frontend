@@ -20,6 +20,11 @@ export const groups = {
             return groupRepository.getGroups().then((response) => {
                 context.state.groups = response.data;
             });
+        },
+        getGroupDetails(context, {id}) {
+            return groupRepository.getGroupDetails(id).then((response) => {
+                context.state.selectedGroup = response.data;
+            })
         }
     },
     mutations: {
