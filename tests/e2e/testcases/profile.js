@@ -59,7 +59,7 @@ describe('Profile', () => {
     
     test('profile settings is not visible for other user', async() => {
         await loginDialog.loginWithEmailAndPassword(page, testvalues.userEmail, testvalues.userPassword);
-        await page.goto('http://localhost:8080/profile/2/test-user-admin');
+        await page.goto(`http://localhost:8080/profile/${testvalues.adminId}/test-user-admin`);
         expect(await common.isElementVisible(page, profilePage.selector.profileSettingsCard)).toBe(false);
         console.log('Profile settings is not visible');
         console.log('Done!');
@@ -68,7 +68,7 @@ describe('Profile', () => {
     test('profile settings is visible for admin', async() => {
         await loginDialog.loginWithEmailAndPassword(page, testvalues.adminEmail, testvalues.adminPassword);
         await toolbar.checkUserName(page, testvalues.adminName, false);
-        await page.goto('http://localhost:8080/profile/1/test-user');
+        await page.goto(`http://localhost:8080/profile/${testvalues.userId}/test-user`);
         console.log('Looking at profile of other user');
         await page.waitForSelector(profilePage.selector.profileSettingsCard);
         console.log('Profile settings is visible for admin');
