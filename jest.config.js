@@ -35,9 +35,9 @@ module.exports = {
         "jest-serializer-vue"
     ],
     "testMatch": [
-        "**/tests/e2e/testcases/**/*.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+        "**/tests/e2e/steps/*.steps.(js|jsx|ts|tsx)"
     ],
-    "testURL": "http://localhost/",
+    "testURL": "http://localhost:8080/",
     "watchPlugins": [
         "jest-watch-typeahead/filename",
         "jest-watch-typeahead/testname"

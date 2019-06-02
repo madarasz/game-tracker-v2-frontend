@@ -12,4 +12,12 @@ module.exports = {
     groupPublicB: 'Public Group B',
     groupPrivateA: 'Private Group A',
     groupPrivateB: 'Private Group B',
+    users: {
+        'Test User': {
+            userName: 'Test User',
+            email: 'e2e@test.com',
+            password: 'pass',
+            id: 1
+        }
+    }
 }
