@@ -12,6 +12,7 @@ async function waitForGroupInTable(page, table, group) {
 
 // checks if group is visible on a group table with settings icon (for group/site admins)
 async function waitForAdminOnGroup(page, table, group) {
+    console.log(`Checking if ${group} is in table ${table} has admin icon`);
     return await page.waitForXPath(`//div[@name='${table}-groups-table']/div/table/tbody/tr/td[contains(.,'${group}')]/../td/i[@name='icon-settings']`)
 }
 

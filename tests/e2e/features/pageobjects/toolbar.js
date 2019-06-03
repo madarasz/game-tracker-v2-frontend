@@ -1,3 +1,5 @@
+const expect = require("expect");
+
 const selector = {
     loginButton: 'button[name="button-login"]',
     userName: 'button[name="user-name"]',
@@ -29,8 +31,17 @@ async function checkSelectedGroup(page, groupName, wantClick) {
     }
 }
 
+async function logout(page) {
+    const elementUserName = await page.waitForSelector(selector.userName);
+    await elementUserName.click();
+    const button = await page.waitForSelector(selector.logoutButton, {visible: true});
+    await button.click();
+    return await page.waitForSelector(selector.loginButton);
+}
+
 module.exports = {
     selector,
     checkUserName,
-    checkSelectedGroup
+    checkSelectedGroup,
+    logout
 }
