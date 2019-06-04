@@ -105,14 +105,10 @@ When("I upload a profile picture", async () => {
 /* ----------------
     Misc
  ------------------*/
-Then(/^"(.*)" (is|are) visible$/, async (elementName, isAre) => {
+Then(/^"(.*)" (is|are)( not|) visible$/, async (elementName, isAre, negation) => {
     let selector = getSelectorForElement(elementName);
-    return await scope.page.waitForSelector(selector, {visible: true});
-});
-
-Then(/^"(.*)" (is|are) not visible$/, async (elementName, isAre) => {
-    let selector = getSelectorForElement(elementName);
-    return expect(await common.isElementVisible(scope.page, selector)).toBe(false);
+    let visibile = negation != ' not';
+    return expect(await common.isElementVisible(scope.page, selector)).toBe(visibile);
 });
 
 function getSelectorForElement(elementName) {
