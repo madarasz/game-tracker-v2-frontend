@@ -1,8 +1,6 @@
-const common = require('./common');
 const toolbar = require('./toolbar');
 
-// Clicks Login button and tries to login with email and password
-async function loginWithEmailAndPassword(page, email, password) {
+async function loginWithUser(page, {email, password, userName}) {
     // Click login button
     const loginButton = await page.waitForSelector(toolbar.selector.loginButton);
     await loginButton.click();
@@ -16,7 +14,6 @@ async function loginWithEmailAndPassword(page, email, password) {
     await fieldEmail.type(email);
     await fieldPassword.type(password);
     await submitLogin.click();
-    common.delay(200);
     console.log('Filled out form, submited');
 }
 
@@ -27,6 +24,6 @@ const selector = {
 }
 
 module.exports = {
-    loginWithEmailAndPassword,
+    loginWithUser,
     selector
 }
