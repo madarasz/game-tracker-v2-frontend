@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:e2e": "jest",
+    "test:e2e": "./node_modules/.bin/cucumber-js ./tests/e2e/features",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {

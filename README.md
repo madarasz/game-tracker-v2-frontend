@@ -30,15 +30,11 @@ yarn run lint
 ```
 yarn run test:e2e
 ```
-Test cases in `./tests/e2e/testcases/`
-Reports in `./tests/e2e/reports/`
-Jest config in `./jest.config.js`
-Jest-Puppeteer config in `./jest-puppeteer.config.js`
+Using **Cucumber-js** and **Puppeteer**
+Features in `./tests/e2e/features/`
 
 ### Run your unit tests
-```
-yarn run test:unit
-```
+*no unit tests*
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

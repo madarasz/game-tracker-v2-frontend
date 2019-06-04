@@ -1,5 +1,5 @@
 const expect = require("expect");
-const common = require('../pageobjects/common');
+const common = require('./common');
 
 const selector = {
     loginButton: 'button[name="button-login"]',

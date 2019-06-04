@@ -6,7 +6,7 @@ const profilePage = require('../pageobjects/profilePage');
 const loginDialog = require('../pageobjects/loginDialog');
 const toolbar = require('../pageobjects/toolbar');
 const common = require('../pageobjects/common');
-const testvalues = require('../data/testvalues');
+const testvalues = require('../../data/testvalues');
 
 /* ----------------
     Navigation

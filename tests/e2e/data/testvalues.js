@@ -1,5 +1,5 @@
 module.exports = {
-    imagePath: './tests/e2e/features/data/dunecat.png',
+    imagePath: './tests/e2e/data/dunecat.png',
     users: {
         'Test User': {
             userName: 'Test User',
