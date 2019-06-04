@@ -21,9 +21,7 @@
                 </v-card-title>
                 <v-list v-if="groupDetailsLoaded" two-line>
                     <template v-for="(member) in groups.selectedGroup.members">
-                        <!-- <v-list-tile :key="member.id"> -->
-                            <user-with-avatar :user="member" :key="member-id"/>
-                        <!-- </v-list-tile> -->
+                        <user-with-avatar :user="member" :key="member-id"/>
                     </template>
                 </v-list>
             </v-card>
@@ -47,7 +45,7 @@ export default {
         computed: {
             ...mapState(['login', 'groups']),
             isSettingsVisible: function() {
-                return this.groups.selectedGroup && (this.login.isAdmin || this.groups.selectedGroup.is_admin);
+                return this.groups.selectedGroup && (this.login.isAdmin || this.$store.getters['groups/isUserGroupAdmin'](this.login.userId));
             },
             imageFolder:function() {
                 return process.env.VUE_APP_BACKEND_IMG_URL;

@@ -13,6 +13,16 @@ export const groups = {
                 return "";
             }
             return state.selectedGroup.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+        },
+        isUserGroupAdmin: (state) => {
+            return userId => {
+                if (!state.selectedGroup || !state.selectedGroup.members) {
+                    return false;
+                }
+                const member = state.selectedGroup.members.find((x) => {return x.id == userId});
+                return member && member.is_group_admin;
+            }
+
         }
     },
     actions: {
