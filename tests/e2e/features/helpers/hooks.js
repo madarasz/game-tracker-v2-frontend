@@ -6,7 +6,7 @@ const scope = require("./scope");
 
 Before(async () => {
     console.log('Test starts, opening browser.');
-    scope.browser = await scope.driver.launch({ headless: false});
+    scope.browser = await scope.driver.launch({ headless: true });
     scope.page = await scope.browser.newPage();
 });
 

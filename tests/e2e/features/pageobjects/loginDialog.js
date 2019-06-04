@@ -15,7 +15,6 @@ async function loginWithUser(page, {email, password, userName}) {
     await fieldPassword.type(password);
     await submitLogin.click();
     console.log('Filled out form, submited');
-    await toolbar.checkUserName(page, userName, false);
 }
 
 const selector = {

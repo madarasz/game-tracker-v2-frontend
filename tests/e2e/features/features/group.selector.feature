@@ -9,7 +9,8 @@ Feature: Group Selector
             | Private Group A   | private   |
             | Private Group B   | private   |
         When I log in with user "Test User"
-        Then I can see the following groups in group selector:
+        Then I'm logged in with user "Test User"
+        And I can see the following groups in group selector:
             | group             | category  |
             | Public Group A    | my        |
             | Public Group B    | public    |
