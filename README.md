@@ -33,6 +33,11 @@ yarn run test:e2e
 Using **Cucumber-js** and **Puppeteer**
 Features in `./tests/e2e/features/`
 
+For testing in non-headless mode:
+```
+yarn run test:e2e -p debug
+```
+
 ### Run your unit tests
 *no unit tests*
 

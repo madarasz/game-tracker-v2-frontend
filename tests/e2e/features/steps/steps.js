@@ -12,7 +12,7 @@ const testvalues = require('../../data/testvalues');
     Navigation
  ------------------*/
 When(/^I visit the (.*)$/, async pageName => {
-    let pagePath = 'http://localhost:8080';
+    let pagePath = scope.context.testUrl;
     switch (pageName) {
         case "homepage":
             pagePath = pagePath + "/";
@@ -26,7 +26,7 @@ When(/^I visit the (.*)$/, async pageName => {
 
 When("I go to path {string}", async path => {
     console.log(`Going to path ${path}`);
-    return await scope.page.goto('http://localhost:8080'+path);
+    return await scope.page.goto(scope.context.testUrl + path);
 });
 
 When("I navigate to {string}", async pageName => {
