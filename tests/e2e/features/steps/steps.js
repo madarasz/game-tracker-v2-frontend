@@ -1,6 +1,8 @@
-const { When, Then } = require('cucumber');
+const { Given, When, Then } = require('cucumber');
+const expect = require("expect");
 const scope = require('../helpers/scope');
 const groupsPage = require('../pageobjects/groupsPage');
+const profilePage = require('../pageobjects/profilePage');
 const loginDialog = require('../pageobjects/loginDialog');
 const toolbar = require('../pageobjects/toolbar');
 const common = require('../pageobjects/common');
@@ -15,6 +17,8 @@ When(/^I visit the (.*)$/, async pageName => {
         case "homepage":
             pagePath = pagePath + "/";
             break;
+        default:
+            console.log(`%c !!! PAGE ${pageName} IS NOT DEFINIED !!!`, 'color: #FF0000');
     }
     console.log(`Going to ${pageName}: ${pagePath}`);
     return await scope.page.goto(pagePath);
@@ -24,6 +28,16 @@ When("I go to path {string}", async path => {
     console.log(`Going to path ${path}`);
     return await scope.page.goto('http://localhost:8080'+path);
 });
+
+When("I navigate to {string}", async pageName => {
+    switch (pageName) {
+        case "my profile":
+            profilePage.navigateToProfilePage(scope.page);
+            break;
+        default:
+            console.log(`%c !!! PAGE ${pageName} IS NOT DEFINIED !!!`, 'color: #FF0000');
+    }
+})
 
 /* ----------------
     Login/Logout
@@ -66,7 +80,7 @@ Then("I can see the admin icon for group {string} in category {string}", async (
 When("I select group {string} in category {string}", async (groupName, category) => {
     const group = await groupsPage.waitForGroupInTable(scope.page, category, groupName);
     console.log(`${groupName} is listed, selecting`);
-    return group.click();
+    return await group.click();
 });
 
 Then("the selected group is {string}", async groupName => {
@@ -74,16 +88,46 @@ Then("the selected group is {string}", async groupName => {
 });
 
 /* ----------------
+    Profile
+ ------------------*/
+Given("profile image is removed", async () => {
+    return await profilePage.removeProfileIfSet(scope.page, false);
+});
+
+When("I remove my profile picture", async () => {
+    return await profilePage.removeProfileIfSet(scope.page, true);
+});
+
+When("I upload a profile picture", async () => {
+    return await profilePage.uploadImage(scope.page, testvalues.imagePath);
+});
+
+/* ----------------
     Misc
  ------------------*/
-Then("{string} is visible", async elementName => {
-    let selector;
-    switch (elementName) {
-        case "Login button":
-            selector = toolbar.selector.loginButton;
-            break;
-        case "Toaster":
-            selector = common.selector.toaster;
-    }
+Then(/^"(.*)" (is|are) visible$/, async (elementName, isAre) => {
+    let selector = getSelectorForElement(elementName);
     return await scope.page.waitForSelector(selector, {visible: true});
 });
+
+Then(/^"(.*)" (is|are) not visible$/, async (elementName, isAre) => {
+    let selector = getSelectorForElement(elementName);
+    return expect(await common.isElementVisible(scope.page, selector)).toBe(false);
+});
+
+function getSelectorForElement(elementName) {
+    switch (elementName.toLowerCase()) {
+        case "login button":
+            return toolbar.selector.loginButton;
+        case "toaster":
+            return common.selector.toaster;
+        case "profile settings":
+            return profilePage.selector.profileSettingsCard;
+        case "profile placeholder":
+            return profilePage.selector.profilePlaceholder;
+        case "profile picture":
+                return profilePage.selector.profileImage;
+        default:
+            console.log(`%c !!! ELEMENT ${elementName} IS NOT DEFINIED !!!`, 'color: #FF0000');
+    }
+}
