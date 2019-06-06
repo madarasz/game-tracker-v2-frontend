@@ -20,7 +20,7 @@ export const groups = {
                     return false;
                 }
                 const member = state.selectedGroup.members.find((x) => {return x.id == userId});
-                return member && member.is_group_admin;
+                return (member !== undefined) && member.is_group_admin;
             }
 
         }
@@ -38,20 +38,33 @@ export const groups = {
         }
     },
     mutations: {
-        selectGroup(state, {id}) {
-            localStorage.setItem('selectedGroupId', id);
+        selectGroupById(state, {id, userIsAdmin = false}) {
+            // looking into my groups
             if (Array.isArray(state.groups.myGroups)) {
                 state.selectedGroup = state.groups.myGroups.find((group) => { return group.id == id});
-                if (state.selectedGroup) {
+                if (state.selectedGroup !== undefined) {
+                    localStorage.setItem('selectedGroup', JSON.stringify({...state.selectedGroup}));
                     return state.selectedGroup;
                 }
             }
-            state.selectedGroup = state.groups.publicGroups.find((group) => { return group.id == id});
-            return state.selectedGroup;
+            // looking into public groups
+            let group = state.groups.publicGroups.find((group) => { return group.id == id});
+            // if still not found and user is site admin, looking into private groups
+            if (group === undefined && userIsAdmin) {
+                group = state.groups.privateGroups.find((group) => { return group.id == id});
+            }
+            if (group !== undefined) {
+                localStorage.setItem('selectedGroup', JSON.stringify({...state.selectedGroup}));
+                state.selectedGroup = group;
+                return state.selectedGroup;
+            }
         },
         unselectGroup(state) {
             state.selectedGroup = null;
-            localStorage.removeItem('selectedGroupId');
+            localStorage.removeItem('selectedGroup');
+        },
+        setSelectedGroupFromLocalStorage(state) {
+            state.selectedGroup = JSON.parse(localStorage.selectedGroup);
         }
     }
 }

@@ -54,14 +54,16 @@
                         <v-data-table :headers="teamHeaders" :items="groups.groups.privateGroups" hide-headers hide-actions 
                             class="borderless" name="private-groups-table" :loading="!groupsLoaded">
                             <template v-slot:items="group">
-                                <td style="width: 1%">
-                                    <v-list-tile-avatar color="grey" tile>
-                                        <v-icon>group</v-icon>
-                                    </v-list-tile-avatar>
-                                <td class="text-xs-left">{{ group.item.name }}</td>
-                                <td class="text-xs-right">
-                                    <v-icon v-if="login.isAdmin" name="icon-settings">settings</v-icon>
-                                </td>
+                                <tr @click="if (login.isAdmin) selectGroup(group.item.id)">
+                                    <td style="width: 1%">
+                                        <v-list-tile-avatar color="grey" tile>
+                                            <v-icon>group</v-icon>
+                                        </v-list-tile-avatar>
+                                    <td class="text-xs-left">{{ group.item.name }}</td>
+                                    <td class="text-xs-right">
+                                        <v-icon v-if="login.isAdmin" name="icon-settings">settings</v-icon>
+                                    </td>
+                                </tr>
                             </template>
                         </v-data-table>
                     </v-list>
@@ -99,7 +101,7 @@
         },
         methods: {
             selectGroup: function(id) {
-                this.$store.commit('groups/selectGroup', {id});
+                this.$store.commit('groups/selectGroupById', {id, userIsAdmin: this.login.isAdmin});
                 this.$router.push(`group/${id}/${this.$store.getters['groups/urlGroupName']}`);
             }
         }

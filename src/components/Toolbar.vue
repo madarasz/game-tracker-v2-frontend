@@ -82,11 +82,20 @@ export default {
         if (localStorage.loginData != null) {
             this.$store.commit('login/login', JSON.parse(localStorage.loginData));
         }
-        // restore selected group from local storage
-        if (this.$route != '/' && localStorage.selectedGroupId) {
-            this.$store.dispatch('groups/getGroups').then(() => {
-                this.$store.commit('groups/selectGroup', { id: localStorage.selectedGroupId });
-            });
+
+        // set selected group
+        // this.$route is not ready on the first loaded page, using window.location.href instead
+        const path = window.location.href.substr(window.location.href.indexOf('/',10)); 
+        const pathParts = path.split('/').filter((el) => { return el != ''});
+        if (path == '/') {
+            // delete selected group if landed on group selection page
+            this.$store.commit('groups/unselectGroup');
+        } else if (pathParts[0] == 'group' && pathParts.length < 4) {
+            // if landed on group details page
+            // do nothing, GroupDetails will set selected group
+        } else if (localStorage.selectedGroup) {
+            // restore selected group anywhere else, if it's set 
+            this.$store.commit('groups/setSelectedGroupFromLocalStorage');
         }
     },
     methods: {

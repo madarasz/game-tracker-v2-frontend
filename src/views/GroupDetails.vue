@@ -2,26 +2,27 @@
     <v-layout wrap row>
         <!-- Games -->
         <v-flex xs12 md8>
-            <v-card class="ma-2">
+            <v-card class="ma-2" name="card-games">
                 <v-card-title class="green white--text">
                     <span class="subheading">Games</span>
                 </v-card-title>
             </v-card>
         </v-flex>
-        <!-- Members -->
         <v-flex xs12 md4>
-            <v-card class="ma-2" v-if="isSettingsVisible">
+            <!-- Settings -->
+            <v-card class="ma-2" v-if="isSettingsVisible" name="card-group-settings">
                 <v-card-title class="orange white--text">
                     <span class="subheading">Settings</span>
                 </v-card-title>
             </v-card>
-            <v-card class="ma-2">
+            <!-- Members -->
+            <v-card class="ma-2" name="card-members">
                 <v-card-title class="green white--text">
                     <span class="subheading">Members</span>
                 </v-card-title>
-                <v-list v-if="groupDetailsLoaded" two-line>
+                <v-list v-if="groups.selectedGroup && groups.selectedGroup.members" two-line>
                     <template v-for="(member) in groups.selectedGroup.members">
-                        <user-with-avatar :user="member" :key="member-id"/>
+                        <user-with-avatar :user="member" :key="member.id"/>
                     </template>
                 </v-list>
             </v-card>
@@ -52,7 +53,10 @@ export default {
             }
         },
         mounted: function() {
-            this.$store.dispatch('groups/getGroupDetails', {id: this.$route.params.id}).then(() => {
+            // load group details and set it as selected
+            const pathParts = window.location.href.substr(window.location.href.indexOf('/',10)).split('/').filter((el) => { return el != ''});
+            const groupId = parseInt(pathParts[1]);
+            this.$store.dispatch('groups/getGroupDetails', {id: groupId}).then(() => {
                 this.groupDetailsLoaded = true;
             });
         },
