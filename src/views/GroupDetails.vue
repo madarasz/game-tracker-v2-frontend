@@ -46,7 +46,8 @@ export default {
         computed: {
             ...mapState(['login', 'groups']),
             isSettingsVisible: function() {
-                return this.groups.selectedGroup && (this.login.isAdmin || this.$store.getters['groups/isUserGroupAdmin'](this.login.userId));
+                return this.groups.selectedGroup && 
+                    (this.login.isAdmin || this.$store.getters['groups/isUserGroupAdmin'](this.login.userId));
             },
             imageFolder:function() {
                 return process.env.VUE_APP_BACKEND_IMG_URL;
@@ -54,7 +55,8 @@ export default {
         },
         mounted: function() {
             // load group details and set it as selected
-            const pathParts = window.location.href.substr(window.location.href.indexOf('/',10)).split('/').filter((el) => { return el != ''});
+            const pathParts = window.location.href.substr(window.location.href.indexOf('/',10))
+                .split('/').filter((el) => { return el != ''});
             const groupId = parseInt(pathParts[1]);
             this.$store.dispatch('groups/getGroupDetails', {id: groupId}).then(() => {
                 this.groupDetailsLoaded = true;

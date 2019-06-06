@@ -18,7 +18,7 @@
                         <v-data-table :headers="teamHeaders" :items="groups.groups.myGroups" hide-headers hide-actions class="borderless" 
                             v-if="groups.groups.myGroups && !groups.groups.myGroups.error" name="my-groups-table" :loading="groupsLoaded">
                             <template v-slot:items="group">
-                                <tr @click="selectGroup(group.item.id)">
+                                <tr @click="selectGroup(group.item.id, group.item.name)">
                                     <td style="width: 1%">
                                         <v-list-tile-avatar color="grey" tile>
                                             <v-icon>group</v-icon>
@@ -36,7 +36,7 @@
                         <v-data-table :headers="teamHeaders" :items="groups.groups.publicGroups" hide-headers hide-actions 
                             class="borderless" name="public-groups-table" :loading="!groupsLoaded">
                             <template v-slot:items="group">
-                                <tr @click="selectGroup(group.item.id)">
+                                <tr @click="selectGroup(group.item.id, group.item.name)">
                                     <td style="width: 1%">
                                         <v-list-tile-avatar color="grey" tile>
                                             <v-icon>group</v-icon>
@@ -54,7 +54,7 @@
                         <v-data-table :headers="teamHeaders" :items="groups.groups.privateGroups" hide-headers hide-actions 
                             class="borderless" name="private-groups-table" :loading="!groupsLoaded">
                             <template v-slot:items="group">
-                                <tr @click="if (login.isAdmin) selectGroup(group.item.id)">
+                                <tr @click="if (login.isAdmin) selectGroup(group.item.id, group.item.name)">
                                     <td style="width: 1%">
                                         <v-list-tile-avatar color="grey" tile>
                                             <v-icon>group</v-icon>
@@ -100,9 +100,12 @@
             });
         },
         methods: {
-            selectGroup: function(id) {
-                this.$store.commit('groups/selectGroupById', {id, userIsAdmin: this.login.isAdmin});
-                this.$router.push(`group/${id}/${this.$store.getters['groups/urlGroupName']}`);
+            selectGroup: function(id, groupName = '') {
+                this.$router.push(`group/${id}/${this.urlGroupName(groupName)}`);
+            },
+            urlGroupName: function(groupName) {
+                // TODO: code duplication
+                return groupName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
             }
         }
     }
