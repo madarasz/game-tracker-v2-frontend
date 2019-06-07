@@ -5,6 +5,7 @@ const scope = require("./scope");
 const World = function({attach, parameters}) {
   scope.driver = puppeteer;
   scope.context = parameters;
+  scope.attach = attach;
 };
 
 setDefaultTimeout(10 * 1000);

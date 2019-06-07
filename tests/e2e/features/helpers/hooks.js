@@ -17,7 +17,9 @@ After(async (scenario) => {
         const dateString = `${currentdate.getFullYear()}.${padZero(currentdate.getMonth()+1)}.${padZero(currentdate.getDate())}`
             +`-${padZero(currentdate.getHours())}:${padZero(currentdate.getMinutes())}:${padZero(currentdate.getSeconds())}`;
         const scenarioName = scenario.pickle.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
-        return scope.page.screenshot({path: `./tests/e2e/screenshots/${dateString}-${scenarioName}.png`});
+        return scope.page.screenshot({path: `./tests/e2e/screenshots/${dateString}-${scenarioName}.png`}).then((screenshot) => {
+            scope.attach(screenshot, 'image/png');
+        });
     };
 
     await scope.browser.close();
