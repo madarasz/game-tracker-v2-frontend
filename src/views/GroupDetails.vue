@@ -1,42 +1,57 @@
 <template>
     <v-layout wrap row>
         <!-- Games -->
-        <v-flex xs12 md8>
-            <v-card class="ma-2" name="card-games" v-if="groupDetailsLoaded">
-                <v-card-title class="green white--text">
-                    <span class="subheading">Games</span>
-                </v-card-title>
+        <v-flex xs12 md8 v-if="groupDetailsLoaded" class="pa-2">
+            <v-toolbar color="green" dark dense>
+                <v-toolbar-title>
+                    <span class="subheading">Games</span>       
+                </v-toolbar-title>
+                <v-spacer></v-spacer>
+                <add-game-dialog v-if="isGroupMember"/>
+            </v-toolbar>
+            <v-card name="card-games">
+                <v-card-text>
+                </v-card-text>
             </v-card>
         </v-flex>
         <v-flex xs12 md4>
             <!-- Settings -->
-            <v-card class="ma-2" v-if="isSettingsVisible" name="card-group-settings">
-                <v-card-title class="orange white--text">
-                    <span class="subheading">Settings</span>
-                </v-card-title>
-            </v-card>
+            <div class="ma-2" v-if="isGroupAdmin">
+                <v-toolbar color="orange" dark dense>
+                    <v-toolbar-title>
+                        <span class="subheading">Settings</span>       
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card name="card-group-settings">
+                </v-card>
+            </div>
             <!-- Members -->
-            <v-card class="ma-2" name="card-members" v-if="groupDetailsLoaded">
-                <v-card-title class="green white--text">
-                    <span class="subheading">Members</span>
-                </v-card-title>
-                <v-list v-if="groups.selectedGroup && groups.selectedGroup.members" two-line>
-                    <template v-for="(member) in groups.selectedGroup.members">
-                        <user-with-avatar :user="member" :key="member.id"/>
-                    </template>
-                </v-list>
-            </v-card>
+            <div v-if="groupDetailsLoaded" class="ma-2">
+                <v-toolbar color="green" dark dense>
+                    <v-toolbar-title>
+                        <span class="subheading">Members</span>       
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card name="card-members">
+                    <v-list v-if="groups.selectedGroup && groups.selectedGroup.members">
+                        <template v-for="(member) in groups.selectedGroup.members">
+                            <user-with-avatar :user="member" :key="member.id"/>
+                        </template>
+                    </v-list>
+                </v-card>
+            </div>
         </v-flex>
     </v-layout>
 </template>
 
 <script>
 import UserWithAvatar from '@/components/UserWithAvatar';
+import AddGameDialog from '@/components/AddGameDialog';
 import { mapState } from 'vuex';
 
 export default {
         components: {
-            UserWithAvatar
+            UserWithAvatar, AddGameDialog
         },
         data() {
             return {
@@ -45,9 +60,13 @@ export default {
         },
         computed: {
             ...mapState(['login', 'groups']),
-            isSettingsVisible: function() {
+            isGroupAdmin: function() { // can be site admin as well
                 return this.groups.selectedGroup && 
                     (this.login.isAdmin || this.$store.getters['groups/isUserGroupAdmin'](this.login.userId));
+            },
+            isGroupMember: function() { // can be site admin as well
+                return this.groups.selectedGroup && 
+                    (this.login.isAdmin || this.$store.getters['groups/isUserGroupMember'](this.login.userId));
             },
             imageFolder:function() {
                 return process.env.VUE_APP_BACKEND_IMG_URL;

@@ -14,15 +14,26 @@ export const groups = {
             }
             return state.selectedGroup.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
         },
-        isUserGroupAdmin: (state) => {
+        getUserAsMember: (state) => {
             return userId => {
                 if (!state.selectedGroup || !state.selectedGroup.members) {
-                    return false;
+                    return undefined;
                 }
                 const member = state.selectedGroup.members.find((x) => {return x.id == userId});
+                return member;
+            }
+        },
+        isUserGroupAdmin: (state, getters) => {
+            return userId => {
+                const member = getters.getUserAsMember(userId);
                 return (member !== undefined) && member.is_group_admin;
             }
-
+        },
+        isUserGroupMember: (state, getters) => {
+            return userId => {
+                const member = getters.getUserAsMember(userId);
+                return member !== undefined;
+            }
         }
     },
     actions: {
