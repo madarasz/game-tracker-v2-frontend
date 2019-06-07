@@ -28,15 +28,13 @@ yarn run lint
 
 ### Run your end-to-end tests
 ```
-yarn run test:e2e
+./runtest.sh
 ```
 Using **Cucumber-js** and **Puppeteer**  
 Features in `./tests/e2e/features/`
 
-For testing in non-headless mode:
-```
-yarn run test:e2e -p debug
-```
+For testing in non-headless mode: `./runtest.sh -p headless`  
+For testing in stable mode: `./runtest.sh -p slow`
 
 ### Run your unit tests
 *no unit tests*
