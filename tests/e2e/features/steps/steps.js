@@ -138,6 +138,8 @@ function getSelectorForElement(elementName) {
             return groupDetailPage.selector.groupMembersCard;
         case "games card":
             return groupDetailPage.selector.groupGamesCard;
+        case "add game button":
+            return groupDetailPage.selector.addGameButton;
         default:
             console.log(`%c !!! ELEMENT ${elementName} IS NOT DEFINIED !!!`, 'color: #FF0000');
     }

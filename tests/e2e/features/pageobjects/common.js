@@ -6,7 +6,7 @@ function delay(time) {
 
 async function isElementVisible(page, cssSelector) {
     var visible = true;
-    await page.waitForSelector(cssSelector, { visible: true, timeout: 1000 }).catch(() => {
+    await page.waitForSelector(cssSelector, { visible: true, timeout: 2000 }).catch(() => {
         visible = false;
     });
     return visible;

@@ -3,6 +3,7 @@ const selector = {
     groupSettingsCard: 'div[name="card-group-settings"]',
     groupMembersCard: 'div[name="card-members"]',
     groupGamesCard: 'div[name="card-games"]',
+    addGameButton: 'button[name="button-add-game"]',
 }
 
 async function checkUserMembership(page, userName, membershipType) {
