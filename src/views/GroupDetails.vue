@@ -2,7 +2,7 @@
     <v-layout wrap row>
         <!-- Games -->
         <v-flex xs12 md8>
-            <v-card class="ma-2" name="card-games">
+            <v-card class="ma-2" name="card-games" v-if="groupDetailsLoaded">
                 <v-card-title class="green white--text">
                     <span class="subheading">Games</span>
                 </v-card-title>
@@ -16,7 +16,7 @@
                 </v-card-title>
             </v-card>
             <!-- Members -->
-            <v-card class="ma-2" name="card-members">
+            <v-card class="ma-2" name="card-members" v-if="groupDetailsLoaded">
                 <v-card-title class="green white--text">
                     <span class="subheading">Members</span>
                 </v-card-title>
@@ -58,8 +58,12 @@ export default {
             const pathParts = window.location.href.substr(window.location.href.indexOf('/',10))
                 .split('/').filter((el) => { return el != ''});
             const groupId = parseInt(pathParts[1]);
-            this.$store.dispatch('groups/getGroupDetails', {id: groupId}).then(() => {
+            this.$store.dispatch('groups/getGroupDetails', {
+                id: groupId
+            }).then(() => {
                 this.groupDetailsLoaded = true;
+            }).catch(() => {
+                this.$store.commit('toaster/showError', 'Unable to load group details');
             });
         },
         methods: {

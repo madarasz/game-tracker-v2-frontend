@@ -9,8 +9,8 @@
                 {{ user.name }}
             </v-list-tile-title>
             <v-list-tile-sub-title>
-                <em v-if="user.is_group_admin" class="caption orange--text font-weight-bold">(group admin)</em>
-                <em v-if="user.is_admin" class="caption purple--text font-weight-bold">(admin)</em>
+                <em v-if="user.is_group_admin" class="caption orange--text font-weight-bold" name="membership-group-admin">(group admin)</em>
+                <em v-if="user.is_admin" class="caption purple--text font-weight-bold" name="membership-admin">(admin)</em>
             </v-list-tile-sub-title>
         </v-list-tile-content>
     </v-list-tile>
@@ -25,7 +25,8 @@ export default {
             default: function() { 
                 return {
                     name: '',
-                    imageFile: null
+                    imageFile: null,
+                    id: 0
                 }
             }
         },

@@ -2,6 +2,7 @@ const { Given, When, Then } = require('cucumber');
 const expect = require("expect");
 const scope = require('../helpers/scope');
 const groupsPage = require('../pageobjects/groupsPage');
+const groupDetailPage = require('../pageobjects/groupDetailPage');
 const profilePage = require('../pageobjects/profilePage');
 const loginDialog = require('../pageobjects/loginDialog');
 const toolbar = require('../pageobjects/toolbar');
@@ -88,6 +89,14 @@ Then("the selected group is {string}", async groupName => {
 });
 
 /* ----------------
+    Group Details
+ ------------------*/
+Then(/^"(.*)" is (a|an) (.*) of the group$/, async (userName, article, membership) => {
+    console.log(`Checking if ${userName} is ${membership}`);
+    return await groupDetailPage.checkUserMembership(scope.page, userName, membership);
+});
+
+/* ----------------
     Profile
  ------------------*/
 Given("profile image is removed", async () => {
@@ -122,7 +131,13 @@ function getSelectorForElement(elementName) {
         case "profile placeholder":
             return profilePage.selector.profilePlaceholder;
         case "profile picture":
-                return profilePage.selector.profileImage;
+            return profilePage.selector.profileImage;
+        case "group settings":
+            return groupDetailPage.selector.groupSettingsCard;
+        case "members card":
+            return groupDetailPage.selector.groupMembersCard;
+        case "games card":
+            return groupDetailPage.selector.groupGamesCard;
         default:
             console.log(`%c !!! ELEMENT ${elementName} IS NOT DEFINIED !!!`, 'color: #FF0000');
     }

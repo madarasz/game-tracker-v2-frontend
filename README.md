@@ -30,7 +30,7 @@ yarn run lint
 ```
 yarn run test:e2e
 ```
-Using **Cucumber-js** and **Puppeteer**
+Using **Cucumber-js** and **Puppeteer**  
 Features in `./tests/e2e/features/`
 
 For testing in non-headless mode:
