@@ -47,7 +47,7 @@
                     <v-btn flat @click="showDialog = false" name="button-dialog-cancel">Cancel</v-btn>
                     <v-btn flat @click="selectedGame = null" name="button-dialog-back">Back</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn flat class="green" dark name="button-dialog-upload">Add Game</v-btn>
+                    <v-btn flat @click="addGame()" class="green" dark name="button-dialog-upload">Add Game</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -56,10 +56,13 @@
 
 <script>
 import axios from 'axios';
+import { repositoryFactory } from '@/api/repositoryFactory';
+const gamesRepository = repositoryFactory.get('games');
 var parseString = require('xml2js').parseString;
+import { mapState } from 'vuex';
 
 export default {
-    name: 'LoginDialog',
+    name: 'AddGameDialog',
     data () {
         return {
             showDialog: false,
@@ -85,7 +88,31 @@ export default {
             this.showDialog = true;
             // put focus on search field
             this.$nextTick(this.$refs.searchInput.focus);
+        },
+        addGame: function() {
+            let id = this.selectedGame[0].id;
+            gamesRepository.addGame({
+                'bgg_id': id,
+                'name': this.selectedGame[0].name,
+                'year': this.selectedGame[0].year,
+                'thumbnail': this.gameImages[id],
+                'designers': this.gameDesigners[id].join(', '),
+                'type': 1, //TODO
+                'group_id': this.groups.selectedGroup.id
+            }).then(() => {
+                this.showDialog = false;
+                this.$store.dispatch('groups/getGroupDetails', {id: this.groups.selectedGroup.id});
+            }).catch((error) => {
+                if (error.response && error.response.data.error) {
+                    this.$store.commit('toaster/showError', error.response.data.error);
+                } else {
+                    this.$store.commit('toaster/showError', 'Game not added');
+                }
+            });
         }
+    },
+    computed: {
+            ...mapState(['groups']),
     },
     watch: {
         search: function(value) {
@@ -105,6 +132,8 @@ export default {
                                             // game image
                                             if (detailResult.items.item[0].thumbnail && detailResult.items.item[0].thumbnail.length > 0) {
                                                 this.$set(this.gameImages, x.$.id, detailResult.items.item[0].thumbnail[0]);
+                                            } else {
+                                                this.$set(this.gameImages, x.$.id, null);
                                             }
                                             // game designer
                                             var designers = detailResult.items.item[0].link.filter((link) => { return link.$.type == 'boardgamedesigner'});

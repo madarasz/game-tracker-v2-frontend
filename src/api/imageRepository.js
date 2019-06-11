@@ -1,6 +1,6 @@
 import Repository from "./repository";
 
-const resource = "/image";
+const resource = "/images";
 export default {
     uploadImage(data) {
         return Repository.repo.post(
