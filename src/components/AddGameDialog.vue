@@ -103,7 +103,9 @@ export default {
                                     axios.get(`${this.apiDetails}${x.$.id}`).then((detailResponse) => {
                                         parseString(detailResponse.data, (err2, detailResult) => {
                                             // game image
-                                            this.$set(this.gameImages, x.$.id, detailResult.items.item[0].thumbnail[0]);
+                                            if (detailResult.items.item[0].thumbnail && detailResult.items.item[0].thumbnail.length > 0) {
+                                                this.$set(this.gameImages, x.$.id, detailResult.items.item[0].thumbnail[0]);
+                                            }
                                             // game designer
                                             var designers = detailResult.items.item[0].link.filter((link) => { return link.$.type == 'boardgamedesigner'});
                                             designers = designers.slice(0, 3).map((link) => {return link.$.value});
