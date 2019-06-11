@@ -4,6 +4,8 @@ const selector = {
     groupMembersCard: 'div[name="card-members"]',
     groupGamesCard: 'div[name="card-games"]',
     addGameButton: 'button[name="button-add-game"]',
+    addGameDialog: 'div[name="dialog-add-game"]',
+    inputGameSearch: 'input[name="searchInput"]',
 }
 
 async function checkUserMembership(page, userName, membershipType) {
@@ -17,7 +19,18 @@ async function checkUserMembership(page, userName, membershipType) {
     return await page.waitForXPath(selector);
 }
 
+async function searchForGame(page, searchString) {
+    const input = await page.waitForSelector(selector.inputGameSearch);
+    await input.type(searchString);
+}
+
+async function gameVisibleInSearchResults(page, gameName) {
+    await page.waitForXPath(`//div[@class='v-list__tile__title' and contains(.,'${gameName}')]`)
+}
+
 module.exports = {
     selector,
-    checkUserMembership
+    checkUserMembership,
+    searchForGame,
+    gameVisibleInSearchResults
 }

@@ -81,6 +81,7 @@ Then("I can see the admin icon for group {string} in category {string}", async (
 When("I select group {string} in category {string}", async (groupName, category) => {
     const group = await groupsPage.waitForGroupInTable(scope.page, category, groupName);
     console.log(`${groupName} is listed, selecting`);
+    await common.delay(100); // stability reasons
     return await group.click();
 });
 
@@ -95,6 +96,14 @@ Then(/^"(.*)" is (a|an) (.*) of the group$/, async (userName, article, membershi
     console.log(`Checking if ${userName} is ${membership}`);
     return await groupDetailPage.checkUserMembership(scope.page, userName, membership);
 });
+
+When("I search for game {string}", async searchString => {
+    await groupDetailPage.searchForGame(scope.page, searchString);
+})
+
+Then("{string} is visible in game search results", async gameName => {
+    await groupDetailPage.gameVisibleInSearchResults(scope.page, gameName);
+}) 
 
 /* ----------------
     Profile
@@ -120,6 +129,11 @@ Then(/^"(.*)" (is|are)( not|) visible$/, async (elementName, isAre, negation) =>
     return expect(await common.isElementVisible(scope.page, selector)).toBe(visibile);
 });
 
+Then("I click {string}", async elementName => {
+    const element = await scope.page.waitForSelector(getSelectorForElement(elementName));
+    await element.click();
+})
+
 function getSelectorForElement(elementName) {
     switch (elementName.toLowerCase()) {
         case "login button":
@@ -140,6 +154,8 @@ function getSelectorForElement(elementName) {
             return groupDetailPage.selector.groupGamesCard;
         case "add game button":
             return groupDetailPage.selector.addGameButton;
+        case "add game dialog":
+            return groupDetailPage.selector.addGameDialog;
         default:
             console.log(`%c !!! ELEMENT ${elementName} IS NOT DEFINIED !!!`, 'color: #FF0000');
     }

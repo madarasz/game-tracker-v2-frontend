@@ -5,11 +5,11 @@
             <v-icon>add</v-icon>
         </v-btn>
         <!-- Dialog -->
-        <v-dialog v-model="showDialog" width="500">
+        <v-dialog v-model="showDialog" width="500" name="dialog-add-game">
             <v-toolbar color="green" dark>
                 <v-toolbar-title>Add Game</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-text-field dark v-model.lazy="search" append-icon="search" ref="searchInput"
+                <v-text-field dark v-model.lazy="search" append-icon="search" ref="searchInput" name="searchInput"
                     label="Search" single-line hide-details class="pa-0" v-if="!selectedGame"/>
             </v-toolbar>
             <v-card>
