@@ -11,8 +11,7 @@ const selector = {
     buttonSubmitAddGame: 'button[name="button-dialog-add"]',
     buttonRemoveGroupImage: 'button[name="button-remove-group-image"]',
     placeholderGroupImage: 'i[name="placeholder-group"]',
-    groupImage: 'img[name="image-group"]',
-    uploadImageButton: 'button[name="button-upload-image"]',
+    groupImage: 'img[name="image-group"]'
 }
 
 async function checkUserMembership(page, userName, membershipType) {
@@ -54,20 +53,6 @@ async function removeGroupImage(page) {
     return await button.click();
 }
 
-async function uploadImage(page, filePath) {
-    console.log('Uploading image');
-    const uploadButton = await page.waitForSelector(selector.uploadImageButton);
-    await uploadButton.click();
-    console.log('Clicked Upload')
-    const fileInput = await page.waitForSelector(uploadDialog.selector.fileInput);
-    await fileInput.uploadFile(filePath);
-    console.log('File selected');
-    await common.delay(100);
-    const uploadDialogButton = await page.waitForSelector(uploadDialog.selector.uploadButton);
-    await uploadDialogButton.click();
-    console.log('File uploaded');
-}
-
 module.exports = {
     selector,
     checkUserMembership,
@@ -76,6 +61,5 @@ module.exports = {
     isGameVisibleInGameList,
     deleteGameFromGroup,
     selectGameFromSearchResults,
-    removeGroupImage,
-    uploadImage
+    removeGroupImage
 }

@@ -29,22 +29,8 @@ async function navigateToProfilePage(page) {
     return await page.waitForSelector(selector.profileSettingsCard);
 }
 
-async function uploadImage(page, filePath) {
-    console.log('Uploading image');
-    const uploadButton = await page.waitForSelector(selector.uploadImageButton);
-    await uploadButton.click();
-    console.log('Clicked Upload')
-    const fileInput = await page.waitForSelector(uploadDialog.selector.fileInput);
-    await fileInput.uploadFile(filePath);
-    console.log('File selected');
-    const uploadDialogButton = await page.waitForSelector(uploadDialog.selector.uploadButton);
-    await uploadDialogButton.click();
-    console.log('File uploaded');
-}
-
 module.exports = {
     selector,
     removeProfileIfSet,
-    navigateToProfilePage,
-    uploadImage
+    navigateToProfilePage
 }

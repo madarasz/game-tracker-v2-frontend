@@ -3,6 +3,7 @@ const expect = require("expect");
 const scope = require('../helpers/scope');
 const groupsPage = require('../pageobjects/groupsPage');
 const groupDetailPage = require('../pageobjects/groupDetailPage');
+const uploadDialog = require('../pageobjects/uploadDialog');
 const profilePage = require('../pageobjects/profilePage');
 const loginDialog = require('../pageobjects/loginDialog');
 const toolbar = require('../pageobjects/toolbar');
@@ -134,7 +135,7 @@ Given ("group image is removed", async () => {
 })
 
 When("I upload a group image", async () => {
-    return await groupDetailPage.uploadImage(scope.page, testvalues.imagePath);
+    return await uploadDialog.uploadImage(scope.page, testvalues.imagePath);
 })
 
 When("I remove group image", async () => {
@@ -153,7 +154,7 @@ When("I remove my profile picture", async () => {
 });
 
 When("I upload a profile picture", async () => {
-    return await profilePage.uploadImage(scope.page, testvalues.imagePath);
+    return await uploadDialog.uploadImage(scope.page, testvalues.imagePath);
 });
 
 /* ----------------
