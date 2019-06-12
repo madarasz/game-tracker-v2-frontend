@@ -16,6 +16,11 @@ export const toaster = {
             state.color = 'error';
             state.text = message;
             state.showToaster = true;
+        },
+        showConfirm(state, message) {
+            state.color = 'orange';
+            state.text = message;
+            state.showToaster = true;
         }
     }
 }

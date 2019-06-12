@@ -15,7 +15,7 @@ async function uploadImage(page, filePath) {
     const fileInput = await page.waitForSelector(selector.fileInput);
     await fileInput.uploadFile(filePath);
     console.log('File selected');
-    await common.delay(200);    // for stability
+    await common.delay(400);    // for stability
     const uploadDialogButton = await page.waitForSelector(selector.uploadButton);
     console.log('File uploading');
     return await uploadDialogButton.click();

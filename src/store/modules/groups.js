@@ -56,6 +56,12 @@ export const groups = {
             }).then(() => {
                 context.state.selectedGroup.imageFile = null;
             });
+        },
+        updateGroup(context, data) {
+            return groupRepository.updateGroup(context.state.selectedGroup.id, data).then((response) => {
+                context.state.selectedGroup.name = response.data.name;
+                context.state.selectedGroup.is_public = response.data.is_public;
+            });
         }
     },
     mutations: {

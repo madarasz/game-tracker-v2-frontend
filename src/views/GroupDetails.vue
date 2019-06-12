@@ -76,7 +76,20 @@
                                     </div>                            
                                 </v-list-tile-content>
                             </v-list-tile>
+                            <v-divider class="mt-4"/>
                         </v-list>
+                        <!-- Edit details -->
+                        <v-form>
+                            <v-text-field v-model="editGroupName" label="Group name"/>
+                            <v-layout wrap row>
+                                <v-flex xs12 sm6>
+                                    <v-checkbox v-model="groups.selectedGroup.is_public" label="public" class="mt-0"/>
+                                </v-flex>
+                                <v-flex xs12 sm6 text-xs-center text-sm-right>
+                                    <v-btn @click="updateGroup" flat class="orange" dark>Update</v-btn>
+                                </v-flex>
+                            </v-layout>
+                        </v-form>
                     </v-card-text>
                 </v-card>
             </div>
@@ -113,7 +126,8 @@ export default {
         },
         data() {
             return {
-                groupDetailsLoaded: false
+                groupDetailsLoaded: false,
+                editGroupName: ''
             }
         },
         computed: {
@@ -149,6 +163,7 @@ export default {
                 this.$store.dispatch('groups/getGroupDetails', {
                     id: groupId
                 }).then(() => {
+                    this.editGroupName = this.groups.selectedGroup.name;
                     this.groupDetailsLoaded = true;
                 }).catch(() => {
                     this.$store.commit('toaster/showError', 'Unable to load group details');
@@ -159,6 +174,13 @@ export default {
             },
             removeGroupImage: function() {
                 this.$store.dispatch('groups/removeGroupImage');
+            },
+            updateGroup: function() {
+                this.$store.dispatch('groups/updateGroup', {name: this.editGroupName, is_public: this.groups.selectedGroup.is_public}).then(() => {
+                    this.$store.commit('toaster/showConfirm', 'Group details updated');
+                }).catch(() => {
+                    this.$store.commit('toaster/showError', 'Could not update group details');
+                });
             }
         }
     }
