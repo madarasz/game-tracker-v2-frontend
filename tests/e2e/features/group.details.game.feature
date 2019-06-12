@@ -5,9 +5,13 @@ Feature: Group Details Games
         When I log in with user "Test User"
         Then I'm logged in with user "Test User"
         When I select group "Public Group A" in category "my"
+        Given I delete game "Monopoly" if it is listed
         And I click "Add game button"
         Then "Add game dialog" is visible
         When I search for game "Monopol"
-        Then "Monopoly" is visible in game search results
+        Then "Monopoly" is visible in the game search results
+        When I select "Monopoly" from the game search results
+        And I click "Submit add game button"
+        Then "Monopoly" is visible in the games of the group
 
     

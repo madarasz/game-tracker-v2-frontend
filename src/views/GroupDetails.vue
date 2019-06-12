@@ -13,7 +13,7 @@
             <v-card name="card-games">
                 <v-list two-line>
                     <template v-for="game in groups.selectedGroup.games">
-                        <v-list-tile :key="game.id">
+                        <v-list-tile :key="game.id" name="list-group-games">
                             <!-- Game thumbnail -->
                             <v-list-tile-avatar tile size="64">
                                 <img v-if="game.thumbnail" :src="game.thumbnail"/>
@@ -33,7 +33,7 @@
                             </v-list-tile-content>
                             <!-- Delete button -->
                             <v-list-tile-action v-if="isGroupMember">
-                                <v-btn icon ripple>
+                                <v-btn icon ripple name="button-delete-game">
                                     <v-icon color="grey darken-1" @click.stop="deleteGame(game.id)">delete</v-icon>
                                 </v-btn>
                             </v-list-tile-action>

@@ -1,3 +1,4 @@
+const common = require('./common');
 
 const selector = {
     groupSettingsCard: 'div[name="card-group-settings"]',
@@ -6,6 +7,7 @@ const selector = {
     addGameButton: 'button[name="button-add-game"]',
     addGameDialog: 'div[name="dialog-add-game"]',
     inputGameSearch: 'input[name="searchInput"]',
+    buttonSubmitAddGame: 'button[name="button-dialog-add"]'
 }
 
 async function checkUserMembership(page, userName, membershipType) {
@@ -25,12 +27,29 @@ async function searchForGame(page, searchString) {
 }
 
 async function gameVisibleInSearchResults(page, gameName) {
-    await page.waitForXPath(`//div[@class='v-list__tile__title' and contains(.,'${gameName}')]`)
+    return await page.waitForXPath(`//div[@class='v-list__tile__title' and contains(.,'${gameName}')]`)
+}
+
+async function isGameVisibleInGameList(page, gameName) {
+    return await common.isElementVisible(page, `//div[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]`, true);
+}
+
+async function deleteGameFromGroup(page, gameName) {
+    const button = await page.waitForXPath(`//div[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]/../../div/button[@name='button-delete-game']`)
+    return await button.click();
+}
+
+async function selectGameFromSearchResults(page, gameName) {
+    const game = await gameVisibleInSearchResults(page, gameName);
+    await game.click();
 }
 
 module.exports = {
     selector,
     checkUserMembership,
     searchForGame,
-    gameVisibleInSearchResults
+    gameVisibleInSearchResults,
+    isGameVisibleInGameList,
+    deleteGameFromGroup,
+    selectGameFromSearchResults
 }

@@ -101,9 +101,28 @@ When("I search for game {string}", async searchString => {
     await groupDetailPage.searchForGame(scope.page, searchString);
 })
 
-Then("{string} is visible in game search results", async gameName => {
+Then("{string} is visible in the game search results", async gameName => {
     await groupDetailPage.gameVisibleInSearchResults(scope.page, gameName);
-}) 
+})
+
+When("I delete game {string} if it is listed", async gameName => {
+    if (await groupDetailPage.isGameVisibleInGameList(scope.page, gameName)) {
+        console.log(`Game "${gameName}" is visible in the list, deleting`);
+        await groupDetailPage.deleteGameFromGroup(scope.page, gameName);
+    } else {
+        console.log(`Game "${gameName}" was not visible in the list`);
+    }
+})
+
+Then("{string} is visible in the games of the group", async gameName => {
+    console.log(`Looking if game is visible in the game list`);
+    expect(await groupDetailPage.isGameVisibleInGameList(scope.page, gameName)).toBe(true);
+})
+
+When ("I select {string} from the game search results", async gameName => {
+    console.log(`Selecting game "${gameName} from search results`)
+    await groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
+})
 
 /* ----------------
     Profile
@@ -130,9 +149,10 @@ Then(/^"(.*)" (is|are)( not|) visible$/, async (elementName, isAre, negation) =>
 });
 
 Then("I click {string}", async elementName => {
+    console.log(`Clicking "${elementName}"`);
     const element = await scope.page.waitForSelector(getSelectorForElement(elementName));
     await element.click();
-})
+});
 
 function getSelectorForElement(elementName) {
     switch (elementName.toLowerCase()) {
@@ -156,6 +176,8 @@ function getSelectorForElement(elementName) {
             return groupDetailPage.selector.addGameButton;
         case "add game dialog":
             return groupDetailPage.selector.addGameDialog;
+        case "submit add game button":
+            return groupDetailPage.selector.buttonSubmitAddGame;
         default:
             console.log(`%c !!! ELEMENT ${elementName} IS NOT DEFINIED !!!`, 'color: #FF0000');
     }

@@ -47,7 +47,7 @@
                     <v-btn flat @click="showDialog = false" name="button-dialog-cancel">Cancel</v-btn>
                     <v-btn flat @click="selectedGame = null" name="button-dialog-back">Back</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn flat @click="addGame()" class="green" dark name="button-dialog-upload">Add Game</v-btn>
+                    <v-btn flat @click="addGame()" class="green" dark name="button-dialog-add">Add Game</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

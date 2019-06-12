@@ -4,11 +4,17 @@ function delay(time) {
     });
 }
 
-async function isElementVisible(page, cssSelector) {
+async function isElementVisible(page, cssSelector, isXpath = false) {
     var visible = true;
-    await page.waitForSelector(cssSelector, { visible: true, timeout: 2000 }).catch(() => {
-        visible = false;
-    });
+    if (isXpath) {
+        await page.waitForXPath(cssSelector, { visible: true, timeout: 2000 }).catch(() => {
+            visible = false;
+        });
+    } else {
+        await page.waitForSelector(cssSelector, { visible: true, timeout: 2000 }).catch(() => {
+            visible = false;
+        });
+    }
     return visible;
 };
 
