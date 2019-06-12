@@ -1,7 +1,7 @@
 <template>
     <v-list-tile>
         <v-list-tile-avatar :color="color" class="mr-2">
-            <v-icon v-if="user.imageFile == null" :user="`placeholder-user-${user.id}`">person</v-icon>
+            <v-icon v-if="user.imageFile == null" :user="`placeholder-user-${user.id}`">face</v-icon>
             <img v-if="user.imageFile" :src="imageFolder+user.imageFile" :name="`image-user-${user.id}`"/>
         </v-list-tile-avatar>
         <v-list-tile-content>

@@ -51,6 +51,33 @@
                     </v-toolbar-title>
                 </v-toolbar>
                 <v-card name="card-group-settings">
+                    <v-card-text>
+                        <v-list>
+                            <v-list-tile>
+                                <!-- Group avatar in hexagon -->
+                                <v-list-tile-avatar size="80" tile style="margin-right: -15px">
+                                    <div class="hexagon hexagon-big">
+                                        <div class="hexagon-in1">
+                                            <div class="hexagon-in2">
+                                                <div style="height: 75px" class="blue" v-if="groups.selectedGroup.imageFile == null">
+                                                    <v-icon size="48" name="placeholder-group" class="blue">group</v-icon>
+                                                </div>
+                                                <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-list-tile-avatar>
+                                <v-list-tile-content>
+                                    <div>
+                                        <image-uploader is-square @uploaded="updateGroupImage" buttonText="Upload" type="group" :parentid="groups.selectedGroup.id"/>
+                                        <v-btn v-if="groups.selectedGroup.imageFile" @click="removeGroupImage" name="button-remove-group-image" class="mt-0 mb-0">
+                                            Remove
+                                        </v-btn>
+                                    </div>                            
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card-text>
                 </v-card>
             </div>
             <!-- Members -->
@@ -75,13 +102,14 @@
 <script>
 import UserWithAvatar from '@/components/UserWithAvatar';
 import AddGameDialog from '@/components/AddGameDialog';
+import ImageUploader from '@/components/ImageUploader';
 import { mapState } from 'vuex';
 import { repositoryFactory } from '@/api/repositoryFactory';
 const gamesRepository = repositoryFactory.get('games');
 
 export default {
         components: {
-            UserWithAvatar, AddGameDialog
+            UserWithAvatar, AddGameDialog, ImageUploader
         },
         data() {
             return {
@@ -125,6 +153,12 @@ export default {
                 }).catch(() => {
                     this.$store.commit('toaster/showError', 'Unable to load group details');
                 });
+            },
+            updateGroupImage: function(filename) {
+                this.$store.commit('groups/setGroupImage', filename);
+            },
+            removeGroupImage: function() {
+                this.$store.dispatch('groups/removeGroupImage');
             }
         }
     }

@@ -1,5 +1,6 @@
 import { repositoryFactory } from '@/api/repositoryFactory';
 const groupRepository = repositoryFactory.get('groups');
+const imageRepository = repositoryFactory.get('images');
 
 export const groups = {
     namespaced: true,
@@ -47,6 +48,14 @@ export const groups = {
                 context.state.selectedGroup = response.data;
                 localStorage.setItem('selectedGroup', JSON.stringify({...response.data}));
             })
+        },
+        removeGroupImage(context) {
+            return imageRepository.removeImage({
+                type: 'group',
+                parent_id: context.state.selectedGroup.id
+            }).then(() => {
+                context.state.selectedGroup.imageFile = null;
+            });
         }
     },
     mutations: {
@@ -56,6 +65,9 @@ export const groups = {
         },
         setSelectedGroupFromLocalStorage(state) {
             state.selectedGroup = JSON.parse(localStorage.selectedGroup);
-        }
+        },
+        setGroupImage(state, filename) {
+            state.selectedGroup.imageFile = filename;
+        },
     }
 }

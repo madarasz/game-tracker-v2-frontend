@@ -1,4 +1,5 @@
 const common = require('./common');
+const uploadDialog = require('./uploadDialog');
 
 const selector = {
     groupSettingsCard: 'div[name="card-group-settings"]',
@@ -7,7 +8,11 @@ const selector = {
     addGameButton: 'button[name="button-add-game"]',
     addGameDialog: 'div[name="dialog-add-game"]',
     inputGameSearch: 'input[name="searchInput"]',
-    buttonSubmitAddGame: 'button[name="button-dialog-add"]'
+    buttonSubmitAddGame: 'button[name="button-dialog-add"]',
+    buttonRemoveGroupImage: 'button[name="button-remove-group-image"]',
+    placeholderGroupImage: 'i[name="placeholder-group"]',
+    groupImage: 'img[name="image-group"]',
+    uploadImageButton: 'button[name="button-upload-image"]',
 }
 
 async function checkUserMembership(page, userName, membershipType) {
@@ -23,7 +28,7 @@ async function checkUserMembership(page, userName, membershipType) {
 
 async function searchForGame(page, searchString) {
     const input = await page.waitForSelector(selector.inputGameSearch);
-    await input.type(searchString);
+    return await input.type(searchString, {delay: 100}); // delay for stability 
 }
 
 async function gameVisibleInSearchResults(page, gameName) {
@@ -44,6 +49,25 @@ async function selectGameFromSearchResults(page, gameName) {
     await game.click();
 }
 
+async function removeGroupImage(page) {
+    const button = await page.waitForSelector(selector.buttonRemoveGroupImage);
+    return await button.click();
+}
+
+async function uploadImage(page, filePath) {
+    console.log('Uploading image');
+    const uploadButton = await page.waitForSelector(selector.uploadImageButton);
+    await uploadButton.click();
+    console.log('Clicked Upload')
+    const fileInput = await page.waitForSelector(uploadDialog.selector.fileInput);
+    await fileInput.uploadFile(filePath);
+    console.log('File selected');
+    await common.delay(100);
+    const uploadDialogButton = await page.waitForSelector(uploadDialog.selector.uploadButton);
+    await uploadDialogButton.click();
+    console.log('File uploaded');
+}
+
 module.exports = {
     selector,
     checkUserMembership,
@@ -51,5 +75,7 @@ module.exports = {
     gameVisibleInSearchResults,
     isGameVisibleInGameList,
     deleteGameFromGroup,
-    selectGameFromSearchResults
+    selectGameFromSearchResults,
+    removeGroupImage,
+    uploadImage
 }

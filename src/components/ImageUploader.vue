@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <v-btn @click="launchFilePicker" name="button-upload-image">Upload</v-btn>
+    <span>
+        <v-btn @click="launchFilePicker" name="button-upload-image" class="mt-0 mb-0">{{ buttonText }}</v-btn>
         <input type="file" ref="fileInput" style="display:none" @change="onFileChange" name="input-file"/>
         <!-- Dialog -->
-        <v-dialog v-model="imageUploaded" :width="`${dialogWidth}px`" persistent>
+        <v-dialog v-model="imageUploaded" :width="`${dialogWidth}px`" persistent style="display: inline">
             <v-card>
                 <v-card-title class="headline green lighten-2">
                     Upload image
@@ -29,7 +29,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </div>
+    </span>
 </template>
 
 <script>
@@ -49,6 +49,18 @@ export default {
         allowRotate: {
             type: Boolean,
             default: false
+        },
+        buttonText: {
+            type: String,
+            default: 'Upload'
+        },
+        type: {
+            type: String,
+            default: ''
+        },
+        parentid: {
+            type: Number,
+            default: 0
         }
     },
     data () {
@@ -136,8 +148,8 @@ export default {
                 // construct form data
                 var formData = new FormData();
                 formData.append('image', file);
-                formData.append('type', 'user');
-                formData.append('parent_id', this.login.userId);
+                formData.append('type', this.type);
+                formData.append('parent_id', this.parentid);
 
                 imagesRepository.uploadImage(formData).then((response) => {
                     this.$emit('uploaded', response.data.filename);

@@ -19,9 +19,18 @@
             <v-menu offset-y bottom left v-if="groups.selectedGroup != null">
                 <template v-slot:activator="{ on }">
                     <v-btn flat class="text-transform-none" v-on="on" name="group-name">
-                        <v-avatar color="green darken-4" size="32" class="mr-2" tile>
-                            <v-icon v-if="!groups.selectedGroup.imageFile" name="placeholder-group-toolbar">group</v-icon>
-                            <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group-toolbar"/>
+                        <!-- Group avatar in hexagon -->
+                        <v-avatar size="32" tile>
+                            <div class="hexagon hexagon-small">
+                                <div class="hexagon-in1">
+                                    <div class="hexagon-in2">
+                                        <div style="height: 30px" class="green darken-4" v-if="!groups.selectedGroup.imageFile"> 
+                                            <v-icon  name="placeholder-group-toolbar" class="green darken-4">group</v-icon>
+                                        </div>
+                                        <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group-toolbar"/>
+                                    </div>
+                                </div>
+                            </div>
                         </v-avatar>
                         <span class="hidden-xs-only">{{ groups.selectedGroup.name }}</span>
                     <v-icon>arrow_drop_down</v-icon>

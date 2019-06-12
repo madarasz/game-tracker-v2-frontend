@@ -105,7 +105,7 @@ Then("{string} is visible in the game search results", async gameName => {
     await groupDetailPage.gameVisibleInSearchResults(scope.page, gameName);
 })
 
-When("I delete game {string} if it is listed", async gameName => {
+Given("I delete game {string} if it is listed", async gameName => {
     if (await groupDetailPage.isGameVisibleInGameList(scope.page, gameName)) {
         console.log(`Game "${gameName}" is visible in the list, deleting`);
         await groupDetailPage.deleteGameFromGroup(scope.page, gameName);
@@ -122,6 +122,23 @@ Then("{string} is visible in the games of the group", async gameName => {
 When ("I select {string} from the game search results", async gameName => {
     console.log(`Selecting game "${gameName} from search results`)
     await groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
+})
+
+Given ("group image is removed", async () => {
+    if (await common.isElementVisible(scope.page, groupDetailPage.selector.placeholderGroupImage)) {
+        console.log("Group image was missing");
+    } else {
+        console.log("Group image is present, removing");
+        await groupDetailPage.removeGroupImage(scope.page);
+    }
+})
+
+When("I upload a group image", async () => {
+    return await groupDetailPage.uploadImage(scope.page, testvalues.imagePath);
+})
+
+When("I remove group image", async () => {
+    return await groupDetailPage.removeGroupImage(scope.page);
 })
 
 /* ----------------
@@ -178,6 +195,10 @@ function getSelectorForElement(elementName) {
             return groupDetailPage.selector.addGameDialog;
         case "submit add game button":
             return groupDetailPage.selector.buttonSubmitAddGame;
+        case "group image placeholder":
+            return groupDetailPage.selector.placeholderGroupImage;
+        case "group image":
+            return groupDetailPage.selector.groupImage;
         default:
             console.log(`%c !!! ELEMENT ${elementName} IS NOT DEFINIED !!!`, 'color: #FF0000');
     }
