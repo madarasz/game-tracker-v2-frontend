@@ -35,11 +35,11 @@ async function gameVisibleInSearchResults(page, gameName) {
 }
 
 async function isGameVisibleInGameList(page, gameName) {
-    return await common.isElementVisible(page, `//div[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]`, true);
+    return await common.isElementVisible(page, `//a[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]`, true);
 }
 
 async function deleteGameFromGroup(page, gameName) {
-    const button = await page.waitForXPath(`//div[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]/../../div/button[@name='button-delete-game']`)
+    const button = await page.waitForXPath(`//a[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]/../../div/button[@name='button-delete-game']`)
     return await button.click();
 }
 

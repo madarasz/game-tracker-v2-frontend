@@ -34,7 +34,7 @@
                             <!-- Delete button -->
                             <v-list-tile-action v-if="isGroupMember">
                                 <v-btn icon ripple name="button-delete-game">
-                                    <v-icon color="grey darken-1" @click.stop="deleteGame(game.id)">delete</v-icon>
+                                    <v-icon color="grey darken-1" @click.prevent="deleteGame(game.id)">delete</v-icon>
                                 </v-btn>
                             </v-list-tile-action>
                         </v-list-tile>
