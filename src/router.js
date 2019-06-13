@@ -22,5 +22,10 @@ export default new Router({
       name: 'Group details',
       component: () => import(/* webpackChunkName: "groupDetails" */ './views/GroupDetails.vue')
     },
+    {
+      path: '/group/:groupid/:groupname/:gameid/:gamename',
+      name: 'Game details',
+      component: () => import(/* webpackChunkName: "groupDetails" */ './views/GameDetails.vue')
+    },
   ]
 })

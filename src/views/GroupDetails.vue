@@ -1,7 +1,7 @@
 <template>
     <v-layout wrap row>
         <!-- Games -->
-        <v-flex xs12 md8 v-if="groupDetailsLoaded" class="pa-2">
+        <v-flex xs12 md8 class="pa-2">
             <v-toolbar color="green" dark dense>
                 <v-toolbar-title>
                     <span class="subheading">Games</span>       
@@ -10,10 +10,10 @@
                 <add-game-dialog v-if="isGroupMember"/>
             </v-toolbar>
             <!-- Game list -->
-            <v-card name="card-games">
+            <v-card name="card-games" v-if="groupDetailsLoaded">
                 <v-list two-line>
                     <template v-for="game in groups.selectedGroup.games">
-                        <v-list-tile :key="game.id" name="list-group-games">
+                        <v-list-tile :key="game.id" name="list-group-games" :to="`/group/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}/${game.id}/meh`">
                             <!-- Game thumbnail -->
                             <v-list-tile-avatar tile size="64">
                                 <img v-if="game.thumbnail" :src="game.thumbnail"/>
@@ -131,7 +131,7 @@ export default {
             }
         },
         computed: {
-            ...mapState(['login', 'groups']),
+            ...mapState(['login', 'groups', 'game']),
             isGroupAdmin: function() { // can be site admin as well
                 return this.groups.selectedGroup && 
                     (this.login.isAdmin || this.$store.getters['groups/isUserGroupAdmin'](this.login.userId));
@@ -150,6 +150,7 @@ export default {
                 .split('/').filter((el) => { return el != ''});
             const groupId = parseInt(pathParts[1]);
             this.getGroupDetails(groupId);
+            this.$store.commit('game/clearGame');
         },
         methods: {
             deleteGame: function(gameId) {
