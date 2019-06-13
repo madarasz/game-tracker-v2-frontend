@@ -40,6 +40,14 @@ export const login = {
             }).then(() => {
                 context.state.imageFile = null;
             });
+        },
+        // check if token still works, get user image
+        ping(context) {
+            return loginRepository.ping().then((response) => {
+                context.state.imageFile = response.data.imageFile;
+            }).catch(() => {
+                context.commit('logout');
+            })
         }
     },
     mutations: {

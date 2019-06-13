@@ -13,5 +13,8 @@ export default {
     },
     removeToken() {
         Repository.removeToken();
+    },
+    ping() {
+        return Repository.repo.get(`${resource}/ping`);
     }
 }

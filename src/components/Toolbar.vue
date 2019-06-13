@@ -99,7 +99,8 @@ export default {
         // restore login from local storage
         if (localStorage.loginData != null) {
             this.$store.commit('login/login', JSON.parse(localStorage.loginData));
-        }
+            this.$store.dispatch('login/ping');
+        }        
 
         // set selected group
         // this.$route is not ready on the first loaded page, using window.location.href instead

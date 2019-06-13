@@ -10,6 +10,8 @@ Feature: Profile
         Then "profile placeholder" is visible
         When I upload a profile picture
         Then "profile picture" is visible
+        When I go to path "/profile/1/test-user"
+        Then "profile picture" is visible
         When I remove my profile picture
         Then "profile placeholder" is visible
 
