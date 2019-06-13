@@ -93,11 +93,14 @@ Then("the selected group is {string}", async groupName => {
 /* ----------------
     Group Details
  ------------------*/
+
+ // Members
 Then(/^"(.*)" is (a|an) (.*) of the group$/, async (userName, article, membership) => {
     console.log(`Checking if ${userName} is ${membership}`);
     return await groupDetailPage.checkUserMembership(scope.page, userName, membership);
 });
 
+// Games
 When("I search for game {string}", async searchString => {
     await groupDetailPage.searchForGame(scope.page, searchString);
 })
@@ -125,6 +128,7 @@ When ("I select {string} from the game search results", async gameName => {
     await groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
 })
 
+// Settings
 Given ("group image is removed", async () => {
     if (await common.isElementVisible(scope.page, groupDetailPage.selector.placeholderGroupImage)) {
         console.log("Group image was missing");
@@ -140,6 +144,10 @@ When("I upload a group image", async () => {
 
 When("I remove group image", async () => {
     return await groupDetailPage.removeGroupImage(scope.page);
+})
+
+When("I edit group settings: public={string}, name={string}", async (isPublic, groupName) => {
+    return await groupDetailPage.editGroupSettings(scope.page, isPublic == 'true', groupName);
 })
 
 /* ----------------

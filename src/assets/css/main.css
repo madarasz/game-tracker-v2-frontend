@@ -64,3 +64,6 @@ html {
 .v-rating .v-icon {
     padding: 0;
 }
+.theme--light.v-label {
+    color: black;
+}

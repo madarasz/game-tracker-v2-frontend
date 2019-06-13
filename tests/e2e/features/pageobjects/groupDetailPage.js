@@ -11,7 +11,10 @@ const selector = {
     buttonSubmitAddGame: 'button[name="button-dialog-add"]',
     buttonRemoveGroupImage: 'button[name="button-remove-group-image"]',
     placeholderGroupImage: 'i[name="placeholder-group"]',
-    groupImage: 'img[name="image-group"]'
+    groupImage: 'img[name="image-group"]',
+    checkboxIsPublic: 'input[name="checkbox-is-public"]',
+    inputGroupName: 'input[name="input-group-name"]',
+    buttonGroupUpdate: 'button[name="button-update-group"]',
 }
 
 async function checkUserMembership(page, userName, membershipType) {
@@ -53,6 +56,21 @@ async function removeGroupImage(page) {
     return await button.click();
 }
 
+async function editGroupSettings(page, isPublic, groupName) {
+    console.log(`Editing group name: "${groupName}" public: "${isPublic}"`);
+    const input = await page.waitForSelector(selector.inputGroupName);
+    await input.click({clickCount: 3}); // selecting existing value for deletion
+    await input.type(groupName);
+    const checkbox = await page.waitForSelector(selector.checkboxIsPublic);
+    const checked = await (await checkbox.getProperty('checked')).jsonValue();
+    if (checked != isPublic) {
+        console.log(`Currently group is public: ${checked}, clicking checkbox`);
+        await checkbox.click();
+    }
+    const button =  await page.waitForSelector(selector.buttonGroupUpdate);
+    return await button.click();
+}
+
 module.exports = {
     selector,
     checkUserMembership,
@@ -61,5 +79,6 @@ module.exports = {
     isGameVisibleInGameList,
     deleteGameFromGroup,
     selectGameFromSearchResults,
-    removeGroupImage
+    removeGroupImage,
+    editGroupSettings
 }

@@ -80,13 +80,13 @@
                         </v-list>
                         <!-- Edit details -->
                         <v-form>
-                            <v-text-field v-model="editGroupName" label="Group name"/>
+                            <v-text-field v-model="editGroupName" label="Group name" name="input-group-name"/>
                             <v-layout wrap row>
                                 <v-flex xs12 sm6>
-                                    <v-checkbox v-model="groups.selectedGroup.is_public" label="public" class="mt-0"/>
+                                    <v-checkbox v-model="groups.selectedGroup.is_public" label="public" class="mt-0" name="checkbox-is-public"/>
                                 </v-flex>
                                 <v-flex xs12 sm6 text-xs-center text-sm-right>
-                                    <v-btn @click="updateGroup" flat class="orange" dark>Update</v-btn>
+                                    <v-btn @click="updateGroup" flat class="orange" dark name="button-update-group">Update</v-btn>
                                 </v-flex>
                             </v-layout>
                         </v-form>

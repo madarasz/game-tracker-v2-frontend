@@ -13,4 +13,24 @@ Feature: Group Details Settings
         When I remove group image
         Then "Group image placeholder" is visible
 
+    Scenario: Edit Group details
+        Given I visit the homepage
+        When I log in with user "Test User"
+        Then I'm logged in with user "Test User"
+        When I select group "Public Group A" in category "my"
+        And I edit group settings: public="false", name="Public Group A 12345"
+        When I log out
+        And I visit the homepage
+        Then I can see the following groups in group selector:
+            | group                 | category  |
+            | Public Group A 12345  | private   |
+        When I log in with user "Test Admin"
+        When I select group "Public Group A 12345" in category "my"
+        And I edit group settings: public="true", name="Public Group A"
+        And I log out
+        And I visit the homepage
+        Then I can see the following groups in group selector:
+            | group          | category  |
+            | Public Group A | public    |
+
     
