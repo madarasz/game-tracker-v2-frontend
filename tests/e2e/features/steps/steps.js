@@ -5,10 +5,12 @@ const groupsPage = require('../pageobjects/groupsPage');
 const groupDetailPage = require('../pageobjects/groupDetailPage');
 const uploadDialog = require('../pageobjects/uploadDialog');
 const profilePage = require('../pageobjects/profilePage');
+const gamePage = require('../pageobjects/gamePage');
 const loginDialog = require('../pageobjects/loginDialog');
 const toolbar = require('../pageobjects/toolbar');
 const common = require('../pageobjects/common');
 const testvalues = require('../../data/testvalues');
+const chalk = require('chalk');
 
 /* ----------------
     Navigation
@@ -20,7 +22,7 @@ When(/^I visit the (.*)$/, async pageName => {
             pagePath = pagePath + "/";
             break;
         default:
-            console.log(`%c !!! PAGE ${pageName} IS NOT DEFINIED !!!`, 'color: #FF0000');
+            console.log(chalk.red(`!!! PAGE ${pageName} IS NOT DEFINIED !!!`));
     }
     console.log(`Going to ${pageName}: ${pagePath}`);
     return await scope.page.goto(pagePath);
@@ -37,7 +39,7 @@ When("I navigate to {string}", async pageName => {
             profilePage.navigateToProfilePage(scope.page);
             break;
         default:
-            console.log(`%c !!! PAGE ${pageName} IS NOT DEFINIED !!!`, 'color: #FF0000');
+            console.log(chalk.red(`!!! PAGE ${pageName} IS NOT DEFINIED !!!`));
     }
 })
 
@@ -180,6 +182,12 @@ Then("I click {string}", async elementName => {
     await element.click();
 });
 
+Then("{string} has value {string}", async (elementName, value) => {
+    console.log(`Checking if "${elementName}" has value "${value}"`);
+    const target = await scope.page.waitForSelector(getSelectorForElement(elementName));
+    expect(await scope.page.evaluate(element => element.textContent, target)).toEqual(value);
+})
+
 function getSelectorForElement(elementName) {
     switch (elementName.toLowerCase()) {
         case "login button":
@@ -208,7 +216,15 @@ function getSelectorForElement(elementName) {
             return groupDetailPage.selector.placeholderGroupImage;
         case "group image":
             return groupDetailPage.selector.groupImage;
+        case "game details":
+            return gamePage.selector.gameDetailsCard;
+        case "game title":
+            return gamePage.selector.gameTitle;
+        case "bgg rating":
+            return gamePage.selector.gameRating;
+        case "game designer":
+            return gamePage.selector.gameDesigner;
         default:
-            console.log(`%c !!! ELEMENT ${elementName} IS NOT DEFINIED !!!`, 'color: #FF0000');
+            console.log(chalk.red(`!!! ELEMENT ${elementName} IS NOT DEFINIED !!!`));
     }
 }

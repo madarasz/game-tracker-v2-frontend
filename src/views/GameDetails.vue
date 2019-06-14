@@ -4,11 +4,6 @@
         </v-flex>
         <v-flex xs12 md3 lg2>
             <v-card>
-                <!-- For desktop -->
-                <div class="hidden-sm-and-down">
-                    <v-img :src="gameImage"/>
-                    <game-info/>
-                </div>
                 <!-- For mobile -->
                 <v-layout wrap row class="hidden-md-and-up">
                     <v-flex grow class="hidden-xs-only">
@@ -20,6 +15,11 @@
                         <game-info/>
                     </v-flex>
                 </v-layout>
+                <!-- For desktop -->
+                <div class="hidden-sm-and-down">
+                    <v-img :src="gameImage"/>
+                    <game-info/>
+                </div>              
             </v-card>
         </v-flex>
     </v-layout>
@@ -40,7 +40,7 @@ export default {
     computed: {
         ...mapState(['login', 'groups', 'game']),
         gameImage: function() {
-            if (this.game.bggStats.image === undefined) {
+            if (this.game.bggStats.image == null) {
                 return this.game.details.thumbnail;
             }
             return this.game.bggStats.image;
