@@ -16,7 +16,6 @@
                             <canvas ref="editor_canvas" v-show="editing"></canvas>
                         </v-flex>
                     </v-layout>
-                    <!-- <img :src="resultImage" v-show="false"/> -->
                 </v-card-text>
                 <v-card-actions>
                     <v-btn flat @click="resetDialog()" name="button-dialog-cancel">Cancel</v-btn>
@@ -28,7 +27,7 @@
                         <v-icon>rotate_right</v-icon>
                     </v-btn> -->
                     <v-btn flat @click="initiateCropper" v-if="!editing">Edit</v-btn>
-                    <v-btn flat class="green" dark name="button-dialog-upload">Upload</v-btn>
+                    <v-btn flat @click="upload" class="green" dark name="button-dialog-upload">Upload</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -72,12 +71,7 @@ export default {
     data () {
         return {
             imageUploaded: false,
-            // croppieObject: null, // TODO: delete
-            resultImage: null,
-            // dialogWidth: 800,
-            // outputOptions: {
-            //     format: 'jpeg'
-            // } 
+            // resultImage: null,
             cropperObject: null,
             imgData: '',
             imgObject: null,
@@ -88,7 +82,7 @@ export default {
         ...mapState(['login']),
         imgMaxHeight: function() {
             const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-            return viewportHeight-48/*card margin*/-64/*card title*/-32/*card body margin*/-52/*card actions*/-16;
+            return viewportHeight-48/*card margin*/-64/*card title*/-32/*card body margin*/-52/*card actions*/-64;
         }
     },
     methods: {
@@ -116,90 +110,61 @@ export default {
             this.imgObject.onload = () => {
                 this.imageUploaded = true;
                 this.imgData = this.imgObject.src;
-                // const bounds = this.getBounds(img);
-                // const options = {
-                //     viewport: bounds,
-                //     boundary: bounds,
-                //     showZoomer: true,
-                //     enableResize: !this.isSquare,
-                //     enableOrientation: true
-                // }
-                // const options = {
-                //     size: { width: 128, height: 128 },
-                //     canvas: document.querySelector('.js-editorcanvas'),
-                //     preview: document.querySelector('.js-previewcanvas')
-                // }
-
-                // this.croppieObject = new Croppie(this.$refs.croppieContainer, options);
-                // this.croppieObject.bind({ url: img.src });
-                // const context = this.$refs.editor_canvas.get(0).getContext("2d");
-                
-                // this.cropperObject = new Cropper(document.querySelector('.js-editorcanvas'), options);
-                
+                // cropper is mandatory if isSquare
+                if (this.isSquare && this.imgObject.width != this.imgObject.height) {
+                    this.initiateCropper();
+                }
             };
         },
 
         initiateCropper: function() {
+            // init canvas
             const context = this.$refs.editor_canvas.getContext("2d");
             context.canvas.height = this.imgMaxHeight;
             context.canvas.width  = this.imgMaxHeight / this.imgObject.height * this.imgObject.width;
             context.drawImage(this.imgObject, 0, 0, this.imgObject.width, this.imgObject.height, 0, 0, this.imgMaxHeight / this.imgObject.height * this.imgObject.width, this.imgMaxHeight);
+
+            // create Cropper
             this.cropperObject = new Cropper(this.$refs.editor_canvas, {
                 viewMode: 1,
                 dragMode: 'move',
-                autoCropArea: 1
+                autoCropArea: 1,
+                aspectRatio: this.isSquare ? 1 : NaN
             });
+
             this.editing = true;
         },
-        
-        // calculates ideal dimensions for croppie
-        // getBounds({height, width}) {
-        //     const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        //     const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        //     const maxHeight = this.isSquare ? viewportHeight - 285 : viewportHeight - 230; // preceise: 196
-        //     const maxWidth = Math.min(viewportWidth - 48, this.dialogWidth) - 75; // preceise: 80;
-        //     const imgRatio = this.isSquare ? 1 : height / width;
-        //     const maxRatio = maxHeight / maxWidth;
-        //     var boundaryHeight, boundaryWidth;
-        //     if (imgRatio > maxRatio) {
-        //         boundaryHeight = maxHeight;
-        //         boundaryWidth = boundaryHeight / imgRatio;
-        //     } else {
-        //         boundaryWidth = maxWidth;
-        //         boundaryHeight = boundaryWidth * imgRatio;
-        //     }
-        //     // eslint-disable-next-line
-        //     // console.log(`max space: ${maxWidth}x${maxHeight} ratio: ${maxRatio}- image: ${width}x${height} ratio: ${imgRatio} - boundary: ${boundaryWidth}x${boundaryHeight}`);
-        //     return { width: boundaryWidth, height: boundaryHeight };
-        // },
 
-        cropImage() {
-            this.croppieObject.result('base64').then((dataImg) => {
-                this.resultImage = dataImg;
-                
-                // convert from base64 to file
-                const i = dataImg.indexOf('base64,');
-                const buffer = Buffer.from(dataImg.slice(i + 7), 'base64');
-                const file = new File([buffer], 'name', {type: 'image/png'});
+        upload() {
+            const resultImage = this.cropperObject.getCroppedCanvas().toDataURL("image/png");
+            
+            // convert from base64 to file
+            const i = resultImage.indexOf('base64,');
+            const buffer = Buffer.from(resultImage.slice(i + 7), 'base64');
+            const file = new File([buffer], 'name', {type: 'image/png'});
 
-                // construct form data
-                var formData = new FormData();
-                formData.append('image', file);
-                formData.append('type', this.type);
-                formData.append('parent_id', this.parentid);
+            // construct form data
+            var formData = new FormData();
+            formData.append('image', file);
+            formData.append('type', this.type);
+            formData.append('parent_id', this.parentid);
 
-                imagesRepository.uploadImage(formData).then((response) => {
-                    this.$emit('uploaded', response.data.filename);
-                }).catch(() => {
-                    this.$store.commit('toaster/showError', 'File upload failed');
-                });
-                this.resetDialog();
+            imagesRepository.uploadImage(formData).then((response) => {
+                this.$emit('uploaded', response.data.filename);
+            }).catch(() => {
+                this.$store.commit('toaster/showError', 'File upload failed');
             });
+            this.resetDialog();
         },
 
         resetDialog() {
             this.imageUploaded = false;
             this.resultImage = null;
+            this.imgData = '';
+            this.imgObject = null;
+            this.editing = false;
+            this.cropperObject.destroy();
+            this.$refs.fileInput.value = '';
         }
     }
 };
