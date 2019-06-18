@@ -25,7 +25,7 @@
             </v-btn>
             <v-menu offset-y bottom left v-if="groups.selectedGroup != null">
                 <template v-slot:activator="{ on }">
-                    <v-btn flat class="text-transform-none" v-on="on" name="group-name">
+                    <v-btn flat class="text-transform-none pr-0" v-on="on" name="group-name">
                         <!-- Group avatar in hexagon -->
                         <v-avatar size="32" tile>
                             <div class="hexagon hexagon-small">
@@ -35,7 +35,7 @@
                                             <v-icon name="placeholder-group-toolbar" class="green darken-4">group</v-icon>
                                         </div>
                                         <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" 
-                                            name="image-group-toolbar" class="toolbar-border"/>
+                                            name="image-group-toolbar"/>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
             <v-btn flat @click.native.stop="showLoginDialog()" v-if="!login.userId" name="button-login">Login</v-btn>
             <v-menu offset-y bottom left v-if="login.userId">
                 <template v-slot:activator="{ on }">
-                    <v-btn flat class="text-transform-none" v-on="on" name="user-name">
+                    <v-btn flat class="text-transform-none pr-0" v-on="on" name="user-name">
                         <v-avatar color="green darken-4" size="32" class="mr-2">
                             <v-icon v-if="login.imageFile == null" name="placeholder-profile-toolbar">face</v-icon>
                             <img v-if="login.imageFile" :src="imageFolder+login.imageFile" name="image-profile-toolbar"
