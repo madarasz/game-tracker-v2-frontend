@@ -19,13 +19,14 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-btn flat @click="resetDialog()" name="button-dialog-cancel">Cancel</v-btn>
+                    <v-btn flat @click="resetEdit()" v-if="editing">Discard edit</v-btn>
                     <v-spacer></v-spacer>
-                    <!-- <v-btn class="btn btn-dark" @click="croppieObject.rotate(+90)" flat small v-if="allowRotate">
+                    <v-btn @click="rotate(-90)" small fab flat v-if="allowRotate && editing">
                         <v-icon>rotate_left</v-icon>
                     </v-btn>
-                    <v-btn class="btn btn-dark" @click="croppieObject.rotate(-90)" flat small v-if="allowRotate">
+                    <v-btn @click="rotate(90)" small fab flat v-if="allowRotate && editing">
                         <v-icon>rotate_right</v-icon>
-                    </v-btn> -->
+                    </v-btn>
                     <v-btn flat @click="initiateCropper" v-if="!editing">Edit</v-btn>
                     <v-btn flat @click="upload" class="green" dark name="button-dialog-upload">Upload</v-btn>
                 </v-card-actions>
@@ -35,9 +36,6 @@
 </template>
 
 <script>
-/* eslint-disable */
-// import Croppie from 'croppie/croppie';
-// import 'croppie/croppie.css';
 import { repositoryFactory } from '@/api/repositoryFactory';
 const imagesRepository = repositoryFactory.get('images');
 import { mapState } from 'vuex';
@@ -53,7 +51,7 @@ export default {
         },
         allowRotate: {
             type: Boolean,
-            default: false
+            default: true
         },
         buttonText: {
             type: String,
@@ -71,11 +69,11 @@ export default {
     data () {
         return {
             imageUploaded: false,
-            // resultImage: null,
             cropperObject: null,
             imgData: '',
             imgObject: null,
-            editing: false
+            editing: false,
+            isRotated: false
         }
     },    
     computed: {
@@ -117,7 +115,7 @@ export default {
             };
         },
 
-        initiateCropper: function() {
+        initiateCropper() {
             // init canvas
             const context = this.$refs.editor_canvas.getContext("2d");
             context.canvas.height = this.imgMaxHeight;
@@ -133,6 +131,33 @@ export default {
             });
 
             this.editing = true;
+        },
+
+        rotate(degrees) {
+            this.isRotated = !this.isRotated;
+            const newWidth = this.isRotated ? this.imgObject.height : this.imgObject.width;
+            const newHeight = this.isRotated ? this.imgObject.width : this.imgObject.height;
+            var ratio = newHeight/newWidth;
+
+            this.cropperObject.setCropBoxData({left: 0, right: 0, width: 1, height: 1});
+            this.cropperObject.rotate(degrees);
+            
+            // needed this weird scaling logic
+            if (ratio < 1 ^ this.imgObject.width < this.imgObject.height) {
+                ratio = 1;
+            }
+            this.cropperObject.scale(1/ratio);
+
+            const container = this.cropperObject.getContainerData();
+            this.cropperObject.moveTo(container.width / 2, container.height / 2);
+            this.cropperObject.zoomTo(1, {x: container.width / 2, y: container.height / 2});
+            this.cropperObject.setCropBoxData({left: 0, right: 0, width: newWidth, height: newHeight});
+        },
+
+        resetEdit() {
+            this.editing = false;
+            this.isRotated = false;
+            this.cropperObject.destroy();
         },
 
         upload() {
@@ -163,6 +188,7 @@ export default {
             this.imgData = '';
             this.imgObject = null;
             this.editing = false;
+            this.isRotated = false;
             this.cropperObject.destroy();
             this.$refs.fileInput.value = '';
         }
