@@ -139,19 +139,22 @@ export default {
             const newHeight = this.isRotated ? this.imgObject.width : this.imgObject.height;
             var ratio = newHeight/newWidth;
 
-            this.cropperObject.setCropBoxData({left: 0, right: 0, width: 1, height: 1});
+            this.cropperObject.setCropBoxData({left: 0, right: 0, width: 1, height: 1});    // cropbox needs to be minimal, so there is no scaling restriction
+
+            // rotation
             this.cropperObject.rotate(degrees);
             
-            // needed this weird scaling logic
-            if (ratio < 1 ^ this.imgObject.width < this.imgObject.height) {
-                ratio = 1;
+            // scaling
+            if (!this.isRotated) {
+                ratio = 1; // only 90 and 270 degrees rotation needs scaling (relative to original), scaling is relative to original
             }
             this.cropperObject.scale(1/ratio);
 
+            // recentering
             const container = this.cropperObject.getContainerData();
-            this.cropperObject.moveTo(container.width / 2, container.height / 2);
-            this.cropperObject.zoomTo(1, {x: container.width / 2, y: container.height / 2});
-            this.cropperObject.setCropBoxData({left: 0, right: 0, width: newWidth, height: newHeight});
+            this.cropperObject.moveTo(container.width / 2, container.height / 2);  // TODO: still needs some refinement on recentering while isRotated = true
+
+            this.cropperObject.setCropBoxData({left: 0, right: 0, width: newWidth, height: newHeight}); // restore cropbox to full image
         },
 
         resetEdit() {
