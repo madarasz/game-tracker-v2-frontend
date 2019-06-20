@@ -73,7 +73,7 @@ export default {
             imgData: '',
             imgObject: null,
             editing: false,
-            isRotated: false
+            isRotated: false // is true if rotated by 90 or 270 degrees
         }
     },    
     computed: {

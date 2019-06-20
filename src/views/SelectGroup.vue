@@ -15,57 +15,15 @@
                                 <em>Login to view your Groups</em>
                             </v-list-tile-title>
                         </v-list-tile>
-                        <v-data-table :headers="teamHeaders" :items="groups.groups.myGroups" hide-headers hide-actions class="borderless" 
-                            v-if="groups.groups.myGroups && !groups.groups.myGroups.error" name="my-groups-table" :loading="groupsLoaded">
-                            <template v-slot:items="group">
-                                <tr @click="selectGroup(group.item.id, group.item.name)">
-                                    <td style="width: 1%">
-                                        <v-list-tile-avatar color="grey" tile>
-                                            <v-icon>group</v-icon>
-                                        </v-list-tile-avatar>
-                                    <td class="text-xs-left">{{ group.item.name }}</td>
-                                    <td class="text-xs-right">
-                                        <v-icon v-if="group.item.is_group_admin || login.isAdmin" name="icon-settings">settings</v-icon>
-                                    </td>
-                                </tr>
-                            </template>
-                        </v-data-table>
+                        <group-table :items="groups.groups.myGroups" name="my-groups-table" :loading="groupsLoaded" @selected="selectGroup"/>
                         <v-divider></v-divider>
                         <!-- Public Groups -->
                         <v-subheader>Public Groups</v-subheader>
-                        <v-data-table :headers="teamHeaders" :items="groups.groups.publicGroups" hide-headers hide-actions 
-                            class="borderless" name="public-groups-table" :loading="!groupsLoaded">
-                            <template v-slot:items="group">
-                                <tr @click="selectGroup(group.item.id, group.item.name)">
-                                    <td style="width: 1%">
-                                        <v-list-tile-avatar color="grey" tile>
-                                            <v-icon>group</v-icon>
-                                        </v-list-tile-avatar>
-                                    <td class="text-xs-left">{{ group.item.name }}</td>
-                                    <td class="text-xs-right">
-                                        <v-icon v-if="login.isAdmin" name="icon-settings">settings</v-icon>
-                                    </td>
-                                </tr>
-                            </template>
-                        </v-data-table>
+                        <group-table :items="groups.groups.publicGroups" name="public-groups-table" :loading="groupsLoaded" @selected="selectGroup"/>
                         <v-divider></v-divider>
                         <!-- Private Groups -->
                         <v-subheader>Private Groups</v-subheader>
-                        <v-data-table :headers="teamHeaders" :items="groups.groups.privateGroups" hide-headers hide-actions 
-                            class="borderless" name="private-groups-table" :loading="!groupsLoaded">
-                            <template v-slot:items="group">
-                                <tr @click="if (login.isAdmin) selectGroup(group.item.id, group.item.name)">
-                                    <td style="width: 1%">
-                                        <v-list-tile-avatar color="grey" tile>
-                                            <v-icon>group</v-icon>
-                                        </v-list-tile-avatar>
-                                    <td class="text-xs-left">{{ group.item.name }}</td>
-                                    <td class="text-xs-right">
-                                        <v-icon v-if="login.isAdmin" name="icon-settings">settings</v-icon>
-                                    </td>
-                                </tr>
-                            </template>
-                        </v-data-table>
+                        <group-table :items="groups.groups.privateGroups" name="private-groups-table" :loading="groupsLoaded" @selected="selectGroup" is-private/>
                     </v-list>
                 </v-card-text>
             </v-card>
@@ -75,9 +33,11 @@
 
 <script>
     import { mapState } from 'vuex';
+    import GroupTable from '@/components/GroupTable';
 
     export default {
         components: {
+            GroupTable
         },
         data() {
             return {
