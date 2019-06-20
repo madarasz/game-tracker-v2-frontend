@@ -84,7 +84,7 @@ Then("I can see the admin icon for group {string} in category {string}", async (
 When("I select group {string} in category {string}", async (groupName, category) => {
     const group = await groupsPage.waitForGroupInTable(scope.page, category, groupName);
     console.log(`${groupName} is listed, selecting`);
-    await common.delay(100); // stability reasons
+    await common.delay(300); // stability reasons
     return await group.click();
 });
 
@@ -224,6 +224,10 @@ function getSelectorForElement(elementName) {
             return gamePage.selector.gameRating;
         case "game designer":
             return gamePage.selector.gameDesigner;
+        case "boardgame search":
+            return groupDetailPage.selector.radioBoardgame;
+        case "videogame search":
+            return groupDetailPage.selector.radioVideogame;
         default:
             console.log(chalk.red(`!!! ELEMENT ${elementName} IS NOT DEFINIED !!!`));
     }

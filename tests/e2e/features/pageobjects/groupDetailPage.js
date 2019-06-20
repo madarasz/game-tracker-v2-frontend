@@ -15,6 +15,8 @@ const selector = {
     checkboxIsPublic: 'input[name="checkbox-is-public"]',
     inputGroupName: 'input[name="input-group-name"]',
     buttonGroupUpdate: 'button[name="button-update-group"]',
+    radioBoardgame: 'input[name="radio-boardgame"]',
+    radioVideogame: 'input[name="radio-videogame"]',
 }
 
 async function checkUserMembership(page, userName, membershipType) {

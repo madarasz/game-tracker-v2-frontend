@@ -10,7 +10,17 @@
                 <v-toolbar-title>Add Game</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-text-field dark v-model.lazy="search" append-icon="search" ref="searchInput" name="searchInput"
-                    label="Search" single-line hide-details class="pa-0" v-if="!selectedGame"/>
+                    label="Search" single-line hide-details class="pa-0" v-if="!selectedGame" color="white"/>
+                <template v-slot:extension v-if="!selectedGame">
+                    <v-layout>
+                        <v-flex class="flex-center">
+                            <v-radio-group row class="mb-0 small flex-center" v-model="gameType" dark>
+                                <v-radio label="boardgame" value="1" color="white" name="radio-boardgame"/>
+                                <v-radio label="videogame" value="2" color="white" name="radio-videogame"/>
+                            </v-radio-group>
+                        </v-flex>
+                    </v-layout>
+                </template>
             </v-toolbar>
             <v-card>
                 <!-- Game list -->
@@ -73,8 +83,9 @@ export default {
             gameDesigners: {},
             selectedGame: null,
             minCharacters: 3,
-            apiSearch: 'https://api.geekdo.com/xmlapi2/search?type=boardgame&limit=10&query=',
-            apiDetails: 'https://api.geekdo.com/xmlapi2/thing?id='
+            apiSearch: 'https://api.geekdo.com/xmlapi2/search?limit=10&query=',
+            apiDetails: 'https://api.geekdo.com/xmlapi2/thing?id=',
+            gameType: '1'
         }
     },
     methods: {
@@ -97,7 +108,7 @@ export default {
                 'year': this.selectedGame[0].year,
                 'thumbnail': this.gameImages[id],
                 'designers': this.gameDesigners[id].join(', '),
-                'type': 1, //TODO
+                'type': parseInt(this.gameType),
                 'group_id': this.groups.selectedGroup.id
             }).then(() => {
                 this.showDialog = false;
@@ -109,16 +120,11 @@ export default {
                     this.$store.commit('toaster/showError', 'Game not added');
                 }
             });
-        }
-    },
-    computed: {
-            ...mapState(['groups']),
-    },
-    watch: {
-        search: function(value) {
-            if (value.length >= this.minCharacters) {
+        },
+        searchGame: function() {
+            if (this.search.length >= this.minCharacters) {
                 this.searching = true;
-                axios.get(`${this.apiSearch}${value}`).then((response) => {
+                axios.get(`${this.apiSearch}${this.search}&type=${this.gameTypeString}`).then((response) => {
                     parseString(response.data, (err, result) => {
                         this.searching = false;
                         if (result.items.$.total > 0) {
@@ -157,6 +163,23 @@ export default {
             } else {
                 this.searchResults = [];
             }
+        }
+    },
+    computed: {
+            ...mapState(['groups']),
+            gameTypeString() {
+                if (this.gameType == 1) {
+                    return 'boardgame';
+                }
+                return 'videogame'
+            }
+    },
+    watch: {
+        gameType: function() {
+            this.searchGame();
+        },
+        search: function() {
+            this.searchGame();
         }
     }
 }
