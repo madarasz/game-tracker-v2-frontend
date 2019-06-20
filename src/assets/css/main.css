@@ -67,3 +67,10 @@ html {
 .theme--light.v-label {
     color: black;
 }
+
+.groups-table tbody tr td:not(:first-child) {
+    padding: 0 6px !important
+}
+.groups-table tbody tr td:first-child {
+    padding: 0 0 0 24px !important;
+}

@@ -1,5 +1,5 @@
 <template>
-    <v-data-table :items="items" hide-actions hide-headers class="borderless" :name="name" :loading="loading">
+    <v-data-table :items="items" hide-actions hide-headers class="borderless groups-table" :name="name" :loading="loading">
         <template v-slot:items="group">
             <tr @click="selected(group.item.id, group.item.name)">
                  <!-- Group avatar in hexagon -->
