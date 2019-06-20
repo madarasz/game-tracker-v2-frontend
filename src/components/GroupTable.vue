@@ -1,9 +1,9 @@
 <template>
-    <v-data-table :headers="teamHeaders" :items="items" hide-headers hide-actions class="borderless" :name="name" :loading="loading">
+    <v-data-table :items="items" hide-actions hide-headers class="borderless" :name="name" :loading="loading">
         <template v-slot:items="group">
             <tr @click="selected(group.item.id, group.item.name)">
+                 <!-- Group avatar in hexagon -->
                 <td style="width: 1%">
-                    <!-- Group avatar in hexagon -->
                     <v-list-tile-avatar size="32" tile>
                         <div class="hexagon hexagon-small">
                             <div class="hexagon-in1">
@@ -16,9 +16,22 @@
                             </div>
                         </div>
                     </v-list-tile-avatar>
-                <td class="text-xs-left">{{ group.item.name }}</td>
-                <td class="text-xs-right">
-                    <v-icon v-if="group.item.is_group_admin || login.isAdmin" name="icon-settings">settings</v-icon>
+                <td style="width: 100%" class="text-xs-left">{{ group.item.name }}</td>
+                <!-- Icons -->
+                <td style="width: 1%">
+                    <v-icon name="icon-settings" v-if="group.item.is_group_admin || login.isAdmin">settings</v-icon>
+                </td>
+                <td style="width: 1%">
+                    <v-layout align-center v-if="group.item.gameCount > 0">
+                        {{ group.item.gameCount }}
+                        <v-icon>videogame_asset</v-icon>
+                    </v-layout>
+                </td>
+                <td style="width: 1%">
+                    <v-layout align-center v-if="group.item.memberCount > 0">
+                        {{ group.item.memberCount }}
+                        <v-icon>face</v-icon>
+                    </v-layout>
                 </td>
             </tr>
         </template>
@@ -53,13 +66,6 @@
         },
         data () {
             return {
-                teamHeaders: [
-                    {
-                        text: 'name',
-                        value: 'name',
-                        align: 'left'
-                    }
-                ]
             }
         },
         methods: {
