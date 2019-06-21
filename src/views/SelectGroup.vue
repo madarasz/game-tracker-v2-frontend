@@ -2,10 +2,13 @@
     <v-layout wrap row>
         <!-- Groups -->
         <v-flex xs12 lg8 offset-lg2 text-xs-center>
+            <v-toolbar color="green" dark dense>
+                <v-toolbar-title>
+                    <v-icon>people</v-icon>
+                    <span class="subheading">Groups</span>       
+                </v-toolbar-title>
+            </v-toolbar>
             <v-card height="100%" name="groups-card">
-                <v-card-title class="green white--text">
-                    <span class="subheading">Groups</span>
-                </v-card-title>
                 <v-card-text class="pa-0">
                     <v-list dense>
                         <!-- My Groups -->                   

@@ -3,7 +3,7 @@
         <v-toolbar-side-icon>
             <v-icon>videogame_asset</v-icon>
         </v-toolbar-side-icon>
-        <v-toolbar-title :class="groups.selectedGroup == null ? 'hidden-xs-only' : 'hidden-sm-and-down'">GameTracker</v-toolbar-title>
+        <v-toolbar-title :class="groups.selectedGroup == null ? 'hidden-xs-only ml-0' : 'hidden-sm-and-down ml-0'">GameTracker</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
             <!-- Game -->
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                         </v-avatar>
-                        <span class="hidden-xs-only">{{ groups.selectedGroup.name }}</span>
+                        <span class="hidden-xs-only toolbar-group-name">{{ groups.selectedGroup.name }}</span>
                     <v-icon>arrow_drop_down</v-icon>
                     </v-btn>
                 </template>

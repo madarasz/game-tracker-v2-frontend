@@ -1,9 +1,23 @@
 <template>
     <v-layout wrap row>
-        <v-flex xs12>
+        <v-flex xs12 md8 pa-2>    
+            <v-toolbar color="green" dark dense>
+                <v-toolbar-title>
+                    <v-icon>face</v-icon>
+                    <span class="subheading">Profile</span>       
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-card name="card-profile">
+                <v-card-text>
+                    TODO
+                </v-card-text>
+            </v-card>
+        </v-flex>
+        <v-flex xs12 md4 pa-2>
             <div v-if="isSettingsVisible">
                 <v-toolbar color="orange" dark dense>
                     <v-toolbar-title>
+                        <v-icon>settings</v-icon>
                         <span class="subheading">Settings</span>       
                     </v-toolbar-title>
                 </v-toolbar>
@@ -20,16 +34,8 @@
                     </v-card-text>
                 </v-card>
             </div>
-            
-            <v-card name="card-profile" class="mt-2">
-                <v-card-title class="green">
-                    Profile
-                </v-card-title>
-                <v-card-text>
-                    TODO
-                </v-card-text>
-            </v-card>
         </v-flex>
+        
     </v-layout>
 </template>
 

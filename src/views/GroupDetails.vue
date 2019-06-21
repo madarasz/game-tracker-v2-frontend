@@ -1,9 +1,10 @@
 <template>
     <v-layout wrap row>
         <!-- Games -->
-        <v-flex xs12 md8 class="pa-2">
+        <v-flex xs12 md8 pa-2>
             <v-toolbar color="green" dark dense>
                 <v-toolbar-title>
+                    <v-icon>casino</v-icon>
                     <span class="subheading">Games</span>       
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -42,11 +43,12 @@
                 </v-list>
             </v-card>
         </v-flex>
-        <v-flex xs12 md4>
+        <v-flex xs12 md4 pa-2> 
             <!-- Settings -->
-            <div class="ma-2" v-if="isGroupAdmin">
+            <div v-if="isGroupAdmin">
                 <v-toolbar color="orange" dark dense>
                     <v-toolbar-title>
+                        <v-icon>settings</v-icon>
                         <span class="subheading">Settings</span>       
                     </v-toolbar-title>
                 </v-toolbar>
@@ -94,9 +96,10 @@
                 </v-card>
             </div>
             <!-- Members -->
-            <div v-if="groupDetailsLoaded" class="ma-2">
+            <div v-if="groupDetailsLoaded" class="pt-3">
                 <v-toolbar color="green" dark dense>
                     <v-toolbar-title>
+                        <v-icon>face</v-icon>
                         <span class="subheading">Members</span>       
                     </v-toolbar-title>
                 </v-toolbar>

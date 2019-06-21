@@ -1,8 +1,15 @@
 <template>
     <v-layout wrap row>
-        <v-flex xs12 md9 lg10>
+        <v-flex xs12 md9 lg10 pa-2>
+            <v-toolbar color="green" dark dense>
+                <v-toolbar-title>
+                    <v-icon class="mr-2">event</v-icon>
+                    <span class="subheading">Sessions</span>       
+                </v-toolbar-title>
+                <v-spacer></v-spacer>
+            </v-toolbar>
         </v-flex>
-        <v-flex xs12 md3 lg2>
+        <v-flex xs12 md3 lg2 pa-2>
             <v-card>
                 <!-- For mobile -->
                 <v-layout wrap row class="hidden-md-and-up">

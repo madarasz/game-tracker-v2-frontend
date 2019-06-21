@@ -24,7 +24,7 @@
                 <td style="width: 1%">
                     <v-layout align-center v-if="group.item.gameCount > 0">
                         {{ group.item.gameCount }}
-                        <v-icon>videogame_asset</v-icon>
+                        <v-icon>casino</v-icon>
                     </v-layout>
                 </td>
                 <td style="width: 1%">
