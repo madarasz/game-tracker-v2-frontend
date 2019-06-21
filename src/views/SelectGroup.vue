@@ -8,9 +8,10 @@
                     <span class="subheading">Groups</span>       
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card height="100%" name="groups-card">
+            <v-card name="groups-card">
                 <v-card-text class="pa-0">
-                    <v-list dense>
+                    <v-progress-circular indeterminate color="green" v-if="!groupsLoaded" class="ma-4"/>
+                    <v-list dense v-if="groupsLoaded">
                         <!-- My Groups -->                   
                         <v-subheader>My Groups</v-subheader>
                         <v-list-tile v-if="groupsLoaded && login.userId == null" >

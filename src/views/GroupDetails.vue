@@ -1,7 +1,11 @@
 <template>
-    <v-layout wrap row>
+    <v-layout wrap row :align-center="!groupDetailsLoaded">
+        <!-- Loading Spinner -->
+        <v-flex v-if="!groupDetailsLoaded" class="text-xs-center">
+            <v-progress-circular indeterminate color="green"/>
+        </v-flex>
         <!-- Games -->
-        <v-flex xs12 md8 pa-2>
+        <v-flex xs12 md8 pa-2 v-if="groupDetailsLoaded">
             <v-toolbar color="green" dark dense>
                 <v-toolbar-title>
                     <v-icon>casino</v-icon>
@@ -11,7 +15,7 @@
                 <add-game-dialog v-if="isGroupMember"/>
             </v-toolbar>
             <!-- Game list -->
-            <v-card name="card-games" v-if="groupDetailsLoaded">
+            <v-card name="card-games">
                 <v-list two-line>
                     <template v-for="game in groups.selectedGroup.games">
                         <v-list-tile :key="game.id" name="list-group-games" :to="`/group/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}/${game.id}/meh`">
@@ -43,7 +47,7 @@
                 </v-list>
             </v-card>
         </v-flex>
-        <v-flex xs12 md4 pa-2> 
+        <v-flex xs12 md4 pa-2 v-if="groupDetailsLoaded"> 
             <!-- Settings -->
             <div v-if="isGroupAdmin">
                 <v-toolbar color="orange" dark dense>
@@ -96,7 +100,7 @@
                 </v-card>
             </div>
             <!-- Members -->
-            <div v-if="groupDetailsLoaded" class="pt-3">
+            <div class="pt-3">
                 <v-toolbar color="green" dark dense>
                     <v-toolbar-title>
                         <v-icon>face</v-icon>
