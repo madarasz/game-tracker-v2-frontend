@@ -4,13 +4,18 @@ html {
 .text-transform-none {
     text-transform: none
 }
+
+/* adjusting color of selected/hovered toolbar item */
 .v-btn:before {
     opacity: 0.3 !important;
 }
+
+/* borderless table */
 .borderless .v-table tbody tr:not(:last-child) {
     border: 0;
 }
 
+/* hexagon shape for group icons */
 .hexagon {
     overflow: hidden;
     visibility: hidden;
@@ -53,10 +58,12 @@ html {
     margin: 0 0 0 -16px;
 }
 
+/* border around toolbar icons: games, profile; not working for group hexagon */
 .toolbar-border {
     border: 1px solid #1B5E20;
 }
 
+/* for BGG rating */
 .v-rating {
     display: inline;
     white-space: nowrap;
@@ -64,10 +71,13 @@ html {
 .v-rating .v-icon {
     padding: 0;
 }
-.theme--light.v-label {
-    color: black;
-}
 
+/* ? */
+/* .theme--light .v-label {
+    color: black;
+} */
+
+/* adjusting paddings for group selection table */
 .groups-table tbody tr td:not(:first-child) {
     padding: 0 6px !important
 }
@@ -75,16 +85,19 @@ html {
     padding: 0 0 0 24px !important;
 }
 
+/* toolbar extension in game adding dialog (select board or video) */
 .v-toolbar__extension {
     height: 38px !important;
 }
 
+/* displaying something in the middle */
 .flex-center {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* adjusting for icons before toolbar title */
 .v-toolbar__content {
     padding-left: 12px !important;
 }
@@ -93,9 +106,29 @@ html {
     margin-right: 8px !important;
 }
 
+/* maximizing group name width in toolbar */
 .toolbar-group-name {
     max-width: 120px;
     text-overflow: ellipsis !important;
     overflow: hidden;
     white-space: nowrap;
+}
+
+/* session form */
+.form-label {
+    margin-right: 4px;
+    font-size: 16px;
+    font-weight: 700 !important;
+}
+.v-textarea.v-text-field--enclosed textarea {
+    margin-top: 0;
+}
+.form-input {
+    margin-top: -4px !important;
+    padding-right: 16px !important;
+    padding-top: 0 !important;
+    padding-left: 4px !important;
+}
+.form-input .v-input__slot {
+    margin-bottom: 0 !important;
 }

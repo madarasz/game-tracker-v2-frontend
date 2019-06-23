@@ -1,28 +1,25 @@
 <template>
     <v-layout wrap row>
-        <!-- Sessions -->
         <v-flex xs12 md9 lg10 pa-2>
-            <v-toolbar color="green" dark dense>
-                <v-toolbar-title>
-                    <v-icon class="mr-2">event</v-icon>
-                    <span class="subheading">Sessions</span>       
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card>
-                <v-card-text class="pt-0" :class="gameLoaded ? '' : 'text-xs-center'">
-                    <v-progress-circular indeterminate color="green" v-if="!gameLoaded" class="ma-4"/>
-                    <v-data-table :items="game.details.sessions" :headers="sessionHeaders" :hide-actions="game.details.sessions.length <= defaultSessionsPerPage" class="borderless" name="table-session" :loading="!gameLoaded" v-if="gameLoaded"
-                        no-results-text="no sessions">
-                        <template v-slot:items="session">
-                            <td class="text-xs-right">{{ session.item.date}}</td>
-                            <td>{{ session.item.place}}</td>
-                            <td></td>
-                            <td></td>
-                        </template>
-                    </v-data-table>
-                </v-card-text>
-            </v-card>
+            <v-layout wrap row>
+                <!-- Session Details/Editor -->
+                <session-details/>
+                <!-- Sessions -->
+                <v-flex xs12>
+                    <v-toolbar color="green" dark dense>
+                        <v-toolbar-title>
+                            <v-icon class="mr-2">event</v-icon>
+                            <span class="subheading">Sessions</span>       
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-btn icon dark flat @click="addSession()" name="button-add-session">
+                            <v-icon>add</v-icon>
+                        </v-btn>
+                    </v-toolbar>
+                    <!-- Session Table -->
+                    <session-table :items="game.details.sessions" :loaded="gameLoaded"/>
+                </v-flex>
+            </v-layout>
         </v-flex>
         <!-- Game info -->
         <v-flex xs12 md3 lg2 pa-2>
@@ -51,42 +48,20 @@
 <script>
 import { mapState } from 'vuex';
 import GameInfo from '@/components/GameInfo'
+import SessionTable from '@/components/SessionTable'
+import SessionDetails from '@/components/SessionDetails'
 
 export default {
     components: {
-        GameInfo
+        GameInfo, SessionTable, SessionDetails
     },
     data() {
         return {
             gameLoaded: false,
-            sessionHeaders: [
-                {
-                    text: 'date',
-                    align: 'right',
-                    sortable: true
-                },
-                {
-                    text: 'place',
-                    align: 'left',
-                    sortable: false
-                },
-                {
-                    text: 'players',
-                    align: 'left',
-                    sortable: false
-                },
-                {
-                    text: '',
-                    align: 'right',
-                    sortable: false,
-                    name: 'icons'
-                },
-            ],
-            defaultSessionsPerPage: '20'
         }
     },
     computed: {
-        ...mapState(['login', 'groups', 'game']),
+        ...mapState(['login', 'groups', 'game', 'session']),
         gameImage: function() {
             if (this.game.bggStats.image == null) {
                 return this.game.details.thumbnail;
@@ -98,6 +73,7 @@ export default {
         const pathParts = window.location.href.substr(window.location.href.indexOf('/',10))
             .split('/').filter((el) => { return el != ''});
         this.$store.commit('game/clearGame');
+        this.$store.commit('session/clearSession');
 
         // get game details
         this.$store.dispatch('game/getGameDetails', {gameId: pathParts[3], groupId: pathParts[1]}).then(() => {
@@ -114,7 +90,9 @@ export default {
         });
     },
     methods: {
-
+        addSession() {
+            this.$store.commit('session/addSession');
+        }
     }
 }
 </script>
