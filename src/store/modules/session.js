@@ -43,6 +43,7 @@ export const session = {
         },
         clearSession(state) {
             state.currentSession = null;
+            state.editingSession = false;
         },
         selectSession(state, session) {
             state.currentSession = session;

@@ -100,6 +100,7 @@ html {
 /* adjusting for icons before toolbar title */
 .v-toolbar__content {
     padding-left: 12px !important;
+    padding-right: 4px !important;
 }
 
 .v-toolbar__title .v-icon {
@@ -136,4 +137,10 @@ html {
 /* selected row */
 .selected-row {
     background-color: #C8E6C9
+}
+
+/* smaller button for icons in toolbars */
+.btn-small {
+    height: 28px;
+    width: 28px;
 }

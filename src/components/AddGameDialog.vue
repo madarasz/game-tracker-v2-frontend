@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Button -->
-        <v-btn icon dark flat @click="displayDialog()" name="button-add-game">
+        <v-btn color="green" class="white btn-small" icon dark flat @click="displayDialog()" name="button-add-game">
             <v-icon>add</v-icon>
         </v-btn>
         <!-- Dialog -->

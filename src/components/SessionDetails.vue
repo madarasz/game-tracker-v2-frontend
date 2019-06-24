@@ -8,6 +8,14 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <!-- Buttons -->
+            <div v-if="session.editingSession">
+                <v-btn @click="clearSession()" class="hidden-xs-only" dark flat name="button-save-session">
+                    Cancel
+                </v-btn>
+                <v-btn @click="clearSession()" class="hidden-sm-and-up" dark flat icon name="button-save-session">
+                    <v-icon>close</v-icon>
+                </v-btn>
+            </div>
             <div v-if="session.editingSession && session.isNewSession">
                 <v-btn @click="saveSession()" class="white hidden-xs-only" color="green" dark flat name="button-save-session">
                     Save
@@ -24,9 +32,11 @@
                     <v-icon>save</v-icon>
                 </v-btn>
             </div>
-            <v-btn v-if="!session.editingSession" @click="editSession()" dark flat icon name="button-edit-session">
-                    <v-icon>edit</v-icon>
-            </v-btn>
+            <div>
+                <v-btn v-if="!session.editingSession" @click="editSession()" dark flat icon name="button-edit-session" class="white btn-small" color="green">
+                        <v-icon>edit</v-icon>
+                </v-btn>
+            </div>
         </v-toolbar>
         <v-card v-if="session.currentSession != null" class="mb-3">
             <!-- Session Form -->
@@ -122,6 +132,9 @@ export default {
         },
         editSession() {
             this.$store.commit('session/editSession');
+        },
+        clearSession() {
+            this.$store.commit('session/clearSession');
         },
         reloadGameDetails() {
             this.$store.dispatch('game/getGameDetails', { gameId: this.game.details.id, groupId: this.groups.selectedGroup.id }).catch(() => {

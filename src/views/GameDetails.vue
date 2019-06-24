@@ -12,9 +12,11 @@
                             <span class="subheading">Sessions</span>       
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
-                        <v-btn icon dark flat @click="addSession()" name="button-add-session">
-                            <v-icon>add</v-icon>
-                        </v-btn>
+                        <div>
+                            <v-btn color="green" class="white btn-small" icon dark flat @click="addSession()" name="button-add-session">
+                                <v-icon>add</v-icon>
+                            </v-btn>
+                        </div>
                     </v-toolbar>
                     <!-- Session Table -->
                     <session-table :items="game.details.sessions" :loaded="gameLoaded"/>
