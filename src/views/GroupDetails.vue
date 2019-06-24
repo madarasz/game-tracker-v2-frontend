@@ -50,7 +50,7 @@
         </v-flex>
         <v-flex xs12 md4 pa-2 v-if="groupDetailsLoaded"> 
             <!-- Settings -->
-            <div v-if="isGroupAdmin">
+            <div v-if="isGroupAdmin" class="pb-3">
                 <v-toolbar color="orange" dark dense>
                     <v-toolbar-title>
                         <v-icon>settings</v-icon>
@@ -69,10 +69,7 @@
                                                 <div style="height: 75px" class="blue" v-if="groups.selectedGroup.imageFile == null">
                                                     <v-icon size="48" name="placeholder-group" class="blue">group</v-icon>
                                                 </div>
-                                                <!-- <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/> -->
-                                                <!-- <div style="width: 120px; height: 75px;"> -->
-                                                    <v-img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/>
-                                                <!-- </div> -->
+                                                <v-img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/>
                                             </div>
                                         </div>
                                     </div>
@@ -103,8 +100,46 @@
                     </v-card-text>
                 </v-card>
             </div>
+            <!-- Group details for non-admins -->
+            <div class="pb-3">
+                <v-toolbar color="green" dark dense>
+                    <v-toolbar-title>
+                        <v-icon>details</v-icon>
+                        <span class="subheading">Group details</span>       
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card name="card-group-settings">
+                    <v-card-text>
+                        <v-list>
+                            <v-list-tile>
+                                <!-- Group avatar in hexagon -->
+                                <v-list-tile-avatar size="80" tile style="margin-right: -15px">
+                                    <div class="hexagon hexagon-big">
+                                        <div class="hexagon-in1">
+                                            <div class="hexagon-in2">
+                                                <div style="height: 75px" class="blue" v-if="groups.selectedGroup.imageFile == null">
+                                                    <v-icon size="48" name="placeholder-group" class="blue">group</v-icon>
+                                                </div>
+                                                <v-img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-list-tile-avatar>                             
+                                <v-list-tile-content>
+                                    <v-list-tile-title class="text-xs-center title">
+                                        {{ groups.selectedGroup.name }}
+                                    </v-list-tile-title>
+                                    <v-list-tile-sub-title class="text-xs-center">
+                                        {{ groups.selectedGroup.is_public ? 'public' : 'private' }} group
+                                    </v-list-tile-sub-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card-text>
+                </v-card>
+            </div>
             <!-- Members -->
-            <div class="pt-3">
+            <div>
                 <v-toolbar color="green" dark dense>
                     <v-toolbar-title>
                         <v-icon>face</v-icon>
