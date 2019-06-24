@@ -29,5 +29,5 @@ Feature: Group Selector
         Given I visit the homepage
         When I select group "Public Group A" in category "public"
         Then the selected group is "Public Group A"
-        When I go to path "/profile/1/test-user"
+        When I go to path "/profile/9001/test-user"
         Then the selected group is "Public Group A"

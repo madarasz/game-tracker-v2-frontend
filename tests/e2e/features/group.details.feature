@@ -7,7 +7,7 @@ Feature: Group Details
         And "Test Admin" is an admin member of the group
 
     Scenario: Public group details without login
-        Given I go to path "/group/1/public-group-a"
+        Given I go to path "/group/9001/public-group-a"
         Then "Group settings" are not visible
         And "Add Game button" is not visible
         And "Games card" is visible
@@ -43,7 +43,7 @@ Feature: Group Details
         And "Members card" is visible
 
     Scenario: Private group details without login
-        Given I go to path "/group/3/private-group-a"
+        Given I go to path "/group/9003/private-group-a"
         Then "Toaster" is visible
         And "Group settings" are not visible
         And "Members card" is not visible

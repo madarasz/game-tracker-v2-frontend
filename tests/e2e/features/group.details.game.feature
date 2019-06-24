@@ -22,7 +22,7 @@ Feature: Group Details Games
         Given I delete game "Duck Game" if it is listed
         And I click "Add game button"
         Then "Add game dialog" is visible
-        When I search for game "Duck G"
+        When I search for game "Duck Ga"
         And I click "Videogame search"
         Then "Duck Game" is visible in the game search results
         When I select "Duck Game" from the game search results

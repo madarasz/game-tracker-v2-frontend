@@ -5,13 +5,13 @@ module.exports = {
             userName: 'Test User',
             email: 'e2e@test.com',
             password: 'pass',
-            id: 1
+            id: 9001
         },
         'Test Admin': {
             userName: 'Test Admin',
             email: 'e2e.admin@test.com',
             password: 'pass',
-            id: 2
+            id: 9002
         }
     }
 }
