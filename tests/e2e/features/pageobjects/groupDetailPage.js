@@ -2,7 +2,7 @@ const common = require('./common');
 const uploadDialog = require('./uploadDialog');
 
 const selector = {
-    groupSettingsCard: 'div[name="card-group-settings"]',
+    buttonGroupEdit: 'button[name="button-edit-group"]',
     groupMembersCard: 'div[name="card-members"]',
     groupGamesCard: 'div[name="card-games"]',
     addGameButton: 'button[name="button-add-game"]',
@@ -11,7 +11,7 @@ const selector = {
     buttonSubmitAddGame: 'button[name="button-dialog-add"]',
     buttonRemoveGroupImage: 'button[name="button-remove-group-image"]',
     placeholderGroupImage: 'i[name="placeholder-group"]',
-    groupImage: 'img[name="image-group"]',
+    groupImage: 'div[name="image-group"]',
     checkboxIsPublic: 'input[name="checkbox-is-public"]',
     inputGroupName: 'input[name="input-group-name"]',
     buttonGroupUpdate: 'button[name="button-update-group"]',

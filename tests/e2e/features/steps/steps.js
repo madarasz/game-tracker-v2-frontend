@@ -184,6 +184,7 @@ Then("I click {string}", async elementName => {
 
 Then("{string} has value {string}", async (elementName, value) => {
     console.log(`Checking if "${elementName}" has value "${value}"`);
+    await common.delay(300); // stability reasons
     const target = await scope.page.waitForSelector(getSelectorForElement(elementName));
     expect(await scope.page.evaluate(element => element.textContent, target)).toEqual(value);
 })
@@ -200,8 +201,8 @@ function getSelectorForElement(elementName) {
             return profilePage.selector.profilePlaceholder;
         case "profile picture":
             return profilePage.selector.profileImage;
-        case "group settings":
-            return groupDetailPage.selector.groupSettingsCard;
+        case "group edit button":
+            return groupDetailPage.selector.buttonGroupEdit;
         case "members card":
             return groupDetailPage.selector.groupMembersCard;
         case "games card":
