@@ -132,3 +132,8 @@ html {
 .form-input .v-input__slot {
     margin-bottom: 0 !important;
 }
+
+/* selected row */
+.selected-row {
+    background-color: #C8E6C9
+}

@@ -58,6 +58,8 @@ export default {
     data() {
         return {
             gameLoaded: false,
+            gameId: 0,
+            groupId: 0
         }
     },
     computed: {
@@ -72,18 +74,20 @@ export default {
     mounted() {
         const pathParts = window.location.href.substr(window.location.href.indexOf('/',10))
             .split('/').filter((el) => { return el != ''});
+        this.gameId = pathParts[3];
+        this.groupId = pathParts[1];
         this.$store.commit('game/clearGame');
         this.$store.commit('session/clearSession');
 
         // get game details
-        this.$store.dispatch('game/getGameDetails', {gameId: pathParts[3], groupId: pathParts[1]}).then(() => {
+        this.$store.dispatch('game/getGameDetails', {gameId: this.gameId, groupId: this.groupId}).then(() => {
             this.gameLoaded = true;
         }).catch(() => {
             this.$store.commit('toaster/showError', 'Could not load game details');
         });
 
         // get BGG stats
-        this.$store.dispatch('game/getBGGStats', pathParts[3]).then(() => {
+        this.$store.dispatch('game/getBGGStats', this.gameId).then(() => {
 
         }).catch(() => {
             this.$store.commit('toaster/showError', 'Could not load BGG stats');
@@ -91,7 +95,7 @@ export default {
     },
     methods: {
         addSession() {
-            this.$store.commit('session/addSession');
+            this.$store.commit('session/addSession', {gameId: this.gameId, groupId: this.groupId});
         }
     }
 }
