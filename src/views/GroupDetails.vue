@@ -69,7 +69,10 @@
                                                 <div style="height: 75px" class="blue" v-if="groups.selectedGroup.imageFile == null">
                                                     <v-icon size="48" name="placeholder-group" class="blue">group</v-icon>
                                                 </div>
-                                                <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/>
+                                                <!-- <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/> -->
+                                                <!-- <div style="width: 120px; height: 75px;"> -->
+                                                    <v-img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" name="image-group"/>
+                                                <!-- </div> -->
                                             </div>
                                         </div>
                                     </div>

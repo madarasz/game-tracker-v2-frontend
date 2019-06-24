@@ -58,6 +58,11 @@ html {
     margin: 0 0 0 -16px;
 }
 
+/* fix v-img in hexagon */
+.hexagon-in2 .v-image {
+    position: initial;
+}
+
 /* border around toolbar icons: games, profile; not working for group hexagon */
 .toolbar-border {
     border: 1px solid #1B5E20;

@@ -34,7 +34,7 @@
                                         <div style="height: 30px" class="green darken-4" v-if="!groups.selectedGroup.imageFile"> 
                                             <v-icon name="placeholder-group-toolbar" class="green darken-4">group</v-icon>
                                         </div>
-                                        <img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" 
+                                        <v-img v-if="groups.selectedGroup.imageFile" :src="imageFolder+groups.selectedGroup.imageFile" 
                                             name="image-group-toolbar"/>
                                     </div>
                                 </div>
