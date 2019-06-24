@@ -11,7 +11,7 @@
                                     <div style="height: 30px" class="grey" v-if="group.item.imageFile == null"> 
                                         <v-icon name="placeholder-group" class="grey">group</v-icon>
                                     </div>
-                                    <img v-if="group.item.imageFile" :src="imageFolder+group.item.imageFile" name="image-group"/>
+                                    <v-img v-if="group.item.imageFile" :src="imageFolder+group.item.imageFile" name="image-group"/>
                                 </div>
                             </div>
                         </div>
