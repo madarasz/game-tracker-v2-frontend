@@ -1,4 +1,5 @@
 import { repositoryFactory } from '@/api/repositoryFactory';
+import common from '@/common';
 const groupRepository = repositoryFactory.get('groups');
 const imageRepository = repositoryFactory.get('images');
 
@@ -10,10 +11,7 @@ export const groups = {
     },
     getters: {
         urlGroupName: (state) => {
-            if (!state.selectedGroup) {
-                return "";
-            }
-            return state.selectedGroup.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+            return common.urlFriendly(state.selectedGroup.name);
         },
         getUserAsMember: (state) => {
             return userId => {

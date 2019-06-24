@@ -1,4 +1,5 @@
 import { repositoryFactory } from '@/api/repositoryFactory';
+import common from '@/common';
 import axios from 'axios';
 const gameRepository = repositoryFactory.get('games');
 const bggEndpoint = 'https://api.geekdo.com/xmlapi2/thing?stats=1&id=';
@@ -15,6 +16,9 @@ export const game = {
         }
     },
     getters: {
+        urlGameName: (state) => {
+            return common.urlFriendly(state.details.name);
+        },
     },
     actions: {
         getGameDetails(context, {gameId, groupId}) {

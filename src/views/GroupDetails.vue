@@ -18,7 +18,8 @@
             <v-card name="card-games">
                 <v-list two-line>
                     <template v-for="game in groups.selectedGroup.games">
-                        <v-list-tile :key="game.id" name="list-group-games" :to="`/group/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}/${game.id}/meh`">
+                        <v-list-tile :key="game.id" name="list-group-games" 
+                            :to="`/group/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}/${game.id}/${urlFriendly(game.name)}`">
                             <!-- Game thumbnail -->
                             <v-list-tile-avatar tile size="64">
                                 <img v-if="game.thumbnail" :src="game.thumbnail"/>
@@ -125,6 +126,7 @@ import AddGameDialog from '@/components/AddGameDialog';
 import ImageUploader from '@/components/ImageUploader';
 import { mapState } from 'vuex';
 import { repositoryFactory } from '@/api/repositoryFactory';
+import common from '@/common';
 const gamesRepository = repositoryFactory.get('games');
 
 export default {
@@ -189,6 +191,9 @@ export default {
                 }).catch(() => {
                     this.$store.commit('toaster/showError', 'Could not update group details');
                 });
+            },
+            urlFriendly: function(str) {
+                return common.urlFriendly(str);
             }
         }
     }

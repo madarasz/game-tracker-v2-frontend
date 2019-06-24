@@ -1,4 +1,5 @@
 import { repositoryFactory } from '@/api/repositoryFactory';
+import common from '@/common';
 const loginRepository = repositoryFactory.get('login');
 const imageRepository = repositoryFactory.get('images');
 
@@ -14,10 +15,7 @@ export const login = {
     },
     getters: {
         urlUserName: (state) => {
-            if (!state.userName) {
-                return "";
-            }
-            return state.userName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+            return common.urlFriendly(state.userName);
         }
     },
     actions: {
