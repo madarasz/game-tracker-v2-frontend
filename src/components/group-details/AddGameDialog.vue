@@ -34,7 +34,7 @@
                         <v-list-tile :key="game.id" @click="selectGame(index)">
                             <!-- Game thumbnail -->
                             <v-list-tile-avatar tile size="64" class="mr-2">
-                                <img v-if="gameImages.hasOwnProperty(game.id)" :src="gameImages[game.id]"/>
+                                <v-img v-if="gameImages.hasOwnProperty(game.id)" :src="gameImages[game.id]"/>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <!-- Game name -->

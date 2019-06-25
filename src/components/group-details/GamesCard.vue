@@ -16,7 +16,7 @@
                         :to="`/group/${groups.selectedGroup.id}/${$store.getters['groups/urlGroupName']}/${game.id}/${urlFriendly(game.name)}`">
                         <!-- Game thumbnail -->
                         <v-list-tile-avatar tile size="64">
-                            <img v-if="game.thumbnail" :src="game.thumbnail"/>
+                            <v-img v-if="game.thumbnail" :src="game.thumbnail"/>
                         </v-list-tile-avatar>
                         <v-list-tile-content class="ml-2">
                             <!-- Game name -->
