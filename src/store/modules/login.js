@@ -14,11 +14,14 @@ export const login = {
         imageFile: null
     },
     getters: {
-        urlUserName: (state) => {
+        urlUserName: state => {
             return common.urlFriendly(state.userName);
         },
-        getUserId: (state) => {
+        getUserId: state => {
             return state.userId;
+        },
+        isUserAdmin: state => {
+            return state.isAdmin;
         }
     },
     actions: {

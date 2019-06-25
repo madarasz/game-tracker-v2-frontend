@@ -26,24 +26,24 @@ export const groups = {
             }
         },
         isUserGroupAdmin: (state, getters, rootState, rootGetters) => {
-            const userId = rootGetters['login/getUserId'];
             if (state.selectedGroup == null) {
                 return false;
             }
-            if (rootGetters['login/isAdmin']) {
+            if (rootGetters['login/isUserAdmin']) {
                 return true;    // admins always have member privilage
             }
+            const userId = rootGetters['login/getUserId'];
             const member = getters.getUserAsMember(userId);
             return (member !== undefined) && member.is_group_admin;
         },
         isUserGroupMember: (state, getters, rootState, rootGetters) => {
-            const userId = rootGetters['login/getUserId'];
             if (state.selectedGroup == null) {
                 return false;
             }
-            if (rootGetters['login/isAdmin']) {
+            if (rootGetters['login/isUserAdmin']) {
                 return true;    // admins always have member privilage
             }
+            const userId = rootGetters['login/getUserId'];
             const member = getters.getUserAsMember(userId);
             return member !== undefined;
         }
