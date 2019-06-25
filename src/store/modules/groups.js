@@ -6,7 +6,7 @@ const imageRepository = repositoryFactory.get('images');
 export const groups = {
     namespaced: true,
     state: {
-        groups: [],
+        groups: null,
         selectedGroup: null
     },
     getters: {
