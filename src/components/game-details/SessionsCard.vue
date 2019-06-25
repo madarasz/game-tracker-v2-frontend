@@ -7,7 +7,7 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <div>
-                <v-btn color="green" class="white btn-small" icon dark flat @click="addSession()" name="button-add-session">
+                <v-btn v-if="isGroupMember" color="green" class="white btn-small" icon dark flat @click="addSession()" name="button-add-session">
                     <v-icon>add</v-icon>
                 </v-btn>
             </div>
@@ -40,7 +40,7 @@ export default {
     props: {
     },
     computed: {
-        ...mapState(['session', 'game']),
+        ...mapState(['session', 'game', 'groups']),
         loaded() {
             return this.game.details != {}
         },
@@ -49,7 +49,10 @@ export default {
                 return 0
             }
             return this.game.details.sessions.length;
-        }
+        },
+        isGroupMember: function() { // can be site admin as well
+            return this.$store.getters['groups/isUserGroupMember'];
+        },
     },
     methods: {
         selectRow(sessionId) {

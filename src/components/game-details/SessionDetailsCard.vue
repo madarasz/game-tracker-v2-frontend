@@ -33,7 +33,7 @@
                 </v-btn>
             </div>
             <div>
-                <v-btn v-if="!session.editingSession" @click="editSession()" dark flat icon name="button-edit-session" class="white btn-small" color="green">
+                <v-btn v-if="!session.editingSession && isGroupMember" @click="editSession()" dark flat icon name="button-edit-session" class="white btn-small" color="green">
                         <v-icon>edit</v-icon>
                 </v-btn>
             </div>
@@ -111,7 +111,10 @@ export default {
         }
     },
     computed: {
-        ...mapState(['game', 'groups', 'session'])
+        ...mapState(['game', 'groups', 'session']),
+        isGroupMember: function() { // can be site admin as well
+            return this.$store.getters['groups/isUserGroupMember'];
+        },
     },
     methods: {
         saveSession() {
