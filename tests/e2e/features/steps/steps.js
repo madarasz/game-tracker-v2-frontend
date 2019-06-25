@@ -84,7 +84,7 @@ Then("I can see the admin icon for group {string} in category {string}", async (
 When("I select group {string} in category {string}", async (groupName, category) => {
     const group = await groupsPage.waitForGroupInTable(scope.page, category, groupName);
     console.log(`${groupName} is listed, selecting`);
-    await common.delay(500); // stability reasons
+    await common.delay(300); // stability reasons
     return await group.click();
 });
 
