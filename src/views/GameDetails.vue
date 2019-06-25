@@ -8,7 +8,7 @@
                 <v-flex xs12>
                     <v-toolbar color="green" dark dense>
                         <v-toolbar-title>
-                            <v-icon class="mr-2">event</v-icon>
+                            <v-icon>event</v-icon>
                             <span class="subheading">Sessions</span>       
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
@@ -49,9 +49,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import GameInfo from '@/components/GameInfo'
-import SessionTable from '@/components/SessionTable'
-import SessionDetails from '@/components/SessionDetails'
+import GameInfo from '@/components/game-details/GameInfo'
+import SessionTable from '@/components/game-details/SessionTable'
+import SessionDetails from '@/components/game-details/SessionDetails'
 
 export default {
     components: {
