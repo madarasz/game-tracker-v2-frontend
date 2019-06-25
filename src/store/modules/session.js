@@ -9,7 +9,16 @@ export const session = {
         editingSession: false
     },
     getters: {
-        
+        canUserEditSession(state, getters, rootState, rootGetters) {
+            if (state.currentSession == null) {
+                return false;
+            }
+            if (rootGetters['login/isAdmin'] || rootGetters['groups/isUserGroupAdmin']) {
+                return true;    // admins always have the privilage
+            }
+            const userId = rootGetters['login/getUserId'];
+            return state.currentSession.created_by == userId;
+        }
     },
     actions: {
         saveSession(context) {
@@ -23,6 +32,11 @@ export const session = {
                 context.state.currentSession = response.data;
                 context.state.editingSession = false;
             });
+        },
+        deleteSession({state, commit}) {
+            return sessionRepository.deleteSession(state.currentSession.id).then(() => {
+                commit('clearSession');
+            })
         }
     },
     mutations: {

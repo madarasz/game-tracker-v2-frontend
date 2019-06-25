@@ -32,9 +32,11 @@
                     <v-icon>save</v-icon>
                 </v-btn>
             </div>
-            <div>
-                <v-btn v-if="!session.editingSession && isGroupMember" @click="editSession()" dark flat icon name="button-edit-session" class="white btn-small" color="green">
-                        <v-icon>edit</v-icon>
+            <div v-if="!session.editingSession && canEditSession">
+                <confirm-button dark flat icon buttonIcon="delete" iconColor="green" class="white btn-small" name="button-delete-game"
+                    question="Do you want to delete the session?" :callback="function(){deleteSession()}"/>
+                <v-btn @click="editSession()" dark flat icon name="button-edit-session" class="white btn-small" color="green">
+                    <v-icon>edit</v-icon>
                 </v-btn>
             </div>
         </v-toolbar>
@@ -99,10 +101,14 @@
     </v-flex>
 </template>
 <script>
+import ConfirmButton from '@/components/ConfirmButton';
 import { mapState } from 'vuex';
 
 export default {
-    name: 'SessionDetails',
+    name: 'SessionDetailsCard',
+    components: {
+        ConfirmButton
+    },
     props: {
     },
     data () {
@@ -112,9 +118,9 @@ export default {
     },
     computed: {
         ...mapState(['game', 'groups', 'session']),
-        isGroupMember: function() { // can be site admin as well
-            return this.$store.getters['groups/isUserGroupMember'];
-        },
+        canEditSession() {
+            return this.$store.getters['session/canUserEditSession'];
+        }
     },
     methods: {
         saveSession() {
@@ -131,6 +137,14 @@ export default {
                 this.reloadGameDetails();
             }).catch(() => {
                 this.$store.commit('toaster/showError', 'Could not update session');
+            });
+        },
+        deleteSession() {
+            this.$store.dispatch('session/deleteSession').then(() => {
+                this.$store.commit('toaster/showConfirm', 'Session deleted');
+                this.reloadGameDetails();
+            }).catch(() => {
+                this.$store.commit('toaster/showError', 'Could not delete session');
             });
         },
         editSession() {

@@ -63,7 +63,7 @@ export default {
             document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
         },
         addSession() {
-            this.$store.commit('session/addSession', {gameId: this.gameId, groupId: this.groupId});
+            this.$store.commit('session/addSession', {gameId: this.game.details.id, groupId: this.groups.selectedGroup.id});
         }
     },
     data () {

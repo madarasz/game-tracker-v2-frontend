@@ -7,5 +7,8 @@ export default {
     },
     updateSession(id, session) {
         return Repository.repo.put(`${resource}/${id}`, session);
+    },
+    deleteSession(id) {
+        return Repository.repo.delete(`${resource}/${id}`);
     }
 }

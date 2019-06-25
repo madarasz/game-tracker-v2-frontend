@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <!-- Button -->
-        <v-btn :name="name" :class="buttonClass" :icon="icon" :ripple="ripple" @click.prevent="showDialog = true">
-            <v-icon v-if="buttonIcon != ''" :color="iconColor">{{ buttonIcon}}</v-icon>
-            <span v-if="buttonText != ''">{{ buttonText }}</span>
-        </v-btn>
+    <!-- Button -->
+    <v-btn :name="name" :class="buttonClass" :icon="icon" :ripple="ripple" @click.prevent="showDialog = true" :dark="dark" :flat="flat">
+        <v-icon v-if="buttonIcon != ''" :color="iconColor">{{ buttonIcon}}</v-icon>
+        <span v-if="buttonText != ''">{{ buttonText }}</span>
         <!-- Dialog -->
         <v-dialog v-model="showDialog" width="500" name="dialog-confirm">
             <v-toolbar color="red" dark>
@@ -22,7 +20,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </div>
+    </v-btn>
 </template>
 
 <script>
@@ -40,6 +38,14 @@ export default {
             default: false
         },
         ripple: {
+            type: Boolean,
+            default: false
+        },
+        dark: {
+            type: Boolean,
+            default: false
+        },
+        flat: {
             type: Boolean,
             default: false
         },
