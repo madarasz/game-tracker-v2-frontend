@@ -3,24 +3,9 @@
         <v-flex xs12 md9 lg10 pa-2>
             <v-layout wrap row>
                 <!-- Session Details/Editor -->
-                <session-details/>
-                <!-- Sessions -->
-                <v-flex xs12>
-                    <v-toolbar color="green" dark dense>
-                        <v-toolbar-title>
-                            <v-icon>event</v-icon>
-                            <span class="subheading">Sessions</span>       
-                        </v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <div>
-                            <v-btn color="green" class="white btn-small" icon dark flat @click="addSession()" name="button-add-session">
-                                <v-icon>add</v-icon>
-                            </v-btn>
-                        </div>
-                    </v-toolbar>
-                    <!-- Session Table -->
-                    <session-table :items="game.details.sessions" :loaded="gameLoaded"/>
-                </v-flex>
+                <session-details-card/>
+                <!-- Sessions List -->
+                <sessions-card/>
             </v-layout>
         </v-flex>
         <!-- Game info -->
@@ -50,22 +35,21 @@
 <script>
 import { mapState } from 'vuex';
 import GameInfo from '@/components/game-details/GameInfo'
-import SessionTable from '@/components/game-details/SessionTable'
-import SessionDetails from '@/components/game-details/SessionDetails'
+import SessionsCard from '@/components/game-details/SessionsCard'
+import SessionDetailsCard from '@/components/game-details/SessionDetailsCard'
 
 export default {
     components: {
-        GameInfo, SessionTable, SessionDetails
+        GameInfo, SessionsCard, SessionDetailsCard
     },
     data() {
         return {
-            gameLoaded: false,
             gameId: 0,
             groupId: 0
         }
     },
     computed: {
-        ...mapState(['login', 'groups', 'game', 'session']),
+        ...mapState(['game']),
         gameImage: function() {
             if (this.game.bggStats.image == null) {
                 return this.game.details.thumbnail;
@@ -83,22 +67,17 @@ export default {
 
         // get game details
         this.$store.dispatch('game/getGameDetails', {gameId: this.gameId, groupId: this.groupId}).then(() => {
-            this.gameLoaded = true;
         }).catch(() => {
             this.$store.commit('toaster/showError', 'Could not load game details');
         });
 
         // get BGG stats
         this.$store.dispatch('game/getBGGStats', this.gameId).then(() => {
-
         }).catch(() => {
             this.$store.commit('toaster/showError', 'Could not load BGG stats');
         });
     },
     methods: {
-        addSession() {
-            this.$store.commit('session/addSession', {gameId: this.gameId, groupId: this.groupId});
-        }
     }
 }
 </script>
