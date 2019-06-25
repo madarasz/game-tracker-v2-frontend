@@ -9,10 +9,10 @@
             <v-spacer></v-spacer>
             <!-- Buttons -->
             <div v-if="session.editingSession">
-                <v-btn @click="stopEdit()" class="hidden-xs-only" dark flat name="button-save-session">
+                <v-btn @click="stopEdit()" class="hidden-xs-only" dark flat name="button-stop-edit-session">
                     Cancel
                 </v-btn>
-                <v-btn @click="stopEdit()" class="hidden-sm-and-up" dark flat icon name="button-save-session">
+                <v-btn @click="stopEdit()" class="hidden-sm-and-up" dark flat icon name="button-stop-edit-session2">
                     <v-icon>close</v-icon>
                 </v-btn>
             </div>
@@ -20,27 +20,27 @@
                 <v-btn @click="saveSession()" class="white hidden-xs-only" color="green" dark flat name="button-save-session">
                     Save
                 </v-btn>
-                <v-btn @click="saveSession()" class="white hidden-sm-and-up" color="green" dark flat icon name="button-save-session">
+                <v-btn @click="saveSession()" class="white hidden-sm-and-up" color="green" dark flat icon name="button-save-session2">
                     <v-icon>save</v-icon>
                 </v-btn>
             </div>
             <div v-if="session.editingSession && !session.isNewSession">
-                <v-btn @click="updateSession()" class="white hidden-xs-only" color="green" dark flat name="button-save-session">
+                <v-btn @click="updateSession()" class="white hidden-xs-only" color="green" dark flat name="button-update-session">
                     Update
                 </v-btn>
-                <v-btn @click="updateSession()" class="white hidden-sm-and-up" color="green" dark flat icon name="button-save-session">
+                <v-btn @click="updateSession()" class="white hidden-sm-and-up" color="green" dark flat icon name="button-update-session2">
                     <v-icon>save</v-icon>
                 </v-btn>
             </div>
             <div v-if="!session.editingSession && canEditSession">
-                <confirm-button dark flat icon buttonIcon="delete" iconColor="green" class="white btn-small" name="button-delete-game"
+                <confirm-button dark flat icon buttonIcon="delete" iconColor="green" class="white btn-small" name="button-delete-session"
                     question="Do you want to delete the session?" :callback="function(){deleteSession()}"/>
                 <v-btn @click="editSession()" dark flat icon name="button-edit-session" class="white btn-small" color="green">
                     <v-icon>edit</v-icon>
                 </v-btn>
             </div>
         </v-toolbar>
-        <v-card v-if="session.currentSession != null" class="mb-3">
+        <v-card v-if="session.currentSession != null" class="mb-3" name="card-session-details">
             <!-- Session Form -->
             <v-card-text>
                 <v-form>
@@ -52,8 +52,8 @@
                                     <span class="form-label">place:</span>
                                 </v-flex>
                                 <v-flex grow>
-                                    <span v-if="!session.editingSession" class="subheading">{{ session.currentSession.place }}</span>
-                                    <v-text-field v-model="session.currentSession.place" v-if="session.editingSession" class="form-input"/>
+                                    <span v-if="!session.editingSession" class="subheading" name="value-place">{{ session.currentSession.place }}</span>
+                                    <v-text-field v-model="session.currentSession.place" v-if="session.editingSession" class="form-input" name="input-place"/>
                                 </v-flex>
                             </v-layout>
                         </v-flex>
@@ -80,9 +80,9 @@
                             <!-- Notes -->
                             <div class="form-label">
                                 notes:
-                                <span v-if="!session.editingSession" class="font-weight-regular">{{ session.currentSession.notes }}</span>
+                                <span v-if="!session.editingSession" class="font-weight-regular" name="value-notes">{{ session.currentSession.notes }}</span>
                             </div>
-                            <v-textarea outline auto-grow rows="3" v-if="session.editingSession" v-model="session.currentSession.notes"/>
+                            <v-textarea outline auto-grow rows="3" v-if="session.editingSession" v-model="session.currentSession.notes" name="input-notes"/>
                         </v-flex>
                     </v-layout>
                 </v-form>

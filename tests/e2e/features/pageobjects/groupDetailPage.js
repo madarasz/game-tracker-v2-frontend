@@ -16,6 +16,7 @@ const selector = {
     buttonGroupUpdate: 'button[name="button-update-group"]',
     radioBoardgame: 'input[name="radio-boardgame"]',
     radioVideogame: 'input[name="radio-videogame"]',
+    gameInListFragment: "//a[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'",
 }
 
 async function checkUserMembership(page, userName, membershipType) {
@@ -31,19 +32,26 @@ async function checkUserMembership(page, userName, membershipType) {
 
 async function searchForGame(page, searchString) {
     const input = await page.waitForSelector(selector.inputGameSearch);
-    return await input.type(searchString, {delay: 100}); // delay for stability 
+    await input.type(searchString); 
+    return await common.delay(200); // delay for stability 
 }
 
 async function gameVisibleInSearchResults(page, gameName) {
     return await page.waitForXPath(`//div[@class='v-list__tile__title' and contains(.,'${gameName}')]`)
 }
 
+async function selectGameFromList(page, gameName) {
+    console.log(`Selecting game "${gameName}"`);
+    const game = await page.waitForXPath(`${selector.gameInListFragment}${gameName}')]`);
+    return await game.click();
+}
+
 async function isGameVisibleInGameList(page, gameName) {
-    return await common.isElementVisible(page, `//a[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]`, true);
+    return await common.isElementVisible(page, `${selector.gameInListFragment}${gameName}')]`, true);
 }
 
 async function deleteGameFromGroup(page, gameName) {
-    const button = await page.waitForXPath(`//a[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]/../../div/div/button[@name='button-delete-game']`)
+    const button = await page.waitForXPath(`${selector.gameInListFragment}${gameName}')]/../../div/button[@name='button-delete-game']`)
     await button.click();
     return common.clickConfirm(page);
 }
@@ -82,5 +90,6 @@ module.exports = {
     deleteGameFromGroup,
     selectGameFromSearchResults,
     removeGroupImage,
-    editGroupSettings
+    editGroupSettings,
+    selectGameFromList
 }

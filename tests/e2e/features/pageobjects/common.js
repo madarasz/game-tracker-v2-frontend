@@ -4,14 +4,14 @@ function delay(time) {
     });
 }
 
-async function isElementVisible(page, cssSelector, isXpath = false) {
+async function isElementVisible(page, selectorVal, isXpath = false) {
     var visible = true;
     if (isXpath) {
-        await page.waitForXPath(cssSelector, { visible: true, timeout: 2000 }).catch(() => {
+        await page.waitForXPath(selectorVal, { visible: true, timeout: 2000 }).catch(() => {
             visible = false;
         });
     } else {
-        await page.waitForSelector(cssSelector, { visible: true, timeout: 2000 }).catch(() => {
+        await page.waitForSelector(selectorVal, { visible: true, timeout: 2000 }).catch(() => {
             visible = false;
         });
     }
@@ -19,6 +19,7 @@ async function isElementVisible(page, cssSelector, isXpath = false) {
 };
 
 async function clickConfirm(page) {
+    console.log('Confirming action on dialog');
     const button = await page.waitForSelector(selector.buttonConfirmDialog, { visible: true });
     return button.click();
 }

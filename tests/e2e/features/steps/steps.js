@@ -36,8 +36,7 @@ When("I go to path {string}", async path => {
 When("I navigate to {string}", async pageName => {
     switch (pageName) {
         case "my profile":
-            profilePage.navigateToProfilePage(scope.page);
-            break;
+            return profilePage.navigateToProfilePage(scope.page);
         default:
             console.log(chalk.red(`!!! PAGE ${pageName} IS NOT DEFINIED !!!`));
     }
@@ -104,54 +103,105 @@ Then(/^"(.*)" is (a|an) (.*) of the group$/, async (userName, article, membershi
 
 // Games
 When("I search for game {string}", async searchString => {
-    await groupDetailPage.searchForGame(scope.page, searchString);
-})
+    return await groupDetailPage.searchForGame(scope.page, searchString);
+});
 
 Then("{string} is visible in the game search results", async gameName => {
-    await groupDetailPage.gameVisibleInSearchResults(scope.page, gameName);
-})
+    await common.delay(300); // for stability
+    return await groupDetailPage.gameVisibleInSearchResults(scope.page, gameName);
+});
+
+When("I select game {string} from the list", async gameName => {
+    return await groupDetailPage.selectGameFromList(scope.page, gameName);
+});
 
 Given("I delete game {string} if it is listed", async gameName => {
-    if (await groupDetailPage.isGameVisibleInGameList(scope.page, gameName)) {
-        console.log(`Game "${gameName}" is visible in the list, deleting`);
-        await groupDetailPage.deleteGameFromGroup(scope.page, gameName);
-    } else {
-        console.log(`Game "${gameName}" was not visible in the list`);
-    }
-})
+    return new Promise(async (done) => {
+        if (await groupDetailPage.isGameVisibleInGameList(scope.page, gameName)) {
+            console.log(`Game "${gameName}" is visible in the list, deleting`);
+            await groupDetailPage.deleteGameFromGroup(scope.page, gameName);
+            done();
+        } else {
+            console.log(`Game "${gameName}" was not visible in the list`);
+            done();
+        }
+    });
+});
 
 Then("{string} is visible in the games of the group", async gameName => {
     console.log(`Looking if game is visible in the game list`);
-    expect(await groupDetailPage.isGameVisibleInGameList(scope.page, gameName)).toBe(true);
-})
+    return expect(await groupDetailPage.isGameVisibleInGameList(scope.page, gameName)).toBe(true);
+});
 
 When ("I select {string} from the game search results", async gameName => {
-    console.log(`Selecting game "${gameName} from search results`)
-    groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
-    await common.delay(200); // for stability
+    console.log(`Selecting game "${gameName}" from search results`)
+    return groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
+    // await common.delay(200); // for stability
 })
 
 // Settings
 Given ("group image is removed", async () => {
-    if (await common.isElementVisible(scope.page, groupDetailPage.selector.placeholderGroupImage)) {
-        console.log("Group image was missing");
-    } else {
-        console.log("Group image is present, removing");
-        await groupDetailPage.removeGroupImage(scope.page);
-    }
-})
+    return new Promise(async (done) => {
+        if (await common.isElementVisible(scope.page, groupDetailPage.selector.placeholderGroupImage)) {
+            console.log("Group image was missing");
+            done();
+        } else {
+            console.log("Group image is present, removing");
+            await groupDetailPage.removeGroupImage(scope.page);
+            done();
+        }
+    });
+});
 
 When("I upload a group image", async () => {
     return await uploadDialog.uploadImage(scope.page, testvalues.imagePath);
-})
+});
 
 When("I remove group image", async () => {
     return await groupDetailPage.removeGroupImage(scope.page);
-})
+});
 
 When("I edit group settings: public={string}, name={string}", async (isPublic, groupName) => {
     return await groupDetailPage.editGroupSettings(scope.page, isPublic == 'true', groupName);
-})
+});
+
+/* ----------------
+    Game details
+ ------------------*/
+ When("I edit session: place {string} and notes {string}", async (place, notes) => {
+    await typeValueIn(gamePage.selector.inputPlace, place);
+    return await typeValueIn(gamePage.selector.inputNotes, notes);
+    // await common.delay(200); // for stability
+ });
+
+ Then(/^there is (a|no) session with place "(.*)"$/, async (exists, place) => {
+     console.log(`Checking for a session with place "${place}"`);
+     const shouldExist = exists == 'a';
+     const found =  await gamePage.checkForSessionWithPlace(scope.page, place, shouldExist);
+     console.log(found ? 'Session found!' : 'Session not found!');
+     return expect(found).toBe(shouldExist);
+ });
+
+ When("I select session with place {string}", async place => {
+     console.log(`Selecting session with place "${place}"`);
+     return await gamePage.selectSessionWithPlace(scope.page, place);
+ })
+
+ When("I delete the current session", async () => {
+     return await gamePage.deleteCurrentSession(scope.page);
+ })
+
+ Given("I delete all sessions with place {string}", async place => {
+    return new Promise(async (done) => {
+        console.log(`Checking if there is session with place "${place}"`);
+        while(await gamePage.checkForSessionWithPlace(scope.page, place)) {
+            console.log(`Session with place "${place}" found`);
+            await gamePage.selectSessionWithPlace(scope.page, place);
+            await gamePage.deleteCurrentSession(scope.page);
+        }
+        done();
+    });
+ })
 
 /* ----------------
     Profile
@@ -180,15 +230,21 @@ Then(/^"(.*)" (is|are)( not|) visible$/, async (elementName, isAre, negation) =>
 Then("I click {string}", async elementName => {
     console.log(`Clicking "${elementName}"`);
     const element = await scope.page.waitForSelector(getSelectorForElement(elementName));
-    await element.click();
+    return await element.click();
 });
 
 Then("{string} has value {string}", async (elementName, value) => {
     console.log(`Checking if "${elementName}" has value "${value}"`);
     await common.delay(300); // stability reasons
     const target = await scope.page.waitForSelector(getSelectorForElement(elementName));
-    expect(await scope.page.evaluate(element => element.textContent, target)).toEqual(value);
-})
+    return expect(await scope.page.evaluate(element => element.textContent, target)).toEqual(value);
+});
+
+async function typeValueIn(selector, value) {
+    const input = await scope.page.waitForSelector(selector);
+    await input.click({clickCount: 3}); // selecting existing value for deletion
+    return await input.type(value);
+}
 
 function getSelectorForElement(elementName) {
     switch (elementName.toLowerCase()) {
@@ -230,6 +286,20 @@ function getSelectorForElement(elementName) {
             return groupDetailPage.selector.radioBoardgame;
         case "videogame search":
             return groupDetailPage.selector.radioVideogame;
+        case "add session button":
+            return gamePage.selector.buttonAddSession;
+        case "session details card":
+            return gamePage.selector.cardSessionDetails;
+        case "save session button":
+            return gamePage.selector.buttonSaveSession;
+        case "edit session button":
+            return gamePage.selector.buttonEditSession;
+        case "update session button":
+            return gamePage.selector.buttonUpdateSession;
+        case "session place value":
+            return gamePage.selector.valuePlace;
+        case "session notes value":
+            return gamePage.selector.valueNotes;
         default:
             console.log(chalk.red(`!!! ELEMENT ${elementName} IS NOT DEFINIED !!!`));
     }

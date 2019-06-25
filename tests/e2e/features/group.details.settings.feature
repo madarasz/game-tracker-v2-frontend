@@ -14,6 +14,7 @@ Feature: Group Details Settings
         When I remove group image
         Then "Group image placeholder" is visible
 
+    # TODO: create group to play with
     Scenario: Edit Group details
         Given I visit the homepage
         When I log in with user "Test User"
