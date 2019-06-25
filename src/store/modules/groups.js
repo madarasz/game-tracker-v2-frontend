@@ -25,17 +25,27 @@ export const groups = {
                 return member;
             }
         },
-        isUserGroupAdmin: (state, getters) => {
-            return userId => {
-                const member = getters.getUserAsMember(userId);
-                return (member !== undefined) && member.is_group_admin;
+        isUserGroupAdmin: (state, getters, rootState, rootGetters) => {
+            const userId = rootGetters['login/getUserId'];
+            if (state.selectedGroup == null) {
+                return false;
             }
+            if (rootGetters['login/isAdmin']) {
+                return true;    // admins always have member privilage
+            }
+            const member = getters.getUserAsMember(userId);
+            return (member !== undefined) && member.is_group_admin;
         },
-        isUserGroupMember: (state, getters) => {
-            return userId => {
-                const member = getters.getUserAsMember(userId);
-                return member !== undefined;
+        isUserGroupMember: (state, getters, rootState, rootGetters) => {
+            const userId = rootGetters['login/getUserId'];
+            if (state.selectedGroup == null) {
+                return false;
             }
+            if (rootGetters['login/isAdmin']) {
+                return true;    // admins always have member privilage
+            }
+            const member = getters.getUserAsMember(userId);
+            return member !== undefined;
         }
     },
     actions: {

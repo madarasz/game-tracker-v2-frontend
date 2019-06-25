@@ -16,6 +16,9 @@ export const login = {
     getters: {
         urlUserName: (state) => {
             return common.urlFriendly(state.userName);
+        },
+        getUserId: (state) => {
+            return state.userId;
         }
     },
     actions: {

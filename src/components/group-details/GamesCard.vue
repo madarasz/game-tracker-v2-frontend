@@ -66,8 +66,7 @@ export default {
     computed: {
         ...mapState(['login', 'groups', 'game']),
         isGroupMember: function() { // can be site admin as well
-            return this.groups.selectedGroup && 
-                (this.login.isAdmin || this.$store.getters['groups/isUserGroupMember'](this.login.userId));
+            return this.$store.getters['groups/isUserGroupMember'];
         },
     },
     methods: {

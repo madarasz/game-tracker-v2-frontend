@@ -97,8 +97,7 @@ export default {
     computed: {
         ...mapState(['login', 'groups']),
         isGroupAdmin: function() { // can be site admin as well
-            return this.groups.selectedGroup && 
-                (this.login.isAdmin || this.$store.getters['groups/isUserGroupAdmin'](this.login.userId));
+            return this.$store.getters['groups/isUserGroupAdmin'];
         },
         imageFolder:function() {
             return process.env.VUE_APP_BACKEND_IMG_URL;
