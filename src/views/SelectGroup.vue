@@ -37,7 +37,7 @@
 
 <script>
     import { mapState } from 'vuex';
-    import GroupTable from '@/components/GroupTable';
+    import GroupTable from '@/components/select-group/GroupTable';
 
     export default {
         components: {

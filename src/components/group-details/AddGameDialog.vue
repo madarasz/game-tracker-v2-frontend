@@ -98,7 +98,9 @@ export default {
             this.selectedGame = null;
             this.showDialog = true;
             // put focus on search field
-            this.$nextTick(this.$refs.searchInput.focus);
+            if (this.$refs.searchInput) {
+                this.$nextTick(this.$refs.searchInput.focus);
+            }
         },
         addGame: function() {
             let id = this.selectedGame[0].id;
