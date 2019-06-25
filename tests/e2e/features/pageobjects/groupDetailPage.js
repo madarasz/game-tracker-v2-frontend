@@ -1,5 +1,4 @@
 const common = require('./common');
-const uploadDialog = require('./uploadDialog');
 
 const selector = {
     buttonGroupEdit: 'button[name="button-edit-group"]',
@@ -44,8 +43,9 @@ async function isGameVisibleInGameList(page, gameName) {
 }
 
 async function deleteGameFromGroup(page, gameName) {
-    const button = await page.waitForXPath(`//a[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]/../../div/button[@name='button-delete-game']`)
-    return await button.click();
+    const button = await page.waitForXPath(`//a[@name='list-group-games']/div/div[@class='v-list__tile__title' and contains(.,'${gameName}')]/../../div/div/button[@name='button-delete-game']`)
+    await button.click();
+    return common.clickConfirm(page);
 }
 
 async function selectGameFromSearchResults(page, gameName) {

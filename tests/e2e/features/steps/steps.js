@@ -84,7 +84,7 @@ Then("I can see the admin icon for group {string} in category {string}", async (
 When("I select group {string} in category {string}", async (groupName, category) => {
     const group = await groupsPage.waitForGroupInTable(scope.page, category, groupName);
     console.log(`${groupName} is listed, selecting`);
-    await common.delay(300); // stability reasons
+    await common.delay(500); // stability reasons
     return await group.click();
 });
 
@@ -127,7 +127,8 @@ Then("{string} is visible in the games of the group", async gameName => {
 
 When ("I select {string} from the game search results", async gameName => {
     console.log(`Selecting game "${gameName} from search results`)
-    await groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
+    groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
+    await common.delay(200); // for stability
 })
 
 // Settings

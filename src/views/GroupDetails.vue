@@ -39,9 +39,8 @@
                             </v-list-tile-content>
                             <!-- Delete button -->
                             <v-list-tile-action v-if="isGroupMember">
-                                <v-btn icon ripple name="button-delete-game">
-                                    <v-icon color="grey darken-1" @click.prevent="deleteGame(game.id)">delete</v-icon>
-                                </v-btn>
+                                <confirm-button icon ripple buttonIcon="delete" iconColor="grey darken-1" name="button-delete-game"
+                                    question="Do you want to remove game from group?" :callback="function(){deleteGame(game.id)}"/>
                             </v-list-tile-action>
                         </v-list-tile>
                     </template>
@@ -152,6 +151,7 @@
 import UserWithAvatar from '@/components/UserWithAvatar';
 import AddGameDialog from '@/components/AddGameDialog';
 import ImageUploader from '@/components/ImageUploader';
+import ConfirmButton from '@/components/ConfirmButton';
 import { mapState } from 'vuex';
 import { repositoryFactory } from '@/api/repositoryFactory';
 import common from '@/common';
@@ -159,7 +159,7 @@ const gamesRepository = repositoryFactory.get('games');
 
 export default {
         components: {
-            UserWithAvatar, AddGameDialog, ImageUploader
+            UserWithAvatar, AddGameDialog, ImageUploader, ConfirmButton
         },
         data() {
             return {

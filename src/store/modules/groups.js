@@ -11,6 +11,9 @@ export const groups = {
     },
     getters: {
         urlGroupName: (state) => {
+            if (state.selectedGroup == null) {
+                return "";
+            }
             return common.urlFriendly(state.selectedGroup.name);
         },
         getUserAsMember: (state) => {
