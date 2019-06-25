@@ -9,10 +9,10 @@
             <v-spacer></v-spacer>
             <!-- Buttons -->
             <div v-if="session.editingSession">
-                <v-btn @click="clearSession()" class="hidden-xs-only" dark flat name="button-save-session">
+                <v-btn @click="stopEdit()" class="hidden-xs-only" dark flat name="button-save-session">
                     Cancel
                 </v-btn>
-                <v-btn @click="clearSession()" class="hidden-sm-and-up" dark flat icon name="button-save-session">
+                <v-btn @click="stopEdit()" class="hidden-sm-and-up" dark flat icon name="button-save-session">
                     <v-icon>close</v-icon>
                 </v-btn>
             </div>
@@ -133,8 +133,13 @@ export default {
         editSession() {
             this.$store.commit('session/editSession');
         },
-        clearSession() {
-            this.$store.commit('session/clearSession');
+        stopEdit() {
+            // TODO: confirmation dialog about discarding edits
+            if (this.session.isNewSession) {
+                this.$store.commit('session/clearSession');
+            } else {
+                this.$store.commit('session/stopEditingSession');
+            }
         },
         reloadGameDetails() {
             this.$store.dispatch('game/getGameDetails', { gameId: this.game.details.id, groupId: this.groups.selectedGroup.id }).catch(() => {

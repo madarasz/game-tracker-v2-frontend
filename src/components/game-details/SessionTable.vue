@@ -36,6 +36,7 @@ export default {
     },
     methods: {
         selectRow(sessionId) {
+            // TODO confirmation dialog if other session is being edited
             this.$store.commit('session/selectSession', this.items.find((x) => { return x.id == sessionId}));
             // scroll to top
             document.body.scrollTop = 0; // For Safari
