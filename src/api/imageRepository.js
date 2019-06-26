@@ -11,13 +11,14 @@ export default {
             }
         });
     },
-    removeImage({type, parent_id}) {
+    removeImage({type, parent_id, image_id}) {
         return Repository.repo.delete(
             `${resource}`,
             {
                 data: {
                     type: type,
-                    parent_id: parent_id
+                    parent_id: parent_id,
+                    image_id: image_id
                 }
             }
         );

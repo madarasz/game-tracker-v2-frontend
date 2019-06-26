@@ -3,7 +3,7 @@
         <!-- Header -->
         <v-toolbar color="green" dark dense v-if="session.currentSession != null">
             <v-toolbar-title>
-                <v-icon class="mr-2">details</v-icon>
+                <v-icon>details</v-icon>
                 <span class="subheading">Session details</span> 
             </v-toolbar-title>
             <v-spacer></v-spacer>
@@ -94,20 +94,19 @@
             </v-card-text>
             <v-divider/>
             <!-- Images -->
-            <v-card-text>
-                TODO: images
-            </v-card-text>
+            <session-images/>
         </v-card>
     </v-flex>
 </template>
 <script>
 import ConfirmButton from '@/components/ConfirmButton';
+import SessionImages from '@/components/game-details/SessionImages';
 import { mapState } from 'vuex';
 
 export default {
     name: 'SessionDetailsCard',
     components: {
-        ConfirmButton
+        ConfirmButton, SessionImages
     },
     props: {
     },

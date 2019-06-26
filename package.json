@@ -15,6 +15,7 @@
     "cropperjs": "^1.5.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
+    "vue-silentbox": "^0.1.9",
     "vuetify": "^1.5.5",
     "vuex": "^3.0.1",
     "xml2js": "^0.4.19"

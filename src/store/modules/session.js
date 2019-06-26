@@ -1,5 +1,6 @@
 import { repositoryFactory } from '@/api/repositoryFactory';
 const sessionRepository = repositoryFactory.get('sessions');
+const imageRepository = repositoryFactory.get('images');
 
 export const session = {
     namespaced: true,
@@ -13,7 +14,7 @@ export const session = {
             if (state.currentSession == null) {
                 return false;
             }
-            if (rootGetters['login/isAdmin'] || rootGetters['groups/isUserGroupAdmin']) {
+            if (rootGetters['login/isUserAdmin'] || rootGetters['groups/isUserGroupAdmin']) {
                 return true;    // admins always have the privilage
             }
             const userId = rootGetters['login/getUserId'];
@@ -36,6 +37,13 @@ export const session = {
         deleteSession({state, commit}) {
             return sessionRepository.deleteSession(state.currentSession.id).then(() => {
                 commit('clearSession');
+            })
+        },
+        removeImage(context, id) {
+            return imageRepository.removeImage({
+                type: 'session',
+                parent_id: context.state.currentSession.group_id,   // group id is required, group members can remove images
+                image_id: id
             })
         }
     },

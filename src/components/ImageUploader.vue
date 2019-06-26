@@ -1,6 +1,9 @@
 <template>
     <span>
-        <v-btn @click="launchFilePicker" name="button-upload-image" class="mt-0 mb-0">{{ buttonText }}</v-btn>
+        <v-btn @click="launchFilePicker" name="button-upload-image" :flat="flat" :fab="fab" :color="color" :class="(buttonClass + ' mt-0 mb-0')">
+            <v-icon v-if="buttonIcon != ''">{{ buttonIcon }}</v-icon>
+            <span>{{ buttonText }}</span>
+        </v-btn>
         <input type="file" ref="fileInput" style="display:none" @change="onFileChange" name="input-file"
             accept="image/jpeg,image/png,image/gif"/>
         <!-- Dialog -->
@@ -53,9 +56,29 @@ export default {
             type: Boolean,
             default: true
         },
+        flat: {
+            type: Boolean,
+            default: false
+        },
+        fab: {
+            type: Boolean,
+            default: true
+        },
         buttonText: {
             type: String,
             default: 'Upload'
+        },
+        buttonIcon: {
+            type: String,
+            default: ''
+        },
+        color: {
+            type: String,
+            default: ''
+        },
+        buttonClass: {
+            type: String,
+            default: ''
         },
         type: {
             type: String,
@@ -164,7 +187,7 @@ export default {
         },
 
         upload() {
-            const resultImage = this.cropperObject.getCroppedCanvas().toDataURL("image/png");
+            let resultImage = this.cropperObject.getCroppedCanvas().toDataURL("image/png");
             
             // convert from base64 to file
             const i = resultImage.indexOf('base64,');
