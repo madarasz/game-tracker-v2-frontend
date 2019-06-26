@@ -7,6 +7,12 @@ module.exports = {
             password: 'pass',
             id: 9001
         },
+        'Test User2': {
+            userName: 'Test User2',
+            email: 'e2e2@test.com',
+            password: 'pass',
+            id: 9003
+        },
         'Test Admin': {
             userName: 'Test Admin',
             email: 'e2e.admin@test.com',

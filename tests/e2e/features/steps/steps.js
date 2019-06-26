@@ -169,8 +169,8 @@ When("I edit group settings: public={string}, name={string}", async (isPublic, g
     Game details
  ------------------*/
  When("I edit session: place {string} and notes {string}", async (place, notes) => {
-    await typeValueIn(gamePage.selector.inputPlace, place);
-    return await typeValueIn(gamePage.selector.inputNotes, notes);
+    await common.typeValueIn(scope.page, gamePage.selector.inputPlace, place);
+    return await common.typeValueIn(scope.page, gamePage.selector.inputNotes, notes);
     // await common.delay(200); // for stability
  });
 
@@ -240,12 +240,6 @@ Then("{string} has value {string}", async (elementName, value) => {
     return expect(await scope.page.evaluate(element => element.textContent, target)).toEqual(value);
 });
 
-async function typeValueIn(selector, value) {
-    const input = await scope.page.waitForSelector(selector);
-    await input.click({clickCount: 3}); // selecting existing value for deletion
-    return await input.type(value);
-}
-
 function getSelectorForElement(elementName) {
     switch (elementName.toLowerCase()) {
         case "login button":
@@ -296,6 +290,8 @@ function getSelectorForElement(elementName) {
             return gamePage.selector.buttonEditSession;
         case "update session button":
             return gamePage.selector.buttonUpdateSession;
+        case "delete session button":
+            return gamePage.selector.buttonDeleteSession;
         case "session place value":
             return gamePage.selector.valuePlace;
         case "session notes value":

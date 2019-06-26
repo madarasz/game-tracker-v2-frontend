@@ -24,6 +24,12 @@ async function clickConfirm(page) {
     return button.click();
 }
 
+async function typeValueIn(page, selector, value) {
+    const input = await page.waitForSelector(selector);
+    await input.click({clickCount: 3}); // selecting existing value for deletion
+    return await input.type(value);
+}
+
 const selector = {
     toaster: 'div[name="toaster"]',
     profileMenu: 'a[name="menu-profile"]',
@@ -36,5 +42,6 @@ module.exports = {
     selector,
     isElementVisible,
     delay,
-    clickConfirm
+    clickConfirm,
+    typeValueIn
 }

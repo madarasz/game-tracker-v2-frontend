@@ -68,9 +68,7 @@ async function removeGroupImage(page) {
 
 async function editGroupSettings(page, isPublic, groupName) {
     console.log(`Editing group name: "${groupName}" public: "${isPublic}"`);
-    const input = await page.waitForSelector(selector.inputGroupName);
-    await input.click({clickCount: 3}); // selecting existing value for deletion
-    await input.type(groupName);
+    await common.typeValueIn(page, selector.inputGroupName, groupName);
     const checkbox = await page.waitForSelector(selector.checkboxIsPublic);
     const checked = await (await checkbox.getProperty('checked')).jsonValue();
     if (checked != isPublic) {

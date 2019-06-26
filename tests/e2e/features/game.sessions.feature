@@ -30,5 +30,30 @@ Feature: Game Sessions
         Then "Session details card" is not visible
         And there is no session with place "Testplace"
 
+    Scenario: Authorization for session edit
+        Given I go to path "/group/9001/public-group-a/31260/agricola"
+        When I select session with place "Safespace"
+        Then "Add session button" is not visible
+        And "Edit session button" is not visible
+        And "Delete session button" is not visible
+        When I log in with user "Test User"
+        Then I'm logged in with user "Test User"
+        And "Add session button" is visible
+        And "Edit session button" is visible
+        And "Delete session button" is visible
+        When I log out
+        And I log in with user "Test Admin"
+        Then I'm logged in with user "Test Admin"
+        And "Add session button" is visible
+        And "Edit session button" is visible
+        And "Delete session button" is visible
+        When I log out
+        And I log in with user "Test User2"
+        Then I'm logged in with user "Test User2"
+        And "Add session button" is not visible
+        And "Edit session button" is not visible
+        And "Delete session button" is not visible
+
+
 
     

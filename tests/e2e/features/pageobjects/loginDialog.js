@@ -1,4 +1,5 @@
 const toolbar = require('./toolbar');
+const common = require('./common');
 
 async function loginWithUser(page, {email, password, userName}) {
     // Click login button
@@ -6,15 +7,13 @@ async function loginWithUser(page, {email, password, userName}) {
     await loginButton.click();
     console.log('Clicked login button');
     // Login form, form fields, form submit button are visible
-    const fieldEmail = await page.waitForSelector(selector.emailField);
-    const fieldPassword = await page.waitForSelector(selector.passwordField);
     const submitLogin = await page.waitForSelector(selector.loginSubmit);
     console.log('Login form, form fields, form submit button are visible');
     // // Fill out form, submit
-    await fieldEmail.type(email);
-    await fieldPassword.type(password);
-    await submitLogin.click();
-    console.log('Filled out form, submited');
+    await common.typeValueIn (page, selector.emailField, email);
+    await common.typeValueIn (page, selector.passwordField, password);
+    console.log('Filled out form, clicking login');
+    return await submitLogin.click();
 }
 
 const selector = {
