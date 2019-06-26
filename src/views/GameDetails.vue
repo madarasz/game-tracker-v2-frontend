@@ -71,6 +71,11 @@ export default {
             this.$store.commit('toaster/showError', 'Could not load game details');
         });
 
+        // get group details
+        this.$store.dispatch('groups/getGroupDetails', {id: this.groupId}).catch(() => {
+            this.$store.commit('toaster/showError', 'Could not load group details');
+        })
+
         // get BGG stats
         this.$store.dispatch('game/getBGGStats', this.gameId).then(() => {
         }).catch(() => {
