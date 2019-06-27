@@ -21,8 +21,10 @@
                     </v-layout>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn flat @click="resetDialog()" name="button-dialog-cancel">Cancel</v-btn>
-                    <v-btn flat @click="resetEdit()" v-if="editing">Discard edit</v-btn>
+                    <v-btn flat @click="resetDialog()" name="button-dialog-cancel" class="hidden-xs-only">Cancel</v-btn>
+                    <v-btn flat @click="resetDialog()" fab small class="hidden-sm-and-up"><v-icon>clear</v-icon></v-btn>
+                    <v-btn flat @click="resetEdit()" v-if="editing" name="button-dialog-discard" class="hidden-xs-only">Discard edit</v-btn>
+                    <v-btn flat @click="resetEdit()" fab small v-if="editing" name="button-dialog-discard" class="hidden-sm-and-up"><v-icon>keyboard_backspace</v-icon></v-btn>
                     <v-spacer></v-spacer>
                     <v-btn @click="rotate(-90)" small fab flat v-if="allowRotate && editing">
                         <v-icon>rotate_left</v-icon>
@@ -187,12 +189,16 @@ export default {
         },
 
         upload() {
-            let resultImage = this.cropperObject.getCroppedCanvas().toDataURL("image/png");
-            
-            // convert from base64 to file
-            const i = resultImage.indexOf('base64,');
-            const buffer = Buffer.from(resultImage.slice(i + 7), 'base64');
-            const file = new File([buffer], 'name', {type: 'image/png'});
+            let file; 
+            if (this.editing) {
+                const resultImage = this.cropperObject.getCroppedCanvas().toDataURL("image/png");
+                const i = resultImage.indexOf('base64,');
+                const buffer = Buffer.from(resultImage.slice(i + 7), 'base64');
+                // convert from base64 to file
+                file = new File([buffer], 'name', {type: 'image/png'});
+            } else {
+                file = this.$refs.fileInput.files[0];
+            }  
 
             // construct form data
             var formData = new FormData();
@@ -215,8 +221,10 @@ export default {
             this.imgObject = null;
             this.editing = false;
             this.isRotated = false;
-            this.cropperObject.destroy();
             this.$refs.fileInput.value = '';
+            if (this.cropperObject != null) {
+                this.cropperObject.destroy();
+            }
         }
     }
 };
