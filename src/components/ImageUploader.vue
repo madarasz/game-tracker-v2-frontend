@@ -191,12 +191,14 @@ export default {
         upload() {
             let file; 
             if (this.editing) {
+                // upload edited file
                 const resultImage = this.cropperObject.getCroppedCanvas().toDataURL("image/png");
                 const i = resultImage.indexOf('base64,');
                 const buffer = Buffer.from(resultImage.slice(i + 7), 'base64');
-                // convert from base64 to file
-                file = new File([buffer], 'name', {type: 'image/png'});
+                const originalType = this.$refs.fileInput.files[0].type; // save in original image file type
+                file = new File([buffer], 'name', {type: originalType}); // convert from base64 to file
             } else {
+                // upload unmodified file
                 file = this.$refs.fileInput.files[0];
             }  
 
