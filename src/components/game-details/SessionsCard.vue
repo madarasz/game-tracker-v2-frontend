@@ -16,14 +16,18 @@
         <v-card>
             <v-card-text class="pt-0" :class="loaded ? '' : 'text-xs-center'">   
                 <v-progress-circular indeterminate color="green" v-if="!loaded" class="ma-4"/>
-                <v-data-table :items="game.details.sessions" :headers="sessionHeaders" :hide-actions="sessionCount <= defaultSessionsPerPage" class="borderless" 
+                <v-data-table :items="game.details.sessions" :headers="sessionHeaders" :hide-actions="sessionCount <= defaultSessionsPerPage" class="borderless less-cell-padding" 
                     name="table-session" v-if="loaded" no-data-text="no sessions yet">
                     <template v-slot:items="sess">
                         <tr v-bind:class="{'selected-row': session.currentSession && sess.item.id == session.currentSession.id}" @click="selectRow(sess.item.id)">
                             <td class="text-xs-right">{{ sess.item.date}}</td>
                             <td>{{ sess.item.place}}</td>
                             <td></td>
-                            <td></td>
+                            <td style="width: 1%">
+                                <v-layout align-center v-if="sess.item.images.length > 0">
+                                    {{ sess.item.images.length }}<v-icon>photo_camera</v-icon>
+                                </v-layout>
+                            </td>
                         </tr>
                     </template>
                 </v-data-table>
@@ -42,10 +46,10 @@ export default {
     computed: {
         ...mapState(['session', 'game', 'groups']),
         loaded() {
-            return this.game.details != {}
+            return this.game.details.sessions !== undefined
         },
         sessionCount() {
-            if (!this.loaded || this.game.details.sessions === undefined) {
+            if (!this.loaded) {
                 return 0
             }
             return this.game.details.sessions.length;
