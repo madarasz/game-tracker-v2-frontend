@@ -3,8 +3,8 @@
         <v-card-title class="pt-2 pb-0 pr-1">
             <div class="subheading">Images</div>
             <v-spacer/>
-            <image-uploader v-if="canEditImages" buttonIcon="cloud_upload" buttonText="" type="session" :parentid="session.currentSession.id" @uploaded="imageUploaded" 
-                color="white" buttonClass="btn-small green" flat fab/>
+            <image-uploader v-if="canEditImages" buttonIcon="cloud_upload" buttonText="" type="session" :parentid="session.currentSession.id" :groupid="groups.selectedGroup.id"
+                @uploaded="imageUploaded" color="white" buttonClass="btn-small green" flat fab/>
             <v-btn name="button-edit-images" flat fab color="white" class="green btn-small ml-0" 
                 v-if="canEditImages && images.length > 0" @click="editImages = !editImages">
                 <v-icon>{{ editImages ? 'clear' : 'edit' }}</v-icon>
@@ -39,7 +39,8 @@
                             </v-flex>
                         </v-layout>
                     </div>
-                    <div v-if="images.length == 0">
+                    <div v-if="images.length == 0" class="text-xs-center">
+                        <em>no images</em>
                     </div>
                 </v-flex>
             </v-layout>
@@ -110,7 +111,7 @@ export default {
             this.showPreview = true;
         },
         deleteImage(id) {
-            this.$store.dispatch('session/removeImage', id).then(() => {
+            this.$store.dispatch('session/removeImage', {id: id, groupId: this.groups.selectedGroup.id}).then(() => {
                 this.$store.commit('toaster/showConfirm', 'Image removed');
                 this.refreshSession();
             }).catch(() => {

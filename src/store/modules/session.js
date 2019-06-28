@@ -39,11 +39,12 @@ export const session = {
                 commit('clearSession');
             })
         },
-        removeImage(context, id) {
+        removeImage(context, {id, groupId}) {
             return imageRepository.removeImage({
                 type: 'session',
                 parent_id: context.state.currentSession.group_id,   // group id is required, group members can remove images
-                image_id: id
+                image_id: id,
+                group_id: groupId
             })
         }
     },

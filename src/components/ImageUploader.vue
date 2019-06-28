@@ -64,7 +64,7 @@ export default {
         },
         fab: {
             type: Boolean,
-            default: true
+            default: false
         },
         buttonText: {
             type: String,
@@ -87,6 +87,10 @@ export default {
             default: ''
         },
         parentid: {
+            type: Number,
+            default: 0
+        },
+        groupid: {
             type: Number,
             default: 0
         }
@@ -207,6 +211,7 @@ export default {
             formData.append('image', file);
             formData.append('type', this.type);
             formData.append('parent_id', this.parentid);
+            formData.append('group_id', this.groupid);  // for session images
 
             imagesRepository.uploadImage(formData).then((response) => {
                 this.$emit('uploaded', response.data.filename);
