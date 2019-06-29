@@ -5,6 +5,9 @@ html {
     text-transform: none
 }
 
+/* local fonts, icons*/
+@import url('fonts.css');
+
 /* adjusting color of selected/hovered toolbar item */
 .v-btn:before {
     opacity: 0.3 !important;
@@ -88,6 +91,10 @@ html {
 }
 .groups-table tbody tr td:first-child {
     padding: 0 0 0 24px !important;
+}
+
+.less-cell-padding tbody td {
+    padding: 0 6px !important;
 }
 
 /* toolbar extension in game adding dialog (select board or video) */

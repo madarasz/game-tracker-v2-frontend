@@ -6,6 +6,7 @@ node_modules*
 /tests/e2e/reports/
 /tests/e2e/screenshots/
 selenium-debug.log
+/src/assets/fonts/roboto
 
 # local env files
 .env.local
