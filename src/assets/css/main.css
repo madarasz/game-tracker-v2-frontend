@@ -6,7 +6,7 @@ html {
 }
 
 /* local fonts, icons*/
-@import url('fonts.css');
+/* @import url('fonts.css'); */
 
 /* adjusting color of selected/hovered toolbar item */
 .v-btn:before {

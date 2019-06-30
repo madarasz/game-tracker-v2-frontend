@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    name: 'ImageUploader',
+    name: 'UserWithAvatar',
     props: {
         user: {
             type: Object,
