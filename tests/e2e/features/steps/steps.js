@@ -81,9 +81,9 @@ Then("I can see the admin icon for group {string} in category {string}", async (
 });
 
 When("I select group {string} in category {string}", async (groupName, category) => {
+    await common.waitUntilLoaded(scope.page);
     const group = await groupsPage.waitForGroupInTable(scope.page, category, groupName);
     console.log(`${groupName} is listed, selecting`);
-    await common.delay(300); // stability reasons
     return await group.click();
 });
 
@@ -107,7 +107,6 @@ When("I search for game {string}", async searchString => {
 });
 
 Then("{string} is visible in the game search results", async gameName => {
-    await common.delay(300); // for stability
     return await groupDetailPage.gameVisibleInSearchResults(scope.page, gameName);
 });
 
@@ -136,7 +135,6 @@ Then("{string} is visible in the games of the group", async gameName => {
 When ("I select {string} from the game search results", async gameName => {
     console.log(`Selecting game "${gameName}" from search results`)
     return groupDetailPage.selectGameFromSearchResults(scope.page, gameName);
-    // await common.delay(200); // for stability
 })
 
 // Settings
@@ -153,10 +151,6 @@ Given ("group image is removed", async () => {
     });
 });
 
-When("I upload a group image", async () => {
-    return await uploadDialog.uploadImage(scope.page, testvalues.imagePath);
-});
-
 When("I remove group image", async () => {
     return await groupDetailPage.removeGroupImage(scope.page);
 });
@@ -166,12 +160,11 @@ When("I edit group settings: public={string}, name={string}", async (isPublic, g
 });
 
 /* ----------------
-    Game details
+    Game sessions
  ------------------*/
  When("I edit session: place {string} and notes {string}", async (place, notes) => {
     await common.typeValueIn(scope.page, gamePage.selector.inputPlace, place);
     return await common.typeValueIn(scope.page, gamePage.selector.inputNotes, notes);
-    // await common.delay(200); // for stability
  });
 
  Then(/^there is (a|no) session with place "(.*)"$/, async (exists, place) => {
@@ -203,6 +196,31 @@ When("I edit group settings: public={string}, name={string}", async (isPublic, g
     });
  })
 
+ When("I delete all images in the session", async () => {
+    return new Promise(async (done) => {
+        console.log("Checking if there are any images");
+        if (!await common.isElementVisible(scope.page, gamePage.selector.messageNoImages, false)) {
+            console.log("Image found");
+            if (await common.isElementVisible(scope.page, gamePage.selector.buttonEditImages, false)) {
+                console.log("Entering edit mode");
+                let editButton = await scope.page.waitForSelector(gamePage.selector.buttonEditImages);
+                await editButton.click();
+            }
+            while (await common.isElementVisible(scope.page, gamePage.selector.buttonDeleteImage, false)) {
+                const deleteButton = await scope.page.waitForSelector(gamePage.selector.buttonDeleteImage);
+                console.log("Deleting");
+                await deleteButton.click();
+                await common.clickConfirm(scope.page);
+                await common.waitUntilLoaded(scope.page);
+            }
+            done();
+        } else {
+            console.log("No images found");
+        }
+        done();
+    });
+ })
+
 /* ----------------
     Profile
  ------------------*/
@@ -214,16 +232,13 @@ When("I remove my profile picture", async () => {
     return await profilePage.removeProfileIfSet(scope.page, true);
 });
 
-When("I upload a profile picture", async () => {
-    return await uploadDialog.uploadImage(scope.page, testvalues.imagePath);
-});
-
 /* ----------------
     Misc
  ------------------*/
 Then(/^"(.*)" (is|are)( not|) visible$/, async (elementName, isAre, negation) => {
-    let selector = getSelectorForElement(elementName);
     let visibile = negation != ' not';
+    console.log(`Checking visiblity of "${elementName}", expecting: ${visibile}`)
+    let selector = getSelectorForElement(elementName);
     return expect(await common.isElementVisible(scope.page, selector)).toBe(visibile);
 });
 
@@ -238,6 +253,10 @@ Then("{string} has value {string}", async (elementName, value) => {
     await common.delay(300); // stability reasons
     const target = await scope.page.waitForSelector(getSelectorForElement(elementName));
     return expect(await scope.page.evaluate(element => element.textContent, target)).toEqual(value);
+});
+
+When(/^I upload a (group image|profile picture|picture)$/, async (what) => {
+    return await uploadDialog.uploadImage(scope.page, testvalues.imagePath);
 });
 
 function getSelectorForElement(elementName) {
@@ -296,6 +315,8 @@ function getSelectorForElement(elementName) {
             return gamePage.selector.valuePlace;
         case "session notes value":
             return gamePage.selector.valueNotes;
+        case "no images message":
+            return gamePage.selector.messageNoImages;
         default:
             console.log(chalk.red(`!!! ELEMENT ${elementName} IS NOT DEFINIED !!!`));
     }

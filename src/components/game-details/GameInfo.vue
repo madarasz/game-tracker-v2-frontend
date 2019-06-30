@@ -7,8 +7,8 @@
                     <v-img :src="game.details.thumbnail" class="hidden-sm-and-up"/>
                 </v-flex>
                 <v-flex xs8 sm12>
-                    <div class="headline" name="game-title">{{ game.details.name }}</div>
-                    <div class="caption">number of sessions:</div>
+                    <div class="headline" name="game-title" v-if="game.details.name">{{ game.details.name }}</div>
+                    <div class="caption" v-if="game.details.sessions">number of sessions: {{ game.details.sessions.length}}</div>
                 </v-flex>
             </v-layout>
         </v-card-title>

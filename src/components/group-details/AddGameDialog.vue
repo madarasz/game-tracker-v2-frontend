@@ -24,10 +24,13 @@
             </v-toolbar>
             <v-card>
                 <!-- Game list -->
-                <v-card-text v-if="searchResults.length == 0" class="text-xs-center pt-4">
-                    <em v-if="search.length < minCharacters">search for games</em>
-                    <em v-if="search.length >= minCharacters && !searching">no game found</em>
-                    <em v-if="search.length >= minCharacters && searching">searching...</em>
+                <v-card-text v-if="searching || search.length < minCharacters" class="text-xs-center pt-4">
+                    <em v-if="searchResults.length == 0 && search.length < minCharacters">search for games</em>
+                    <em v-if="searchResults.length == 0 && search.length >= minCharacters && !searching">no game found</em>
+                    <em v-if="search.length >= minCharacters && searching">
+                        <v-progress-circular indeterminate color="green" class="pa-3"/>
+                        searching...
+                    </em>
                 </v-card-text>
                 <v-list two-line>
                     <template v-for="(game, index) in selectedGame ? selectedGame : searchResults">

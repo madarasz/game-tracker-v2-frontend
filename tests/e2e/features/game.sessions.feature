@@ -54,6 +54,22 @@ Feature: Game Sessions
         And "Edit session button" is not visible
         And "Delete session button" is not visible
 
+    Scenario: Adding and removing images from sessions
+        Given I visit the homepage
+        When I log in with user "Test User"
+        Then I'm logged in with user "Test User"
+        When I select group "Public Group A" in category "my"
+        And I select game "Agricola" from the list
+        Then "Game title" has value "Agricola"
+        When I select session with place "Safespace"
+        And  I delete all images in the session
+        Then "no images message" is visible
+        When I upload a picture
+        Then "no images message" is not visible
+        When I delete all images in the session
+        Then "no images message" is visible
+
+
 
 
     

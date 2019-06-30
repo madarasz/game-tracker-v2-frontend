@@ -15,7 +15,10 @@ const selector = {
     inputNotes: 'textarea[name="input-notes"]',
     sessionWithPlace: "//div[@name='table-session']/div/table/tbody/tr/td[contains(.,'",
     valuePlace: 'span[name="value-place"]',
-    valueNotes: 'span[name="value-notes"]'
+    valueNotes: 'span[name="value-notes"]',
+    buttonEditImages: 'button[name="button-edit-images"]',
+    buttonDeleteImage: 'button[name="button-delete-image"]',
+    messageNoImages: 'div[name="message-no-images"]',
 }
 
 async function checkForSessionWithPlace(page, place) {

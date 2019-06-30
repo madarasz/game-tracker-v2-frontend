@@ -33,7 +33,7 @@ async function checkUserMembership(page, userName, membershipType) {
 async function searchForGame(page, searchString) {
     const input = await page.waitForSelector(selector.inputGameSearch);
     await input.type(searchString); 
-    return await common.delay(200); // delay for stability 
+    return await common.waitUntilLoaded(page); 
 }
 
 async function gameVisibleInSearchResults(page, gameName) {
