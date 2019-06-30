@@ -193,6 +193,7 @@ export default {
         },
 
         upload() {
+            this.$emit('upload-started');
             let file; 
             if (this.editing) {
                 // upload edited file

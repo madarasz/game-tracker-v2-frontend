@@ -4,8 +4,8 @@
             <div class="subheading">Images</div>
             <v-spacer/>
             <image-uploader v-if="canEditImages" buttonIcon="cloud_upload" buttonText="" type="session" :parentid="session.currentSession.id" :groupid="groups.selectedGroup.id"
-                @uploaded="imageUploaded" color="white" buttonClass="btn-small green" flat fab/>
-            <v-btn name="button-edit-images" flat fab color="white" class="green btn-small ml-0" 
+                @uploaded="imageUploaded" @upload-started="loading=true" color="white" buttonClass="btn-small green" flat fab/>
+            <v-btn :name="editImages ? 'button-cancel-edit' : 'button-edit-images'" flat fab color="white" class="green btn-small ml-0" 
                 v-if="canEditImages && images.length > 0" @click="editImages = !editImages">
                 <v-icon>{{ editImages ? 'clear' : 'edit' }}</v-icon>
             </v-btn>
@@ -39,7 +39,7 @@
                             </v-flex>
                         </v-layout>
                     </div>
-                    <div v-if="images.length == 0" class="text-xs-center">
+                    <div v-if="images.length == 0" class="text-xs-center" name="message-no-images">
                         <em>no images</em>
                     </div>
                 </v-flex>
@@ -111,6 +111,7 @@ export default {
             this.showPreview = true;
         },
         deleteImage(id) {
+            this.loading = true;
             this.$store.dispatch('session/removeImage', {id: id, groupId: this.groups.selectedGroup.id}).then(() => {
                 this.$store.commit('toaster/showConfirm', 'Image removed');
                 this.refreshSession();
