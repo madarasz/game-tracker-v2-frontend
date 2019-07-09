@@ -17,9 +17,10 @@
             <v-card-text>
                 <!-- Current season -->
                 <div class="text-xs-center">
-                    <strong>current season:</strong> <span :class="currentSeason.id == null ? 'font-italic' : ''">{{ currentSeason.title }}</span>
+                    <strong class="mr-1">current season:</strong><span :class="currentSeason.id == null ? 'font-italic' : ''">{{ currentSeason.title }}</span>
                 </div>
                 <div class="text-xs-center" v-if="currentSeason.id != null">
+                    <div v-if="currentSeason.description.length > 0">{{ currentSeason.description }}</div>
                     {{ currentSeason.start_date }} <v-icon>chevron_right</v-icon> {{ currentSeason.end_date }}
                     <div class="font-italic">remaining days: {{ currentSeason.remainingDays }}</div>
                 </div>
