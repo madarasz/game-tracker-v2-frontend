@@ -6,11 +6,12 @@ import { toaster } from './modules/toaster';
 import { groups } from './modules/groups';
 import { game } from './modules/game';
 import { session } from './modules/session';
+import { season } from './modules/season';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     modules: {
-        login, toaster, groups, game, session
+        login, toaster, groups, game, session, season
     }
 });

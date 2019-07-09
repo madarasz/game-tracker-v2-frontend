@@ -32,7 +32,7 @@
                     <v-icon>save</v-icon>
                 </v-btn>
             </div>
-            <div v-if="!session.editingSession && canEditSession">
+            <div v-if="(!session.editingSession) && canEditSession">
                 <confirm-button dark flat icon buttonIcon="delete" iconColor="green" class="white btn-small" name="button-delete-session"
                     question="Do you want to delete the session?" :callback="function(){deleteSession()}"/>
                 <v-btn @click="editSession()" dark flat icon name="button-edit-session" class="white btn-small" color="green">
@@ -45,6 +45,17 @@
             <v-card-text>
                 <v-form>
                     <v-layout row wrap>
+                        <!-- Created by -->
+                        <v-flex xs12 sm6 mb-2 v-if="!session.editingSession">
+                            <span class="form-label">last updated by:</span>
+                            <span class="subheading"></span>
+                        </v-flex>
+                        <!-- Season -->
+                        <v-flex xs12 sm6 mb-2 v-if="!session.editingSession" class="text-xs-right">
+                            <span class="form-label">season:</span>
+                            <span class="subheading" v-if="seasonTitle != null">{{ seasonTitle }}</span>
+                            <em class="subheading" v-if="seasonTitle == null">without season</em>
+                        </v-flex>
                         <!-- Place -->
                         <v-flex xs12 sm6 mb-2>
                             <v-layout row>
@@ -119,6 +130,12 @@ export default {
         ...mapState(['game', 'groups', 'session']),
         canEditSession() {
             return this.$store.getters['session/canUserEditSession'];
+        },
+        seasonTitle() {
+            if (this.game.details === undefined || this.session.currentSession === undefined) return null;
+            const _season = this.game.details.seasons.find((x) => { return x.id == this.session.currentSession.season_id });
+            if (_season === undefined) return null;
+            return _season.title;
         }
     },
     methods: {
@@ -158,7 +175,7 @@ export default {
             }
         },
         reloadGameDetails() {
-            this.$store.dispatch('game/getGameDetails', { gameId: this.game.details.id, groupId: this.groups.selectedGroup.id }).catch(() => {
+            this.$store.dispatch('game/getGameDetails').catch(() => {
                 this.$store.commit('toaster/showError', 'Could not update game details');
             })  
         }

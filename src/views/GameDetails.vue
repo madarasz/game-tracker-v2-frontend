@@ -8,9 +8,9 @@
                 <sessions-card/>
             </v-layout>
         </v-flex>
-        <!-- Game info -->
         <v-flex xs12 md3 lg2 pa-2>
-            <v-card>
+            <!-- Game info -->
+            <v-card class="mb-3">
                 <!-- For mobile -->
                 <v-layout wrap row class="hidden-md-and-up">
                     <v-flex grow class="hidden-xs-only">
@@ -28,6 +28,11 @@
                     <game-info/>
                 </div>              
             </v-card>
+            <!-- Seasons -->
+            <seasons-card/>
+            <season-dialog/>
+            <!-- Faction -->
+            <factions-card/>
         </v-flex>
     </v-layout>
 </template>
@@ -37,10 +42,13 @@ import { mapState } from 'vuex';
 import GameInfo from '@/components/game-details/GameInfo'
 import SessionsCard from '@/components/game-details/SessionsCard'
 import SessionDetailsCard from '@/components/game-details/SessionDetailsCard'
+import SeasonsCard from '@/components/game-details/SeasonsCard'
+import SeasonDialog from '@/components/game-details/SeasonDialog'
+import FactionsCard from '@/components/game-details/FactionsCard'
 
 export default {
     components: {
-        GameInfo, SessionsCard, SessionDetailsCard
+        GameInfo, SessionsCard, SessionDetailsCard, SeasonsCard, FactionsCard, SeasonDialog
     },
     data() {
         return {

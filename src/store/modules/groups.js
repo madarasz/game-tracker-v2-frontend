@@ -16,6 +16,12 @@ export const groups = {
             }
             return common.urlFriendly(state.selectedGroup.name);
         },
+        groupId: (state) => {
+            if (state.selectedGroup == null) {
+                return -1;
+            }
+            return state.selectedGroup.id;
+        },
         getUserAsMember: (state) => {
             return userId => {
                 if (!state.selectedGroup || !state.selectedGroup.members) {

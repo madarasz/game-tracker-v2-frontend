@@ -82,6 +82,9 @@ export default {
             return process.env.VUE_APP_BACKEND_IMG_URL;
         },
         images: function() {
+            if (this.session.currentSession == null || this.session.currentSession.images === undefined) {
+                return [];
+            }
             return this.session.currentSession.images.map((x) => { 
                 return {
                     src: this.imageFolder + x.filename,
@@ -97,7 +100,7 @@ export default {
         },
         refreshSession() {
             this.loading = true;
-            this.$store.dispatch('game/getGameDetails', { gameId: this.game.details.id, groupId: this.groups.selectedGroup.id }).then(() => {
+            this.$store.dispatch('game/getGameDetails').then(() => {
                 // refresh current session
                 this.$store.commit('session/selectSession', 
                     this.game.details.sessions.find((x) => { return x.id == this.session.currentSession.id}));
@@ -112,7 +115,7 @@ export default {
         },
         deleteImage(id) {
             this.loading = true;
-            this.$store.dispatch('session/removeImage', {id: id, groupId: this.groups.selectedGroup.id}).then(() => {
+            this.$store.dispatch('session/removeImage', id).then(() => {
                 this.$store.commit('toaster/showConfirm', 'Image removed');
                 this.refreshSession();
             }).catch(() => {

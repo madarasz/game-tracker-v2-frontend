@@ -19,11 +19,22 @@ export const game = {
         urlGameName: (state) => {
             return common.urlFriendly(state.details.name);
         },
+        gameId: (state) => {
+            if (state.details.id === undefined) {
+                return -1;
+            }
+            return state.details.id;
+        },
+        getSeasonWithId: (state) => {
+            return id => state.details.seasons.filter(x => {return x.id == id})[0];
+        }
     },
     actions: {
-        getGameDetails(context, {gameId, groupId}) {
-            return gameRepository.getGameDetails(groupId, gameId).then((response) => {
-                context.state.details = response.data;
+        getGameDetails({state, rootGetters, getters}, payload) {
+            const gameId = payload ? payload.gameId : getters.gameId;
+            const groupId = payload ? payload.groupId : rootGetters['groups/groupId'];
+            return gameRepository.getGameDetails({groupId: groupId, gameId: gameId}).then((response) => {
+                state.details = response.data;
             });
         },
         getBGGStats(context, gameId) {

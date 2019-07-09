@@ -18,7 +18,7 @@ export const session = {
                 return true;    // admins always have the privilage
             }
             const userId = rootGetters['login/getUserId'];
-            return state.currentSession.created_by == userId;
+            return state.currentSession.creator.id == userId;
         }
     },
     actions: {
@@ -39,12 +39,12 @@ export const session = {
                 commit('clearSession');
             })
         },
-        removeImage(context, {id, groupId}) {
+        removeImage({state}, id) {
             return imageRepository.removeImage({
                 type: 'session',
-                parent_id: context.state.currentSession.group_id,   // group id is required, group members can remove images
+                parent_id: state.currentSession.group_id,   // group id is required, group members can remove images
                 image_id: id,
-                group_id: groupId
+                group_id: state.currentSession.group_id
             })
         }
     },
