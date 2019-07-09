@@ -1,6 +1,6 @@
 <template>
     <v-layout wrap row>
-        <v-flex xs12 md9 lg10 pa-2>
+        <v-flex xs12 md9 xl10 pa-2>
             <v-layout wrap row>
                 <!-- Session Details/Editor -->
                 <session-details-card/>
@@ -8,7 +8,7 @@
                 <sessions-card/>
             </v-layout>
         </v-flex>
-        <v-flex xs12 md3 lg2 pa-2>
+        <v-flex xs12 md3 xl2 pa-2>
             <!-- Game info -->
             <v-card class="mb-3">
                 <!-- For mobile -->

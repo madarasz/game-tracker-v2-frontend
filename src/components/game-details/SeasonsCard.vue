@@ -15,16 +15,32 @@
         </v-toolbar>
         <v-card name="card-seasons">
             <v-card-text>
+                <!-- Current season -->
+                <div class="text-xs-center">
+                    <strong>current season:</strong> {{ currentSeason.title }}
+                </div>
+                <div class="text-xs-center" v-if="currentSeason.id != null">
+                    {{ currentSeason.start_date }} <v-icon style="vertical-align: middle">chevron_right</v-icon> {{ currentSeason.end_date }}
+                    <div class="font-italic">remaining days: {{ currentSeason.remainingDays }}</div>
+                </div>
+            </v-card-text>
+            <v-divider/>
+            <v-card-text>
                 <!-- Season list -->
                 <v-data-table :items="seasons" hide-headers hide-actions class="borderless">
                     <template v-slot:items="sea">
-                        <td>{{ sea.item.title }}</td>
-                        <td style="width: 1%" class="text-xs-right">
+                        <td class="pl-1" :class="sea.item.id == null ? 'font-italic' : ''">{{ sea.item.title }}</td>
+                        <td>
                             <v-layout align-center>
-                                <v-btn flat fab @click="editSeason(sea.item.id)" class="btn-small">
-                                    <v-icon>edit</v-icon>
+                                {{ countSessions(sea.item.id) }}<v-icon>event</v-icon>
+                            </v-layout>
+                        </td>
+                        <td style="width: 1%" class="text-xs-right  pl-0 pr-1" v-if="canEditSeasons">
+                            <v-layout align-center v-if="sea.item.id != null">
+                                <v-btn flat fab @click="editSeason(sea.item.id)" class="btn-small ma-0" color="grey darken-1">
+                                    <v-icon size="20">edit</v-icon>
                                 </v-btn>
-                                <confirm-button icon buttonIcon="delete" class="btn-small"
+                                <confirm-button icon buttonIcon="delete" class="btn-small ma-0" iconColor="grey darken-1"
                                             question="Do you want to delete the season?" :callback="function(){deleteSeason(sea.item.id)}" name="button-delete-season"/>
                             </v-layout>
                         </td>
@@ -46,7 +62,8 @@ export default {
     },
     data () {
         return {
-            loading: false
+            loading: false,
+            withoutSeason: { title: 'without season', id: null }
         }
     },
     computed: {
@@ -55,11 +72,19 @@ export default {
             if (this.game.details.seasons === undefined) {
                 return [];
             }
-            return this.game.details.seasons;
+            return this.game.details.seasons.concat([this.withoutSeason]);
         },
         canEditSeasons() {
-            return this.$store.getters['groups/isUserGroupMember'];
+            return this.$store.getters['groups/isUserGroupAdmin'];
         },
+        currentSeason() {
+            const date = new Date().toISOString();
+            const currentSeason = this.seasons.find((x) => { return x.start_date <= date && x.end_date >= date});
+            if (currentSeason === undefined) return this.withoutSeason;
+            const endDate = new Date(currentSeason.end_date);
+            currentSeason.remainingDays = Math.ceil((endDate.getTime() - new Date().getTime())/(1000 * 60 * 60 * 24));
+            return currentSeason;
+        }
     },
     methods: {
         addSeason() {
@@ -77,6 +102,9 @@ export default {
             }).catch(() => {
                 this.$store.commit('toaster/showError', 'Could not delete season');
             })
+        },
+        countSessions(seasonId) {
+            return this.game.details.sessions.filter((x) => { return x.season_id == seasonId}).length;
         }
     }
 }
