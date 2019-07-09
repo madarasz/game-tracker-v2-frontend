@@ -33,9 +33,9 @@
                         </v-list-tile-content>
                         <!-- Buttons -->
                         <v-list-tile-action>
-                            <v-layout align-center v-if="game.session_count > 0">
+                            <div v-if="game.session_count > 0">
                                 {{ game.session_count }}<v-icon>event</v-icon>
-                            </v-layout>
+                            </div>
                             <confirm-button v-if="isGroupMember && game.session_count == 0" icon ripple buttonIcon="delete" iconColor="grey darken-1" name="button-delete-game"
                                 question="Do you want to remove game from group?" :callback="function(){deleteGame(game.id)}"/>
                         </v-list-tile-action>

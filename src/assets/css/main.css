@@ -156,3 +156,6 @@ html {
     height: 28px;
     width: 28px;
 }
+
+/* correct vertical alignment of icons */
+.material-icons { vertical-align: middle }

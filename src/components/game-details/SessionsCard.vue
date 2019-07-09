@@ -24,9 +24,9 @@
                             <td>{{ sess.item.place}}</td>
                             <td></td>
                             <td style="width: 1%">
-                                <v-layout align-center v-if="sess.item.images.length > 0">
+                                <div v-if="sess.item.images.length > 0">
                                     {{ sess.item.images.length }}<v-icon>photo_camera</v-icon>
-                                </v-layout>
+                                </div>
                             </td>
                         </tr>
                     </template>

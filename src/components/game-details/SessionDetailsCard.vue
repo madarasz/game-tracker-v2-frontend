@@ -48,7 +48,9 @@
                         <!-- Created by -->
                         <v-flex xs12 sm6 mb-2 v-if="!session.editingSession">
                             <span class="form-label">last updated by:</span>
-                            <span class="subheading"></span>
+                            <span class="subheading">
+                                <user-with-avatar :user="session.currentSession.creator" inline/>
+                            </span>
                         </v-flex>
                         <!-- Season -->
                         <v-flex xs12 sm6 mb-2 v-if="!session.editingSession" class="text-xs-right">
@@ -112,12 +114,13 @@
 <script>
 import ConfirmButton from '@/components/ConfirmButton';
 import SessionImages from '@/components/game-details/SessionImages';
+import UserWithAvatar from '@/components/UserWithAvatar';
 import { mapState } from 'vuex';
 
 export default {
     name: 'SessionDetailsCard',
     components: {
-        ConfirmButton, SessionImages
+        ConfirmButton, SessionImages, UserWithAvatar
     },
     props: {
     },

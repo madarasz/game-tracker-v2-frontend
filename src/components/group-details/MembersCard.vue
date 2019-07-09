@@ -9,7 +9,7 @@
         <v-card name="card-members">
             <v-list v-if="groups.selectedGroup && groups.selectedGroup.members">
                 <template v-for="(member) in groups.selectedGroup.members">
-                    <user-with-avatar :user="member" :key="member.id"/>
+                    <user-with-avatar :user="member" :key="member.id" list-tile/>
                 </template>
             </v-list>
         </v-card>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import UserWithAvatar from '@/components/group-details/UserWithAvatar';
+import UserWithAvatar from '@/components/UserWithAvatar';
 import { mapState } from 'vuex';
 
 export default {

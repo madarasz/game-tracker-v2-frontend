@@ -17,10 +17,10 @@
             <v-card-text>
                 <!-- Current season -->
                 <div class="text-xs-center">
-                    <strong>current season:</strong> {{ currentSeason.title }}
+                    <strong>current season:</strong> <span :class="currentSeason.id == null ? 'font-italic' : ''">{{ currentSeason.title }}</span>
                 </div>
                 <div class="text-xs-center" v-if="currentSeason.id != null">
-                    {{ currentSeason.start_date }} <v-icon style="vertical-align: middle">chevron_right</v-icon> {{ currentSeason.end_date }}
+                    {{ currentSeason.start_date }} <v-icon>chevron_right</v-icon> {{ currentSeason.end_date }}
                     <div class="font-italic">remaining days: {{ currentSeason.remainingDays }}</div>
                 </div>
             </v-card-text>
@@ -29,21 +29,21 @@
                 <!-- Season list -->
                 <v-data-table :items="seasons" hide-headers hide-actions class="borderless">
                     <template v-slot:items="sea">
-                        <td class="pl-1" :class="sea.item.id == null ? 'font-italic' : ''">{{ sea.item.title }}</td>
-                        <td>
-                            <v-layout align-center>
+                        <tr>
+                            <td class="pl-1" :class="sea.item.id == null ? 'font-italic' : ''">{{ sea.item.title }}</td>
+                            <td class="text-xs-right pr-1">
                                 {{ countSessions(sea.item.id) }}<v-icon>event</v-icon>
-                            </v-layout>
-                        </td>
-                        <td style="width: 1%" class="text-xs-right  pl-0 pr-1" v-if="canEditSeasons">
-                            <v-layout align-center v-if="sea.item.id != null">
-                                <v-btn flat fab @click="editSeason(sea.item.id)" class="btn-small ma-0" color="grey darken-1">
-                                    <v-icon size="20">edit</v-icon>
-                                </v-btn>
-                                <confirm-button icon buttonIcon="delete" class="btn-small ma-0" iconColor="grey darken-1"
-                                            question="Do you want to delete the season?" :callback="function(){deleteSeason(sea.item.id)}" name="button-delete-season"/>
-                            </v-layout>
-                        </td>
+                            </td>
+                            <td style="width: 1%" class="text-xs-right  pl-0 pr-1" v-if="canEditSeasons">
+                                <v-layout align-center v-if="sea.item.id != null">
+                                    <v-btn flat fab @click="editSeason(sea.item.id)" class="btn-small ma-0" color="grey darken-1">
+                                        <v-icon size="20">edit</v-icon>
+                                    </v-btn>
+                                    <confirm-button icon buttonIcon="delete" class="btn-small ma-0" iconColor="grey darken-1"
+                                                question="Do you want to delete the season?" :callback="function(){deleteSeason(sea.item.id)}" name="button-delete-season"/>
+                                </v-layout>
+                            </td>
+                        </tr>
                     </template>
                 </v-data-table>
             </v-card-text>
