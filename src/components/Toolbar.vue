@@ -51,7 +51,7 @@
                     </v-list-tile>
                     <v-list-tile to="/" name="menu-group-select" @click="unselectGroup()">
                         <v-icon class="pr-2">group</v-icon>
-                        <v-list-tile-title>Select another</v-list-tile-title>              
+                        <v-list-tile-title>Select group</v-list-tile-title>              
                     </v-list-tile>
                 </v-list>
             </v-menu>

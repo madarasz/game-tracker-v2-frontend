@@ -4,7 +4,7 @@
             <tr @click="selected(group.item.id, group.item.name)">
                  <!-- Group avatar in hexagon -->
                 <td style="width: 1%">
-                    <v-list-tile-avatar size="32" tile>
+                    <v-list-tile-avatar size="32" tile style="margin-right: -30px">
                         <div class="hexagon hexagon-small">
                             <div class="hexagon-in1">
                                 <div class="hexagon-in2">
@@ -16,22 +16,24 @@
                             </div>
                         </div>
                     </v-list-tile-avatar>
-                <td style="width: 100%" class="text-xs-left">{{ group.item.name }}</td>
-                <!-- Icons -->
-                <td style="width: 1%">
+                <td class="text-xs-left">
                     <v-icon name="icon-settings" v-if="group.item.is_group_admin || login.isAdmin">settings</v-icon>
+                    {{ group.item.name }}
                 </td>
-                <td style="width: 1%">
-                    <v-layout align-center v-if="group.item.gameCount > 0">
+                <!-- Icons -->
+                <td class="text-xs-right hidden-xs-only">
+                    <span v-if="group.item.gameCount > 0" class="ml-1">
                         {{ group.item.gameCount }}
                         <v-icon>casino</v-icon>
-                    </v-layout>
-                </td>
-                <td style="width: 1%">
-                    <v-layout align-center v-if="group.item.memberCount > 0">
+                    </span>
+                    <span v-if="group.item.sessionCount > 0" class="ml-1">
+                        {{ group.item.sessionCount }}
+                        <v-icon>event</v-icon>
+                    </span>
+                    <span v-if="group.item.memberCount > 0" class="ml-1">
                         {{ group.item.memberCount }}
                         <v-icon>face</v-icon>
-                    </v-layout>
+                    </span>
                 </td>
             </tr>
         </template>
